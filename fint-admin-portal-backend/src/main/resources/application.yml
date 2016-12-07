@@ -1,0 +1,8 @@
+spring:
+  ldap:
+    url: LDAP_URL
+    user: LDAP_USER
+    password: LDAP_PWD
+    base: LDAP_BASE
+
+

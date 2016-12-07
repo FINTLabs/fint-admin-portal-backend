@@ -1,0 +1,4 @@
+defaultTasks 'fint-admin-portal-backend:clean',
+			 'fint-admin-portal-backend:build'
+group 'no.fint'
+version '0.0.1-SNAPSHOT'

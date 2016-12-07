@@ -1,0 +1,3 @@
+rootProject.name = 'fint-admin-portal'
+include 'fint-admin-portal-backend'
+//include 'fint-admin-portal-frontend'
