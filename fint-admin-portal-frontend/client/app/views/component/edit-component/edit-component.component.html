@@ -1,0 +1,44 @@
+<h2 *ngIf="component.id == null">Opprett ny felleskomponent</h2>
+<h2 *ngIf="component.id != null">Rediger felleskomponent</h2>
+
+<form [formGroup]="componentForm" novalidate (ngSubmit)="save(componentForm.value)">
+  <md-card>
+    <md-card-content>
+      <div class="row">
+        <div class="col-xs-8">
+          <md-input placeholder="Navn" type="text" formControlName="name" style="width: 99%" required>
+            <md-hint [hidden]="componentForm.controls['name'].valid || componentForm.controls['name'].pristine" align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="componentForm.controls['name'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+        <div class="col-xs-4">
+          <md-input placeholder="Teknisk navn" type="text" formControlName="technicalName" style="width: 99%" required>
+            <md-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end"
+              style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="componentForm.controls['technicalName'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col img-placeholder" for="iconFile">
+          <div *ngIf="component.icon" class="img with-src" [attr.style]="getIcon()"></div>
+          <div *ngIf="!component.icon" class="img no-src">&nbsp;</div>
+          <input id="iconFile" type="file" name="icon" (change)="setIcon($event)">
+        </label>
+        <div class="col">
+          <md-textarea placeholder="Beskrivelse" rows="6" type="text" formControlName="description" style="width: 99%">
+          </md-textarea>
+        </div>
+      </div>
+    </md-card-content>
+
+    <md-card-actions>
+      <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!componentForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
+      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
+    </md-card-actions>
+  </md-card>
+</form>

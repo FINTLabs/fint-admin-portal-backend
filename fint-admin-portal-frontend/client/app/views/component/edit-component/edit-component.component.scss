@@ -1,0 +1,33 @@
+.img-placeholder {
+  width: 130px;
+  padding: 10px;
+  position: relative;
+  min-height: 10em;
+  input {
+    display: none;
+  }
+  .img {
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    position: absolute;
+    top: 1em; bottom: 1em; left: 0; right: 1em;
+  }
+  div.img.with-src {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50%;
+  }
+  div.img.no-src {
+    &:after {
+      content: 'Legg til ikon';
+      text-align: center;
+      line-height: 6em;
+      background: #ddd;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 3px;
+      top: .15em; bottom: .15em; left: .15em; right: .15em;
+    }
+  }
+}

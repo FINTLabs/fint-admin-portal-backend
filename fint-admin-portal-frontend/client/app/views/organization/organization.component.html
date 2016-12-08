@@ -1,0 +1,34 @@
+<h2>Tilknyttetede organisasjoner</h2>
+
+<div>
+</div>
+
+<md-card>
+  <md-card-content class="table-container" *ngIf="organizations.length">
+    <table>
+      <thead>
+        <tr>
+          <th>Navn</th>
+          <th>Felleskomponenter</th>
+          <th>Ansvarlig</th>
+        </tr>
+      </thead>
+
+      <!-- Editor -->
+      <tbody *ngFor="let organization of organizations;" (click)="editOrganization(organization)">
+        <tr>
+          <td>{{ organization.name }}</td>
+          <td>{{ organization.components }}</td>
+          <td>{{ organization.responsible.firstName }} {{ organization.responsible.lastName }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button md-ripple (click)="addOrganization()" type="button">
+      <fint-fa name="plus"></fint-fa>
+      Ny organisasjon
+    </button>
+  </md-card-actions>
+</md-card>

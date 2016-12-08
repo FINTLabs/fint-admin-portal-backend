@@ -38,3 +38,13 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
+
+// // run spring boot app
+// bootRun {
+// 	//addResources = true
+// 	classpath = sourceSets.main.runtimeClasspath
+// }
+
+// // run all task
+// task runAll {}
+// runAll.dependsOn(bootRun)

@@ -1,0 +1,10 @@
+table {
+  th, td {
+    &:first-child {
+      width: 100%;
+    }
+    &:last-child {
+      width: 100px;
+    }
+  }
+}
