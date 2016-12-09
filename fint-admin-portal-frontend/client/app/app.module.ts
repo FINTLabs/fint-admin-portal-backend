@@ -17,17 +17,18 @@ import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    HttpModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpModule,
+    FormsModule,
     MaterialModule.forRoot(),
 
     LibSharedModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [EventService, OrganizationService, CommonComponentService],
   bootstrap: [AppComponent]

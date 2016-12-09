@@ -1,8 +1,9 @@
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 export class ApiBase {
-  protected handleError(error: Response | any) {
+  protected handleError(error: Response | any): ErrorObservable {
     // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {

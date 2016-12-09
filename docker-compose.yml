@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  backend:
+    build: .
+    image: fint/adminportal
+    container_name: ${DOCKER_CONTAINER}
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_PORT}:8080"

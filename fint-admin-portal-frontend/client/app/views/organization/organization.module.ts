@@ -29,6 +29,6 @@ import { EditOrganizationComponent } from './edit-organization/edit-organization
     OrganizationComponent,
     EditOrganizationComponent
   ],
-  providers: [OrganizationService, { provide: XSRFStrategy, useFactory: () => new NoXSRFStrategy() }] // !!HACK!!
+  providers: [OrganizationService, { provide: XSRFStrategy, useClass: NoXSRFStrategy }] // !!HACK!!
 })
 export class OrganizationModule { }

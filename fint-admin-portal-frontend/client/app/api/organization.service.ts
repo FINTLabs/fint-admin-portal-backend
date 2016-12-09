@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Request, Response, URLSearchParams, XSRFStrategy } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/throw';
 
 import { ApiBase } from './ApiBase';
@@ -66,7 +69,7 @@ export class OrganizationService extends ApiBase {
 
   }
 
-  protected handleError(error: Response | any) {
+  protected handleError(error: Response | any): ErrorObservable {
     // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {

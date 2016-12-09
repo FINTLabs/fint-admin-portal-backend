@@ -1,4 +1,4 @@
-import { Event } from '@angular/platform-browser/src/facade/browser';
+import { SafeStyle } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -44,7 +44,7 @@ export class EditComponentComponent implements OnInit {
     });
   }
 
-  getIcon() {
+  getIcon(): SafeStyle {
     return this.sanitizer.bypassSecurityTrustStyle('background-image: url(' + this.component.icon + ')');
   }
 
