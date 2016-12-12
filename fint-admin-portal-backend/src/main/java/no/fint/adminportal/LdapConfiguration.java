@@ -15,12 +15,12 @@ public class LdapConfiguration {
     Environment env;
 
     @Bean
-    public LdapContextSource contextSource () {
-        LdapContextSource contextSource= new LdapContextSource();
-        contextSource.setUrl(env.getRequiredProperty("spring.ldap.url"));
-        //contextSource.setBase(env.getRequiredProperty("spring.ldap.base"));
-        contextSource.setUserDn(env.getRequiredProperty("spring.ldap.user"));
-        contextSource.setPassword(env.getRequiredProperty("spring.ldap.password"));
+    public LdapContextSource contextSource() {
+        LdapContextSource contextSource = new LdapContextSource();
+        contextSource.setUrl(env.getRequiredProperty("fint.ldap.url"));
+        //contextSource.setBase(env.getRequiredProperty("fint.ldap.base"));
+        contextSource.setUserDn(env.getRequiredProperty("fint.ldap.user"));
+        contextSource.setPassword(env.getRequiredProperty("fint.ldap.password"));
         return contextSource;
     }
 

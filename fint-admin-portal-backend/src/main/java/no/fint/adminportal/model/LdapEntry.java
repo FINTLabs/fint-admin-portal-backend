@@ -1,7 +1,8 @@
 package no.fint.adminportal.model;
 
-import javax.naming.Name;
+import org.springframework.ldap.odm.annotations.Entry;
 
+@Entry(objectClasses = "")
 public interface LdapEntry {
-    Name getDn();
+    String getDn();
 }
