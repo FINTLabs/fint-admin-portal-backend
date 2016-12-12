@@ -23,9 +23,6 @@ public class DnService {
     @Value("${fint.ldap.component-base}")
     private String componentBase;
 
-    @Value("${fint.ldap.contact-base}")
-    private String contactBase;
-
     public void setOrganisationDn(Organisation organisation) {
 
         Name dnById = ldapService.getDnById(organisation.getOrgId(), organisationBase, Organisation.class);
