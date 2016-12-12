@@ -1,0 +1,89 @@
+<h2 *ngIf="!organization.orgId">Opprett ny organisasjon</h2>
+<h2 *ngIf="organization.orgId">Rediger organisasjon</h2>
+
+<form [formGroup]="organizationForm" novalidate (ngSubmit)="save(organizationForm.value)">
+  <md-card>
+    <md-card-content>
+      <div class="row">
+        <div class="col-xs-8">
+          <!--md-input placeholder="" type="text" formControlName="name" style="width: 99%" required-->
+          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesFn()" formControlName="name" [(selectedItem)]="selectedOrganization"
+            style="width: 99%">
+            <md-hint [hidden]="organizationForm.controls['name'].valid || organizationForm.controls['name'].pristine" align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls['name'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </fint-typeahead>
+          <!--/md-input-->
+        </div>
+        <div class="col-xs-4">
+          <md-input placeholder="Org.no." type="tel" formControlName="orgId" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls['orgId'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+      </div>
+    </md-card-content>
+
+    <md-card-content formGroupName="responsible">
+      <h3>Ansvarlig for organisasjonen</h3>
+      <div class="row">
+        <div class="col-xs-4">
+          <md-input placeholder="Fødselsnummer" type="tel" formControlName="id" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['id'].valid || organizationForm.controls.responsible.controls['id'].pristine"
+              align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls.responsible.controls['id'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <md-input placeholder="Fornavn" type="text" formControlName="firstName" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['firstName'].valid || organizationForm.controls.responsible.controls['firstName'].pristine"
+              align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls.responsible.controls['firstName'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+        <div class="col-xs-6">
+          <md-input placeholder="Etternavn" type="text" formControlName="lastName" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['lastName'].valid || organizationForm.controls.responsible.controls['lastName'].pristine"
+              align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls.responsible.controls['lastName'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <md-input placeholder="Epost" type="email" formControlName="email" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['email'].valid || organizationForm.controls.responsible.controls['email'].pristine"
+              align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls.responsible.controls['email'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+        <div class="col-xs-4">
+          <md-input placeholder="Mobil" type="tel" formControlName="phone" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['phone'].valid || organizationForm.controls.responsible.controls['phone'].pristine"
+              align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="organizationForm.controls.responsible.controls['phone'].hasError('required')">Påkrevd</span>
+            </md-hint>
+          </md-input>
+        </div>
+      </div>
+    </md-card-content>
+    <md-card-actions>
+      <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!organizationForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
+      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
+    </md-card-actions>
+  </md-card>
+</form>

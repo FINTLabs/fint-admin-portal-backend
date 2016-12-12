@@ -4,3 +4,4 @@ build
 classes
 schema
 out
+*.log*

@@ -1,0 +1,45 @@
+// frontend build.gradle
+plugins {
+	id "com.moowork.node" version "0.14"
+}
+apply plugin: 'java'
+apply plugin: 'maven'
+
+defaultTasks 'clean', 'webpack_build', 'webjar'
+
+// configure gradle-node-plugin
+node {
+	workDir = file("${project.projectDir}/node")
+	nodeModulesDir = file("${project.projectDir}/")
+}
+
+// clean task for npm
+task npmClean(type: Delete) {
+	final def webDir = "${rootDir}/fint-admin-portal-frontend"
+	//delete "${webDir}/node"
+	//delete "${webDir}/node_modules"
+	delete "${webDir}/dist"
+	delete "${webDir}/coverage"
+}
+clean.dependsOn(npmClean)
+
+// build task for npm
+task webpack_build {
+  dependsOn 'npm_install'
+  dependsOn 'npm_run_build'
+}
+assemble.dependsOn(webpack_build)
+
+task webjar(type: Jar, dependsOn: "jar") {
+  from(fileTree('dist/public')) {
+    into 'META-INF/resources'
+  }
+}
+
+// check task for npm
+check {}
+//check.dependsOn(npm_run_test)
+
+// run all task
+//task runAll{}
+//runAll.dependsOn(npm_run_start)

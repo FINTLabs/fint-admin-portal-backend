@@ -18,7 +18,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
 	baseName = 'fint-admin-portal-backend'
-	version = '0.0.1-SNAPSHOT'
+	version = version
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -31,10 +31,13 @@ repositories {
 			url  "http://dl.bintray.com/rfkikt/maven"
 		}
 	}
+  mavenLocal()
+  flatDir { dirs '../fint-admin-portal-frontend/build/libs' }
 }
 
 
 dependencies {
+  compile name: 'fint-admin-portal-frontend'
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.ldap:spring-ldap-core:2.2.0.RELEASE')
 
@@ -48,3 +51,13 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
+
+// run spring boot app
+bootRun {
+	//addResources = true
+	classpath = sourceSets.main.runtimeClasspath
+}
+
+// run all task
+task runAll {}
+runAll.dependsOn(bootRun)

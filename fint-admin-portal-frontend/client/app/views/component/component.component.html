@@ -1,0 +1,41 @@
+<h2>Felleskomponenter</h2>
+
+<div>
+  Dette er alle felleskomponenter registrert.
+</div>
+
+<md-card>
+  <md-card-content class="table-container" *ngIf="components.length">
+    <table>
+      <thead>
+        <tr>
+          <th>Navn</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <!-- Editor -->
+      <tbody>
+        <tr *ngFor="let component of components;" [routerLink]="['./', component.id]">
+          <td>{{ component.name }}</td>
+          <td class="status">
+            <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
+              <i class="fa fa-circle-o fa-stack-2x"></i>
+              <i class="fa fa-circle fa-stack-1x"></i>
+            </span>
+          </td>
+          <td>
+            <button md-icon-button><fint-fa name="edit"></fint-fa></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button md-ripple [routerLink]="['./add']" type=" button ">
+      <fint-fa name="plus "></fint-fa>
+      Konfigurer ny komponent
+    </button>
+  </md-card-actions>
+</md-card>
