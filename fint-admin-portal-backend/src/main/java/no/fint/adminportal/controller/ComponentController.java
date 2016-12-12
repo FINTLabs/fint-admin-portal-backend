@@ -1,11 +1,14 @@
 package no.fint.adminportal.controller;
 
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.Organization;
+import no.fint.adminportal.model.Role;
 import no.fint.adminportal.service.ComponentService;
-import no.fint.adminportal.service.OrganizationService;
+import no.rogfk.hateoas.extension.HalPagedResources;
+import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
-//@Api(tags = "GuestUser")
+@Api(tags = "Components")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/components")
 public class ComponentController {
@@ -26,37 +29,45 @@ public class ComponentController {
     @Autowired
     ComponentService componentService;
 
-    //@ApiOperation("Request new guest user")
+    @ApiOperation("Request new component")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
-    public ResponseEntity createComponent(@ModelAttribute Component component) {
+    public ResponseEntity createComponent(@ModelAttribute Component component, @RequestHeader(name = "x-fint-role") Role role) {
         log.info("Component: {}", component);
 
         boolean compCreated = componentService.createComponent(component);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{component}")
+                .fromCurrentRequest().path("/{technicalName}")
                 .buildAndExpand(component.getTechnicalName()).toUri();
 
         if (compCreated) {
             return ResponseEntity.created(location).build();
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body(location.toString());
         }
     }
 
-    /*
+
+    @ApiOperation("Get all components")
+    @HalResource(pageSize = 100)
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Organization>> getOrganizations() {
-        return ResponseEntity.ok(organizationService.getOrganizations());
+    public HalPagedResources<Component> getComponents(@RequestParam(required = false) Integer page) {
+        return new HalPagedResources<>(componentService.getComponents(), page);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{orgId:.+}")
-    public ResponseEntity<Organization> getOrganization(@PathVariable String orgId) {
-        return ResponseEntity.ok(organizationService.getOrganization(orgId));
+    @ApiOperation("Get component by technical name ")
+    @RequestMapping(method = RequestMethod.GET, value = "/{technicalName}")
+    public ResponseEntity getComponent(@PathVariable String technicalName) {
+        Optional<Component> component = componentService.getComponent(technicalName);
+
+        if (component.isPresent()) {
+            return ResponseEntity.ok(component.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-    */
+
 }

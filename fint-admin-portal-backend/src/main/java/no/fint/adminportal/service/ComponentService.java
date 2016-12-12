@@ -2,33 +2,28 @@ package no.fint.adminportal.service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.LdapEntry;
-import no.fint.adminportal.model.Organization;
-import no.fint.adminportal.utilities.BaseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Service;
 
-import javax.naming.InvalidNameException;
-import javax.naming.Name;
 import javax.naming.directory.SearchControls;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class ComponentService {
 
     @Autowired
-    private LdapTemplate ldapTemplate;
+    LdapService ldapService;
 
     @Autowired
-    LdapService ldapService;
+    private DnService dnService;
 
     private SearchControls searchControls;
 
-    @Value("${spring.ldap.base}")
-    private String base;
+    @Value("${fint.ldap.component-base}")
+    private String componentBase;
 
     public ComponentService() {
         searchControls = new SearchControls();
@@ -38,11 +33,28 @@ public class ComponentService {
     public boolean createComponent(Component component) {
         log.info("Creating component: {}", component);
 
-        Name dn = LdapNameBuilder.newInstance(
-                String.format("ou=%s,%s", component.getTechnicalName(), BaseFactory.getComponentBase(base))
-        ).build();
-        component.setDn(dn);
-
+        if (component.getDn() == null) {
+            dnService.setComponentDn(component);
+        }
         return ldapService.create(component);
+    }
+
+    public boolean updateComponent(Component component) {
+        log.info("Updating component: {}", component);
+
+        return ldapService.update(component);
+    }
+
+    public List<Component> getComponents() {
+        return ldapService.getAll(componentBase, Component.class);
+    }
+
+    public Optional<Component> getComponent(String technicalName) {
+        Optional<String> stringDnById = Optional.ofNullable(ldapService.getStringDnById(technicalName, componentBase, Component.class));
+
+        if (stringDnById.isPresent()) {
+            return Optional.of(ldapService.getEntry(stringDnById.get(), Component.class));
+        }
+        return Optional.empty();
     }
 }

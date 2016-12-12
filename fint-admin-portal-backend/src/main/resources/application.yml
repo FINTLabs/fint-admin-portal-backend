@@ -1,8 +1,14 @@
-spring:
+springfox:
+ title: 'FINT Admin Portal API'
+ version: '@version@'
+
+fint:
   ldap:
-    url: LDAP_URL
-    user: LDAP_USER
-    password: LDAP_PWD
-    base: LDAP_BASE
+    url:
+    user:
+    password:
+    base:
+    component-base: "ou=felleskomponenter,o=fint"
+    organisation-base: "ou=organisasjoner,o=fint"
 
 
