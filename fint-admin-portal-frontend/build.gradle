@@ -9,8 +9,19 @@ defaultTasks 'clean', 'webpack_build', 'webjar'
 
 // configure gradle-node-plugin
 node {
+  version = '6.9.2'
+  npmVersion = '3.10.8'
+  download = false
   workDir = file("${project.projectDir}/node")
   nodeModulesDir = file("${project.projectDir}/")
+}
+
+// Workaround for https://issues.gradle.org/browse/GRADLE-1843
+task removeDanglingSymlinks(type:Exec) {
+  commandLine 'find', '-L', file("${project.projectDir}").absolutePath, '-type', 'l', '-delete'
+}
+if (!System.properties['os.name'].toLowerCase().contains('windows')) {
+  npmInstall.dependsOn removeDanglingSymlinks
 }
 
 // clean task for npm
