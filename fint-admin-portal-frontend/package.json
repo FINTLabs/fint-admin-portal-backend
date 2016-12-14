@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./dist/standalone.js",
     "build": "npm run build:server && npm run build:client",
-    "build:client": "ng build --prod",
+    "build:client": "ng build --prod --progress=false",
     "build:server": "tsc --project ./server/tsconfig.json",
     "lint": "tslint \"client/**/*.ts\"",
     "test": "ng test",
