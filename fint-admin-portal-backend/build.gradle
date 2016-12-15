@@ -52,7 +52,7 @@ dependencies {
     testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 
-// run spring boot app
+// run spring boot app (only applicable if run through an IDE)
 tasks.withType(org.springframework.boot.gradle.run.BootRunTask) {
     if (project.hasProperty('url')) {
         println "Using Gradle project properties"

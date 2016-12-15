@@ -18,15 +18,15 @@ node {
       if (env.RUN_TYPE != 'default') {
         sh 'cd fint-admin-portal-frontend && npm i github:fintprosjektet/fint-shared-components -S'
       }
-      withCredentials([string(credentialsId: 'adminPortalRunParams', variable: 'runParams')]) {
-        // available as an env variable, but will be masked if you try to print it out any which way
-        sh "./gradlew ${env.runParams}"
-      }
+      sh "./gradlew ${env.runParams}"
     }
 
     stage('deploy') {
       sh 'chmod +x docker-build'
-      sh 'sudo -E sh ./docker-build'
+      withCredentials([string(credentialsId: 'adminPortalRunParams', variable: 'runParams')]) {
+        // available as an env variable, but will be masked if you try to print it out any which way
+        sh 'sudo -E sh ./docker-build'
+      }
     }
   }
 
