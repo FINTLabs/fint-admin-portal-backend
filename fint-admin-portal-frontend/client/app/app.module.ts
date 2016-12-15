@@ -1,4 +1,3 @@
-import { CommonComponentService } from './api/common-component.service';
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -28,7 +27,7 @@ import { AppComponent } from './app.component';
     LibSharedModule,
     AppRoutingModule
   ],
-  providers: [EventService, CommonComponentService],
+  providers: [EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

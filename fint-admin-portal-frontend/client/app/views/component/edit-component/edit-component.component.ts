@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
-import { CommonComponentService, ICommonComponent } from '../../../api/common-component.service';
+import { CommonComponentService, ICommonComponent } from '../common-component.service';
 
 @Component({
   selector: 'app-edit-component',

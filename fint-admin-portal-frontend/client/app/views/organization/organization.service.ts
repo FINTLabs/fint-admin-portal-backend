@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Request, Response, URLSearchParams, XSRFStrategy } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
@@ -8,20 +8,35 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/throw';
 
-import { ApiBase } from '../../api/ApiBase';
+import {ApiBase, IHAL} from '../../api/ApiBase';
 
-export interface IResponsible {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
+export interface IContact {
+  dn: string;                 // DN of the contact. This is automatically set.
+  nin: string;                // National Idenitification Number (NIN). This would be fødselsnummer (11 digits)
+  firstName: string;          // First name of the contact.
+  lastName: string;           // Last name of the contact.
+  mail: string;               // Internet email address for the contact.
+  mobile: string;             // Mobile number of the contact. Should include landcode.
+  orgId: string;              // OrgId of the organisation the contact is connected to.
+  primaryTechnical: boolean;  // Indicates if the contact is the primary technical contact for the organisation.
+  primaryLegal: boolean;      // Indicates if the contact is the primary legal contact for the organisation.
+}
+export interface IContactHALPage extends IHAL {
+  _embedded: {
+    contactList: IContact[]
+  }
 }
 export interface IOrganization {
-  orgId: string;
-  name: string;
-  components: string[];
-  responsible: IResponsible;
+  dn;
+  id: string;                 // Unique identifier for the organisation (UUID). This is automatically generated and should not be set.
+  orgNumber: string;          // The organisation number from Enhetsregisteret (https://w2.brreg.no/enhet/sok/index.jsp)
+  orgId: string;              // Id of the organisation. Should be the official domain of the organisation. For example rogfk.no
+  displayName: string;        // The official name of the organisation. See Enhetsregisteret (https://w2.brreg.no/enhet/sok/index.jsp)
+}
+export interface IOrgHALPage extends IHAL {
+  _embedded: {
+    organisationList: IOrganization[]
+  }
 }
 @Injectable()
 export class OrganizationService extends ApiBase {
@@ -30,16 +45,38 @@ export class OrganizationService extends ApiBase {
     super();
   }
 
-  all(): IOrganization[] {
-    return [
-      { orgId: '971045698', name: 'ROGALAND FYLKESKOMMUNE', components: [], responsible: { id: 111, firstName: '', lastName: '', email: '', phone: '' } },
-      { orgId: '958935420', name: 'OSLO KOMMUNE', components: [], responsible: { id: 112, firstName: '', lastName: '', email: '', phone: '' } },
-      { orgId: '938626367', name: 'HORDALAND FYLKESKOMMUNE', components: [], responsible: { id: 113, firstName: '', lastName: '', email: '', phone: '' } },
-      { orgId: '960895827', name: 'VEST-AGDER FYLKESKOMMUNE', components: [], responsible: { id: 111, firstName: '', lastName: '', email: '', phone: '' } },
-    ];
+  all(page: number = 1, pageSize?: number): Observable<IOrgHALPage> {
+    let params = new URLSearchParams();
+    params.set('page', page.toString());
+    //params.set('pageSize', pageSize.toString());
+    return this.http.get('/api/organisations', { search: params })
+      .map(items => items.json())
+      .catch(this.handleError);
   }
 
-  fetchOrganizationByName(filter: string) {
+  get(orgId: string): Observable<IOrganization> {
+    return this.http.get('/api/organisations/' + orgId)
+      .map(item => item.json())
+      .catch(this.handleError);
+  }
+
+  getContacts(orgId: string): Observable<IContactHALPage> {
+    return this.http.get('/api/organisations/' + orgId + '/contacts')
+      .map(item => item.json())
+      .catch(this.handleError);
+  }
+
+  save(org: IOrganization) {
+//    if (org.id) {
+//      return this.http.put('/api/organisations')
+//    }
+//    return this.http.
+  }
+
+  // --------------------------
+  // External calls
+  // --------------------------
+  fetchRegistryOrgByName(filter: string) {
     let params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
@@ -49,7 +86,7 @@ export class OrganizationService extends ApiBase {
       .catch(this.handleError);
   }
 
-  getOrganizationByOrgId(orgId: number) {
+  fetchRegistryOrgByNumber(orgId: number) {
     let params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
@@ -57,23 +94,5 @@ export class OrganizationService extends ApiBase {
     return this.http.get('//data.brreg.no/enhetsregisteret/enhet.json', { search: params })
       .map(items => items.json().data)
       .catch(this.handleError);
-  }
-
-  save(org: IOrganization) {
-
-  }
-
-  protected handleError(error: Response | any): ErrorObservable {
-    // In a real world app, we might use a remote logging infrastructure
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
   }
 }

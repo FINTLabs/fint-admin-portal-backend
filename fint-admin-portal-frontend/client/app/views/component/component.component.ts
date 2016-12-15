@@ -1,4 +1,4 @@
-import { CommonComponentService, ICommonComponent } from '../../api/common-component.service';
+import { CommonComponentService, ICommonComponent } from './common-component.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 

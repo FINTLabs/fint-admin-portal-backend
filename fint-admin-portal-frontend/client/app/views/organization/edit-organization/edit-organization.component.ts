@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
-import { IOrganization, OrganizationService } from '../organization.service';
+import {IOrganization, OrganizationService, IContact} from '../organization.service';
 
 @Component({
   selector: 'app-edit-organization',
@@ -11,15 +11,16 @@ import { IOrganization, OrganizationService } from '../organization.service';
 })
 export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
-  organization;
+  organization: IOrganization = <IOrganization>{};
+  responsible: IContact[];
   _selectedOrganization;
   get selectedOrganization() {
     return this._selectedOrganization;
   }
   set selectedOrganization(value) {
     this._selectedOrganization = value;
-    this.organizationForm.controls['name'].setValue(value.navn);
-    this.organizationForm.controls['orgId'].setValue(value.organisasjonsnummer);
+    this.organizationForm.controls['displayName'].setValue(value.navn);
+    this.organizationForm.controls['orgNumber'].setValue(value.organisasjonsnummer);
   }
 
   items = [];
@@ -30,29 +31,31 @@ export class EditOrganizationComponent implements OnInit {
     private route: ActivatedRoute,
     private organizationService: OrganizationService
   ) {
-    this.organization = <IOrganization>{ responsible: {} };
     this.route.params.subscribe(params => {
-      let organizations = organizationService.all();
       if (params['orgId']) {
-        let index = organizations.findIndex(org => org.orgId === params['orgId']);
-        if (index > -1) {
-          this.organization = organizations[index];
-        }
+        // Get organisation data
+        organizationService.get(params['orgId'])
+          .subscribe(organization => {
+            this.organization = organization;
+            this.createForm();
+          });
+
+        // Get contact data
+        organizationService.getContacts(params['orgId'])
+          .subscribe(result => this.responsible = result._embedded.contactList);
       }
     });
   }
 
   ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
     this.organizationForm = this.fb.group({
-      name: [this.organization.name, [Validators.required]],
-      orgId: [this.organization.orgId, [Validators.required]],
-      responsible: this.fb.group({
-        id: [this.organization.responsible.id, [Validators.required/*, Validators.minLength(11), Validators.maxLength(11)*/]],
-        firstName: [this.organization.responsible.firstName, [Validators.required/*, Validators.minLength(2)*/]],
-        lastName: [this.organization.responsible.lastName, [Validators.required/*, Validators.minLength(2)*/]],
-        email: [this.organization.responsible.email, [Validators.required]],
-        phone: [this.organization.responsible.phone, [Validators.required/*, Validators.minLength(8)*/]]
-      })
+      displayName: [this.organization.displayName, [Validators.required]],
+      orgNumber: [this.organization.orgNumber, [Validators.required]],
+      orgId: [this.organization.orgId, [Validators.required]]
     });
   }
 
@@ -67,7 +70,7 @@ export class EditOrganizationComponent implements OnInit {
       if (!currentValue || currentValue.length < 2) {
         return items;
       }
-      return me.organizationService.fetchOrganizationByName(currentValue);
+      return me.organizationService.fetchRegistryOrgByName(currentValue);
     }
   }
 }

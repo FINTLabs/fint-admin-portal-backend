@@ -72,7 +72,7 @@ public class OrganisationController {
     @ApiOperation("Get the organisation contacts")
     //@HalResource(pageSize = 100)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/contacts")
-    public ResponseEntity getOrganizationConcats(@PathVariable final String id) {
+    public ResponseEntity getOrganizationContacts(@PathVariable final String id) {
         Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getOrganizationContacts(id));
         if (contacts.isPresent()) {
             return ResponseEntity.ok(contacts.get());

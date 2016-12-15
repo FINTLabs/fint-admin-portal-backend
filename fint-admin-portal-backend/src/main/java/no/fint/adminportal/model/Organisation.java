@@ -49,11 +49,11 @@ public final class Organisation implements LdapEntry {
         }
     }
 
-    public String getOrgId() {
-        return orgId;
-    }
-
     public void setDn(Name dn) {
         this.dn = dn;
+    }
+
+    public String getOrgId() {
+        return orgId;
     }
 }
