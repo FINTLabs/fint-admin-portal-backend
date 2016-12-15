@@ -8,13 +8,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/throw';
 
-import { ApiBase } from './ApiBase';
-
-export class NoXSRFStrategy {
-  configureRequest(req: Request) {
-    // Remove `x-xsrf-token` from request headers
-  }
-}
+import { ApiBase } from '../../api/ApiBase';
 
 export interface IResponsible {
   id: number;

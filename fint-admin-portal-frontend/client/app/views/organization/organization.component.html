@@ -15,7 +15,7 @@
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let organization of organizations;" (click)="editOrganization(organization)">
+      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.orgId]">
         <tr>
           <td>{{ organization.name }}</td>
           <td>{{ organization.components }}</td>
@@ -26,7 +26,7 @@
     </table>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button md-ripple (click)="addOrganization()" type="button">
+    <button md-raised-button md-ripple [routerLink]="['./', 'add']" type="button">
       <fint-fa name="plus"></fint-fa>
       Ny organisasjon
     </button>

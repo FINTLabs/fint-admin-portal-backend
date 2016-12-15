@@ -9,8 +9,6 @@ import { MaterialModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
 import { LibSharedModule, EventService } from 'fint-shared-components';
 
-// Services
-import { OrganizationService } from './api/organization.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -30,7 +28,7 @@ import { AppComponent } from './app.component';
     LibSharedModule,
     AppRoutingModule
   ],
-  providers: [EventService, OrganizationService, CommonComponentService],
+  providers: [EventService, CommonComponentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -41,4 +41,12 @@ public final class Component implements LdapEntry {
             return null;
         }
     }
+
+    public String getTechnicalName() {
+        return technicalName;
+    }
+
+    public void setDn(Name dn) {
+        this.dn = dn;
+    }
 }

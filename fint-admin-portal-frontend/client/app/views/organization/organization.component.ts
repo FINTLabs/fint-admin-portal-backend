@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { OrganizationService } from '../../api/organization.service';
+import { OrganizationService } from './organization.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -13,12 +13,5 @@ export class OrganizationComponent implements OnInit {
 
   ngOnInit() {
     this.organizations = this.organizationService.all();
-  }
-
-  addOrganization() {
-    this.router.navigate(['/organizations/add']);
-  }
-  editOrganization(organization) {
-    this.router.navigate(['/organizations', organization.orgId]);
   }
 }

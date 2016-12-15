@@ -18,7 +18,10 @@ node {
       if (env.RUN_TYPE != 'default') {
         sh 'cd fint-admin-portal-frontend && npm i github:fintprosjektet/fint-shared-components -S'
       }
-      sh './gradlew'
+      withCredentials([string(credentialsId: 'adminPortalRunParams', variable: 'runParams')]) {
+        // available as an env variable, but will be masked if you try to print it out any which way
+        sh "set +x ./gradlew ${env.runParams}"
+      }
     }
 
     stage('deploy') {
