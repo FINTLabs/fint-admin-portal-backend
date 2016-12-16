@@ -37,7 +37,7 @@ repositories {
 
 
 dependencies {
-  compile name: 'fint-admin-portal-frontend'
+    compile name: 'fint-admin-portal-frontend'
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.ldap:spring-ldap-core:2.2.0.RELEASE')
 
@@ -52,9 +52,16 @@ dependencies {
     testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 
-// run spring boot app
-bootRun {
-    //addResources = true
+// run spring boot app (only applicable if run through an IDE)
+tasks.withType(org.springframework.boot.gradle.run.BootRunTask) {
+    if (project.hasProperty('url')) {
+        println "Using Gradle project properties"
+        systemProperty('url', "$url")
+        systemProperty('user', "$user")
+        systemProperty('password', "$password")
+    } else {
+        println "Using system environment variables"
+    }
     classpath = sourceSets.main.runtimeClasspath
 }
 

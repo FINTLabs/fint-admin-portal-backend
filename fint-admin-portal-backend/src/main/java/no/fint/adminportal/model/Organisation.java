@@ -48,4 +48,12 @@ public final class Organisation implements LdapEntry {
             return null;
         }
     }
+
+    public void setDn(Name dn) {
+        this.dn = dn;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
 }

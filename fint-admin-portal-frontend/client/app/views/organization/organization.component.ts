@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
-import { OrganizationService } from '../../api/organization.service';
+import {OrganizationService} from './organization.service';
 import { Component, OnInit } from '@angular/core';
+import {IOrganization} from 'app/api/IOrganization';
 
 @Component({
   selector: 'app-organization',
@@ -8,17 +9,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./organization.component.scss']
 })
 export class OrganizationComponent implements OnInit {
-  organizations = [];
+  organizations: IOrganization[] = [];
+  page: number = 1;
+  pages: number;
+  total: number;
+  pageSize: number = 10;
   constructor(private organizationService: OrganizationService, private router: Router) { }
 
   ngOnInit() {
-    this.organizations = this.organizationService.all();
-  }
-
-  addOrganization() {
-    this.router.navigate(['/organizations/add']);
-  }
-  editOrganization(organization) {
-    this.router.navigate(['/organizations', organization.orgId]);
+    this.organizationService.all(this.page, this.pageSize)
+      .subscribe(result => {
+        this.page = result.page;
+        this.total = result.total_items;
+        this.pages = result.page_count;
+        this.pageSize = result.page_size;
+        this.organizations = result._embedded.organisationList;
+      });
   }
 }

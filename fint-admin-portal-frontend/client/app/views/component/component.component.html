@@ -10,21 +10,16 @@
       <thead>
         <tr>
           <th>Navn</th>
-          <th>Status</th>
+          <th>Beskrivelse</th>
           <th></th>
         </tr>
       </thead>
 
       <!-- Editor -->
       <tbody>
-        <tr *ngFor="let component of components;" [routerLink]="['./', component.id]">
-          <td>{{ component.name }}</td>
-          <td class="status">
-            <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
-              <i class="fa fa-circle-o fa-stack-2x"></i>
-              <i class="fa fa-circle fa-stack-1x"></i>
-            </span>
-          </td>
+        <tr *ngFor="let component of components;" [routerLink]="['./', component.technicalName]">
+          <td>{{ component.displayName }}</td>
+          <td>{{ component.description }}</td>
           <td>
             <button md-icon-button><fint-fa name="edit"></fint-fa></button>
           </td>

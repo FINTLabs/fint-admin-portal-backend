@@ -57,4 +57,16 @@ public class Contact implements LdapEntry {
             return null;
         }
     }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public String getNin() {
+        return nin;
+    }
+
+    public void setDn(Name dn) {
+        this.dn = dn;
+    }
 }
