@@ -79,8 +79,10 @@ export class EditOrganizationComponent implements OnInit {
   }
 
   save(model: IOrganization) {
-    this.organizationService.save(model);
-    this.router.navigate(['../']);
+    this.organizationService.save(model)
+      .subscribe(result => {
+        this.router.navigate(['../']);
+      });
   }
 
   getMatchesFn() {

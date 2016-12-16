@@ -10,10 +10,11 @@ import 'rxjs/add/observable/throw';
 import {IOrgHALPage, IOrganization} from 'app/api/IOrganization';
 import {ApiBase} from 'app/api/ApiBase';
 import {IContactHALPage} from 'app/api/IContact';
+import Response = e.Response;
 
 @Injectable()
 export class OrganizationService extends ApiBase {
-
+  base: string = '/api/organisations';
   constructor(private http: Http) {
     super();
   }
@@ -22,28 +23,26 @@ export class OrganizationService extends ApiBase {
     let params = new URLSearchParams();
     params.set('page', page.toString());
     //params.set('pageSize', pageSize.toString());
-    return this.http.get('/api/organisations', { search: params })
+    return this.http.get(this.base, { search: params })
       .map(items => items.json())
       .catch(this.handleError);
   }
 
   get(orgId: string): Observable<IOrganization> {
-    return this.http.get('/api/organisations/' + orgId)
+    return this.http.get(this.base + '/' + orgId)
       .map(item => item.json())
       .catch(this.handleError);
   }
 
   getContacts(orgId: string): Observable<IContactHALPage> {
-    return this.http.get('/api/organisations/' + orgId + '/contacts')
+    return this.http.get(this.base + '/' + orgId + '/contacts')
       .map(item => item.json())
       .catch(this.handleError);
   }
 
   save(org: IOrganization) {
-//    if (org.id) {
-//      return this.http.put('/api/organisations')
-//    }
-//    return this.http.
+    let call = (org.id) ? this.http.put(this.base, org) : this.http.post(this.base, org); // If exists, put - else post
+    return call.map(item => item.json()).catch(this.handleError);
   }
 
   // --------------------------
