@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
-import { CommonComponentService, ICommonComponent } from '../common-component.service';
+import { CommonComponentService } from '../common-component.service';
+import {ICommonComponent} from 'app/api/ICommonComponent';
 
 @Component({
   selector: 'app-edit-component',
@@ -26,18 +27,21 @@ export class EditComponentComponent implements OnInit {
     this.component = <ICommonComponent>{};
     this.route.params.subscribe(params => {
       if (params['id']) {
-        let components = this.CommonComponent.all();
-        let index = components.findIndex(org => org.id === +params['id']);
-        if (index > -1) {
-          this.component = components[index];
-        }
+        this.CommonComponent.get(params['id']).subscribe(component => {
+          this.component = component;
+          this.createForm();
+        });
       }
     });
   }
 
   ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
     this.componentForm = this.fb.group({
-      'name': [this.component.name, [Validators.required]],
+      'name': [this.component.displayName, [Validators.required]],
       'technicalName': [this.component.technicalName, [Validators.required]],
       'description': [this.component.description],
       'icon': [this.component.icon]

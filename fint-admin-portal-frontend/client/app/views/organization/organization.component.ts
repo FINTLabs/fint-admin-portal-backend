@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
-import {OrganizationService, IOrganization, IOrgHALPage} from './organization.service';
+import {OrganizationService} from './organization.service';
 import { Component, OnInit } from '@angular/core';
+import {IOrganization} from 'app/api/IOrganization';
 
 @Component({
   selector: 'app-organization',

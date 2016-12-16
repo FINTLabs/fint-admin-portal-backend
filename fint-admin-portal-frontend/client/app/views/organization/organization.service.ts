@@ -1,43 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/throw';
 
-import {ApiBase, IHAL} from '../../api/ApiBase';
+import {IOrgHALPage, IOrganization} from 'app/api/IOrganization';
+import {ApiBase} from 'app/api/ApiBase';
+import {IContactHALPage} from 'app/api/IContact';
 
-export interface IContact {
-  dn: string;                 // DN of the contact. This is automatically set.
-  nin: string;                // National Idenitification Number (NIN). This would be fødselsnummer (11 digits)
-  firstName: string;          // First name of the contact.
-  lastName: string;           // Last name of the contact.
-  mail: string;               // Internet email address for the contact.
-  mobile: string;             // Mobile number of the contact. Should include landcode.
-  orgId: string;              // OrgId of the organisation the contact is connected to.
-  primaryTechnical: boolean;  // Indicates if the contact is the primary technical contact for the organisation.
-  primaryLegal: boolean;      // Indicates if the contact is the primary legal contact for the organisation.
-}
-export interface IContactHALPage extends IHAL {
-  _embedded: {
-    contactList: IContact[]
-  }
-}
-export interface IOrganization {
-  dn;
-  id: string;                 // Unique identifier for the organisation (UUID). This is automatically generated and should not be set.
-  orgNumber: string;          // The organisation number from Enhetsregisteret (https://w2.brreg.no/enhet/sok/index.jsp)
-  orgId: string;              // Id of the organisation. Should be the official domain of the organisation. For example rogfk.no
-  displayName: string;        // The official name of the organisation. See Enhetsregisteret (https://w2.brreg.no/enhet/sok/index.jsp)
-}
-export interface IOrgHALPage extends IHAL {
-  _embedded: {
-    organisationList: IOrganization[]
-  }
-}
 @Injectable()
 export class OrganizationService extends ApiBase {
 

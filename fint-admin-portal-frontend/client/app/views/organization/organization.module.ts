@@ -12,6 +12,7 @@ import { HttpModule, XSRFStrategy, Request} from '@angular/http';
 // Components
 import { OrganizationComponent } from './organization.component';
 import { EditOrganizationComponent } from './edit-organization/edit-organization.component';
+import { EditResponsibleComponent } from './edit-responsible/edit-responsible.component';
 
 // Services
 import { OrganizationService } from './organization.service';
@@ -34,7 +35,8 @@ export class NoXSRFStrategy {
   ],
   declarations: [
     OrganizationComponent,
-    EditOrganizationComponent
+    EditOrganizationComponent,
+    EditResponsibleComponent
   ],
   providers: [OrganizationService, { provide: XSRFStrategy, useClass: NoXSRFStrategy }] // !!HACK!!
 })

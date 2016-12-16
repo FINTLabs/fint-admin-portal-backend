@@ -2,7 +2,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
-import {IOrganization, OrganizationService, IContact} from '../organization.service';
+import { OrganizationService } from '../organization.service';
+import {IOrganization} from 'app/api/IOrganization';
+import {IContact} from 'app/api/IContact';
 
 @Component({
   selector: 'app-edit-organization',
@@ -12,7 +14,7 @@ import {IOrganization, OrganizationService, IContact} from '../organization.serv
 export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
   organization: IOrganization = <IOrganization>{};
-  responsible: IContact[];
+  responsible: IContact[] = [];
   _selectedOrganization;
   get selectedOrganization() {
     return this._selectedOrganization;
@@ -37,7 +39,7 @@ export class EditOrganizationComponent implements OnInit {
         organizationService.get(params['orgId'])
           .subscribe(organization => {
             this.organization = organization;
-            this.createForm();
+            this.createOrganisationForm();
           });
 
         // Get contact data
@@ -48,15 +50,32 @@ export class EditOrganizationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createForm();
+    this.createOrganisationForm();
   }
 
-  createForm() {
+  createOrganisationForm() {
     this.organizationForm = this.fb.group({
       displayName: [this.organization.displayName, [Validators.required]],
       orgNumber: [this.organization.orgNumber, [Validators.required]],
       orgId: [this.organization.orgId, [Validators.required]]
     });
+  }
+
+  addContact() {
+    let newContact = <IContact>{};
+    newContact.isEditing = true;
+    this.responsible.push(newContact);
+  }
+
+  contactChanged(contact: IContact) {
+    if (!contact.firstName && !contact.lastName && !contact.mail && !contact.mobile && !contact.nin) {
+      this.deleteContact(contact);
+    }
+  }
+
+  deleteContact(contact: IContact) {
+    let index = this.responsible.findIndex(cn => cn.nin === contact.nin);
+    this.responsible.splice(index, 1);
   }
 
   save(model: IOrganization) {
