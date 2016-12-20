@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/throw';
 
-import {IOrgHALPage, IOrganization} from 'app/api/IOrganization';
-import {ApiBase} from 'app/api/ApiBase';
-import {IContactHALPage} from 'app/api/IContact';
-import Response = e.Response;
+import { IOrgHALPage, IOrganization } from 'app/api/IOrganization';
+import { ApiBase } from 'app/api/ApiBase';
+import {IContactHALPage, IContact} from 'app/api/IContact';
 
 @Injectable()
 export class OrganizationService extends ApiBase {
@@ -34,8 +32,8 @@ export class OrganizationService extends ApiBase {
       .catch(this.handleError);
   }
 
-  getContacts(orgId: string): Observable<IContactHALPage> {
-    return this.http.get(this.base + '/' + orgId + '/contacts')
+  getContacts(id: string): Observable<IContact[]> {
+    return this.http.get(this.base + '/' + id + '/contacts')
       .map(item => item.json())
       .catch(this.handleError);
   }
@@ -52,7 +50,7 @@ export class OrganizationService extends ApiBase {
     let params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
-    params.set('$filter', 'startswith(navn,\'' + filter + '\') and (organisasjonsform eq \'FYLK\' or organisasjonsform eq \'KOMM\')');
+    params.set('$filter', `startswith(navn,'${filter}') and (organisasjonsform eq 'FYLK' or organisasjonsform eq 'KOMM')`);
     return this.http.get('//data.brreg.no/enhetsregisteret/enhet.json', { search: params })
       .map(items => items.json().data)
       .catch(this.handleError);
@@ -62,7 +60,7 @@ export class OrganizationService extends ApiBase {
     let params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
-    params.set('$filter', 'organisasjonsnummer eq \'' + orgId + '\'');
+    params.set('$filter', `organisasjonsnummer eq '${orgId}' and (organisasjonsform eq 'FYLK' or organisasjonsform eq 'KOMM')`);
     return this.http.get('//data.brreg.no/enhetsregisteret/enhet.json', { search: params })
       .map(items => items.json().data)
       .catch(this.handleError);
