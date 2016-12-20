@@ -31,7 +31,7 @@ public class ComponentController {
 
     @ApiOperation("Request new component")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity createComponent(@ModelAttribute Component component, @RequestHeader(name = "x-fint-role") Role role) {
         log.info("Component: {}", component);
