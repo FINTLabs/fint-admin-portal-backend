@@ -41,7 +41,9 @@ export class EditComponentComponent implements OnInit {
 
   createForm() {
     this.componentForm = this.fb.group({
-      'name': [this.component.displayName, [Validators.required]],
+      'dn': [this.component.dn],
+      'id': [this.component.id],
+      'displayName': [this.component.displayName, [Validators.required]],
       'technicalName': [this.component.technicalName, [Validators.required]],
       'description': [this.component.description],
       'icon': [this.component.icon]
