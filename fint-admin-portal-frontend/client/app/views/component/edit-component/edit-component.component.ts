@@ -21,13 +21,13 @@ export class EditComponentComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private CommonComponent: CommonComponentService,
+    private componentService: CommonComponentService,
     private sanitizer: DomSanitizer
   ) {
     this.component = <ICommonComponent>{};
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.CommonComponent.get(params['id']).subscribe(component => {
+        this.componentService.get(params['id']).subscribe(component => {
           this.component = component;
           this.createForm();
         });
@@ -41,7 +41,9 @@ export class EditComponentComponent implements OnInit {
 
   createForm() {
     this.componentForm = this.fb.group({
-      'name': [this.component.displayName, [Validators.required]],
+      'dn': [this.component.dn],
+      'id': [this.component.id],
+      'displayName': [this.component.displayName, [Validators.required]],
       'technicalName': [this.component.technicalName, [Validators.required]],
       'description': [this.component.description],
       'icon': [this.component.icon]
@@ -60,6 +62,9 @@ export class EditComponentComponent implements OnInit {
   }
 
   save(model: ICommonComponent) {
-    this.router.navigate(['../']);
+    this.componentService.save(model)
+      .subscribe(result => {
+        this.router.navigate(['../']);
+      });
   }
 }

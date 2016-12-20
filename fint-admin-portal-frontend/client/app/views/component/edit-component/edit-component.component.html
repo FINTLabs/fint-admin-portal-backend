@@ -6,10 +6,10 @@
     <md-card-content>
       <div class="row">
         <div class="col-xs-8">
-          <md-input placeholder="Navn" type="text" formControlName="name" style="width: 99%" required>
-            <md-hint [hidden]="componentForm.controls['name'].valid || componentForm.controls['name'].pristine" align="end" style="color: red">
+          <md-input placeholder="Navn" type="text" formControlName="displayName" style="width: 99%" required>
+            <md-hint [hidden]="componentForm.controls['displayName'].valid || componentForm.controls['displayName'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="componentForm.controls['name'].hasError('required')">Påkrevd</span>
+              <span *ngIf="componentForm.controls['displayName'].hasError('required')">Påkrevd</span>
             </md-hint>
           </md-input>
         </div>

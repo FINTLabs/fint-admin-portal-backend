@@ -4,7 +4,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { OrganizationService } from '../organization.service';
 import {IOrganization} from 'app/api/IOrganization';
-import {IContact} from 'app/api/IContact';
+import {IContact, EmptyContact} from 'app/api/IContact';
+import {MdCheckboxChange} from '@angular/material';
 
 @Component({
   selector: 'app-edit-organization',
@@ -14,11 +15,50 @@ import {IContact} from 'app/api/IContact';
 export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
   organization: IOrganization = <IOrganization>{};
+
   responsible: IContact[] = [];
-  _selectedOrganization;
-  get selectedOrganization() {
-    return this._selectedOrganization;
+  _legalContact: IContact = <IContact>{};
+  get legalContact(): IContact {
+    if (!this._legalContact) {
+      let index          = this.responsible.findIndex(r => r.primaryLegal === true);
+      let c              = index > -1 ? this.responsible[index] : <IContact>{};
+      this._legalContact = c;
+    }
+    return this._legalContact;
   }
+  set legalContact(c: IContact) {
+    c.primaryLegal = true;
+    let index = this.responsible.findIndex(r => r.primaryLegal === true);
+    if (index > -1) {
+      this.responsible[index] = c;
+    } else {
+      this.responsible.push(c);
+    }
+    this._legalContact = c;
+  }
+
+  _technicalContact: IContact = <IContact>{};
+  get technicalContact(): IContact {
+    if (!this._technicalContact) {
+      let index              = this.responsible.findIndex(r => r.primaryTechnical === true);
+      let c                  = index > -1 ? this.responsible[index] : <IContact>{};
+      this._technicalContact = c;
+    }
+    return this._technicalContact;
+  }
+  set technicalContact(c: IContact) {
+    c.primaryTechnical = true;
+    let index = this.responsible.findIndex(r => r.primaryTechnical === true);
+    if (index > -1) {
+      this.responsible[index] = c;
+    } else {
+      this.responsible.push(c);
+    }
+    this._technicalContact = c;
+  }
+
+  _selectedOrganization;
+  get selectedOrganization() { return this._selectedOrganization; }
   set selectedOrganization(value) {
     this._selectedOrganization = value;
     this.organizationForm.controls['displayName'].setValue(value.navn);
@@ -39,57 +79,73 @@ export class EditOrganizationComponent implements OnInit {
         organizationService.get(params['orgId'])
           .subscribe(organization => {
             this.organization = organization;
-            this.createOrganisationForm();
-          });
+            this.organizationForm.setValue(organization);
 
-        // Get contact data
-        organizationService.getContacts(params['orgId'])
-          .subscribe(result => this.responsible = result._embedded.contactList);
+            // Get contact data
+            organizationService.getContacts(this.organization.id)
+              .subscribe(result => {
+                this._legalContact = new EmptyContact();
+                this._technicalContact = new EmptyContact();
+                this.responsible = result;
+              });
+          });
       }
     });
-  }
 
+  }
   ngOnInit() {
-    this.createOrganisationForm();
-  }
-
-  createOrganisationForm() {
     this.organizationForm = this.fb.group({
+      dn         : [this.organization.dn],
+      id         : [this.organization.id],
       displayName: [this.organization.displayName, [Validators.required]],
-      orgNumber: [this.organization.orgNumber, [Validators.required]],
-      orgId: [this.organization.orgId, [Validators.required]]
+      orgNumber  : [this.organization.orgNumber, [Validators.required]],
+      orgId      : [this.organization.orgId, [Validators.required]]
     });
-  }
-
-  addContact() {
-    let newContact = <IContact>{};
-    newContact.isEditing = true;
-    this.responsible.push(newContact);
-  }
-
-  contactChanged(contact: IContact) {
-    if (!contact.firstName && !contact.lastName && !contact.mail && !contact.mobile && !contact.nin) {
-      this.deleteContact(contact);
-    }
-  }
-
-  deleteContact(contact: IContact) {
-    let index = this.responsible.findIndex(cn => cn.nin === contact.nin);
-    this.responsible.splice(index, 1);
   }
 
   save(model: IOrganization) {
-    this.organizationService.save(model);
-    this.router.navigate(['../']);
+    this.organizationService.save(model)
+      .subscribe(result => {
+        this.router.navigate(['../']);
+      });
   }
 
-  getMatchesFn() {
+  toggleMergeContact($event: MdCheckboxChange) {
+    let legal = this.legalContact;
+    if ($event.checked) {
+      // Remove previous technical
+      let index = this.responsible.findIndex(r => r.primaryTechnical === true);
+      if (index > -1) {
+        this.responsible.splice(index, 1);
+      }
+
+      // Set new technical
+      legal.primaryTechnical = $event.checked;
+      this.technicalContact = legal;
+    }
+    else {
+      legal.primaryTechnical = $event.checked;
+      this.technicalContact = new EmptyContact();
+    }
+  }
+
+  getMatchesByNameFn() {
     let me = this;
     return function (items, currentValue: string, matchText: string) {
       if (!currentValue || currentValue.length < 2) {
         return items;
       }
       return me.organizationService.fetchRegistryOrgByName(currentValue);
+    }
+  }
+
+  getMatchesByNumberFn() {
+    let me = this;
+    return function (items, currentValue: number, matchText: string) {
+      if (!currentValue || currentValue.toString().length < 9) {
+        return items;
+      }
+      return me.organizationService.fetchRegistryOrgByNumber(currentValue);
     }
   }
 }

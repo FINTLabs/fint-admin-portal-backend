@@ -6,23 +6,20 @@
     <md-card-content>
       <div class="row">
         <div class="col-xs-8">
-          <!--md-input placeholder="" type="text" formControlName="name" style="width: 99%" required-->
-          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesFn()" formControlName="displayName" [(selectedItem)]="selectedOrganization"
-            style="width: 99%">
+          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesByNameFn()" formControlName="displayName" [(selectedItem)]="selectedOrganization" style="width: 99%">
             <md-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
               <span *ngIf="organizationForm.controls['displayName'].hasError('required')">Påkrevd</span>
             </md-hint>
           </fint-typeahead>
-          <!--/md-input-->
         </div>
         <div class="col-xs-4">
-          <md-input placeholder="Org.no." type="tel" formControlName="orgNumber" style="width: 99%" required>
+          <fint-typeahead placeholder="Org.no." itemText="organisasjonsnummer" [items]="items" [getMatches]="getMatchesByNumberFn()" formControlName="orgNumber" [(selectedItem)]="selectedOrganization" style="width: 99%">
             <md-hint [hidden]="organizationForm.controls['orgNumber'].valid || organizationForm.controls['orgNumber'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
               <span *ngIf="organizationForm.controls['orgNumber'].hasError('required')">Påkrevd</span>
             </md-hint>
-          </md-input>
+          </fint-typeahead>
         </div>
       </div>
     </md-card-content>
@@ -30,43 +27,22 @@
     <md-card-subtitle>
       <h3>Ansvarlige for organisasjonen</h3>
     </md-card-subtitle>
-    <md-card-content class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Navn</th>
-            <th>Mobil</th>
-            <th>E-Post</th>
-            <th>Ansvarstype</th>
-          </tr>
-        </thead>
-
-        <!-- Editor -->
-        <tbody *ngFor="let contact of responsible;">
-          <tr *ngIf="!contact.isEditing">
-            <td><button md-icon-button md-ripple type="button" (click)="deleteContact(contact)"><fint-fa name="ban"></fint-fa></button></td>
-            <td>{{ contact.firstName }} {{ contact.lastName }}</td>
-            <td>{{ contact.mobile }}</td>
-            <td>{{ contact.mail }}</td>
-            <td>
-              <fint-fa *ngIf="contact.primaryTechnical" name="user-circle-o"></fint-fa>
-              <fint-fa *ngIf="contact.primaryLegal" name="legal"></fint-fa>
-            </td>
-          </tr>
-          <tr *ngIf="contact.isEditing">
-            <td colspan="5">
-              <app-edit-responsible [responsible]="contact" (responsibleChange)="contactChanged(contact)"></app-edit-responsible>
-            </td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td><button md-icon-button md-ripple type="button" (click)="addContact()"><fint-fa name="plus"></fint-fa></button></td>
-            <td colspan="4"></td>
-          </tr>
-        </tbody>
-      </table>
+    <md-card-content>
+      <div class="row">
+        <div class="col-6">
+          <h4>Juridisk ansvarlig</h4>
+          <app-edit-responsible [(responsible)]="legalContact"></app-edit-responsible>
+        </div>
+        <div class="col-6">
+          <h4>
+            Teknisk ansvarlig
+            <small class="pull-right">
+              <md-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event)">Samme som juridisk ansvarlig?</md-checkbox>
+            </small>
+          </h4>
+          <app-edit-responsible [(responsible)]="technicalContact"></app-edit-responsible>
+        </div>
+      </div>
     </md-card-content>
     <md-card-actions>
       <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!organizationForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>

@@ -17,3 +17,15 @@ export interface IContactHALPage extends IHAL {
     contactList: IContact[]
   }
 }
+
+export class EmptyContact implements IContact {
+  dn = null;
+  nin = null;
+  firstName = null;
+  lastName = null;
+  mail = null;
+  mobile = null;
+  orgId = null;
+  primaryTechnical = false;
+  primaryLegal = false;
+}

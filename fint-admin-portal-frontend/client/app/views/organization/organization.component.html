@@ -8,18 +8,22 @@
     <table>
       <thead>
         <tr>
+          <th>Org. Id</th>
           <th>Navn</th>
           <th>Org. nummer</th>
-          <th>Ansvarlig</th>
+          <th></th>
         </tr>
       </thead>
 
       <!-- Editor -->
       <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.orgId]">
         <tr>
+          <td>{{ organization.orgId }}</td>
           <td>{{ organization.displayName }}</td>
           <td>{{ organization.orgNumber }}</td>
-          <td></td>
+          <td>
+            <button md-icon-button><fint-fa name="edit"></fint-fa></button>
+          </td>
         </tr>
       </tbody>
 

@@ -1,9 +1,8 @@
-<form [formGroup]="responsibleForm" novalidate (ngSubmit)="save(responsibleForm.value)">
+<form [formGroup]="responsibleForm" novalidate>
   <div class="row">
     <div class="col-xs-4">
-      <md-input placeholder="Fødselsnummer" type="tel" formControlName="nin" style="width: 99%" required>
-        <md-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine"
-                 align="end" style="color: red">
+      <md-input placeholder="Fødselsnummer" type="tel" formControlName="nin" style="width: 99%" required (blur)="onChange()">
+        <md-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine" align="end" style="color: red">
           <fint-fa name="warning"></fint-fa>
           <span *ngIf="responsibleForm.controls['nin'].hasError('required')">Påkrevd</span>
         </md-hint>
@@ -12,18 +11,16 @@
   </div>
   <div class="row">
     <div class="col-xs-6">
-      <md-input placeholder="Fornavn" type="text" formControlName="firstName" style="width: 99%" required>
-        <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine"
-                 align="end" style="color: red">
+      <md-input placeholder="Fornavn" type="text" formControlName="firstName" style="width: 99%" required (blur)="onChange()">
+        <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine" align="end" style="color: red">
           <fint-fa name="warning"></fint-fa>
           <span *ngIf="responsibleForm.controls['firstName'].hasError('required')">Påkrevd</span>
         </md-hint>
       </md-input>
     </div>
     <div class="col-xs-6">
-      <md-input placeholder="Etternavn" type="text" formControlName="lastName" style="width: 99%" required>
-        <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine"
-                 align="end" style="color: red">
+      <md-input placeholder="Etternavn" type="text" formControlName="lastName" style="width: 99%" required (blur)="onChange()">
+        <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine" align="end" style="color: red">
           <fint-fa name="warning"></fint-fa>
           <span *ngIf="responsibleForm.controls['lastName'].hasError('required')">Påkrevd</span>
         </md-hint>
@@ -32,26 +29,20 @@
   </div>
   <div class="row">
     <div class="col-xs-8">
-      <md-input placeholder="Epost" type="email" formControlName="mail" style="width: 99%" required>
-        <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine"
-                 align="end" style="color: red">
+      <md-input placeholder="Epost" type="email" formControlName="mail" style="width: 99%" required (blur)="onChange()">
+        <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine" align="end" style="color: red">
           <fint-fa name="warning"></fint-fa>
           <span *ngIf="responsibleForm.controls['mail'].hasError('required')">Påkrevd</span>
         </md-hint>
       </md-input>
     </div>
     <div class="col-xs-4">
-      <md-input placeholder="Mobil" type="tel" formControlName="mobile" required>
-        <md-hint [hidden]="responsibleForm.controls['mobile'].valid || responsibleForm.controls['mobile'].pristine"
-                 align="end" style="color: red">
+      <md-input placeholder="Mobil" type="tel" formControlName="mobile" required (blur)="onChange()">
+        <md-hint [hidden]="responsibleForm.controls['mobile'].valid || responsibleForm.controls['mobile'].pristine" align="end" style="color: red">
           <fint-fa name="warning"></fint-fa>
           <span *ngIf="responsibleForm.controls['mobile'].hasError('required')">Påkrevd</span>
         </md-hint>
       </md-input>
     </div>
   </div>
-  <footer>
-    <button md-raised-button md-ripple type="submit"><fint-fa name="save"></fint-fa>Lagre</button>
-    <button md-raised-button md-ripple type="button" (click)="closeEditor()"><fint-fa name="ban"></fint-fa>Avbryt</button>
-  </footer>
 </form>

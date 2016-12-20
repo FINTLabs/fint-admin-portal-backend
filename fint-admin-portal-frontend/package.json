@@ -4,10 +4,8 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
-    "start": "node ./dist/standalone.js",
-    "build": "npm run build:server && npm run build:client",
-    "build:client": "ng build --prod --progress=false",
-    "build:server": "tsc --project ./server/tsconfig.json",
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "build": "ng build --prod --progress=false",
     "lint": "tslint \"client/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",

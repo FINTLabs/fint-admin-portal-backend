@@ -45,7 +45,7 @@ task webpack_build {
 assemble.dependsOn(webpack_build)
 
 task webjar(type: Jar, dependsOn: "jar") {
-  from(fileTree('dist/public')) {
+  from(fileTree('dist')) {
     into 'META-INF/resources'
   }
 }

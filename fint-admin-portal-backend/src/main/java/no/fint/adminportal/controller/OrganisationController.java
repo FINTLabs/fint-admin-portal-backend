@@ -32,7 +32,7 @@ public class OrganisationController {
 
     @ApiOperation("Request new organisation")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity createOrganization(@ModelAttribute Organisation organisation) {
         log.info("Organisation: {}", organisation);

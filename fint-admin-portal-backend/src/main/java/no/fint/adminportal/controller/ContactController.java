@@ -27,7 +27,7 @@ public class ContactController {
 
     @ApiOperation("Request new contact")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity createOrganization(@ModelAttribute Contact contact) {
         log.info("Contact: {}", contact);
