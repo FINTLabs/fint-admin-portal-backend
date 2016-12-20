@@ -30,7 +30,7 @@
       <li [routerLinkActive]="['active']" *ngFor="let route of routes">
         <a [routerLink]="[route.path]">
           <fint-fa *ngIf="route.icon" [name]="route.icon"></fint-fa>
-          {{ route.label }}
+          <span>{{ route.label }}</span>
         </a>
       </li>
     </ul>
