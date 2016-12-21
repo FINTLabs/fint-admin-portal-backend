@@ -24,7 +24,7 @@ import { AppComponent } from './app.component';
     FormsModule,
     MaterialModule.forRoot(),
 
-    LibSharedModule,
+    LibSharedModule.forRoot(),
     AppRoutingModule
   ],
   providers: [EventService],
