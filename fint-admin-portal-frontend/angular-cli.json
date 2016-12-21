@@ -1,7 +1,7 @@
 {
   "project": {
-    "version": "1.0.0-beta.21",
-    "name": "fint-adminportal-mockups"
+    "version": "1.0.0-beta.24",
+    "name": "fint-admin-portal"
   },
   "apps": [
     {
@@ -21,7 +21,9 @@
         "styles.scss",
         "../node_modules/font-awesome/scss/font-awesome.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/cssuseragent/cssua.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

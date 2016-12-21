@@ -19,7 +19,7 @@ import { CommonComponentService } from './common-component.service';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule,
+    LibSharedModule.forRoot(),
     RouterModule.forChild([...ComponentRoutes])
   ],
   declarations: [
