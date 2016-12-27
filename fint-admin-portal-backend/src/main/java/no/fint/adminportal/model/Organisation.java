@@ -51,6 +51,7 @@ public final class Organisation implements LdapEntry {
         }
     }
 
+<<<<<<< HEAD
     public void setDn(String dn) {
         this.dn = LdapNameBuilder.newInstance(dn).build();
     }
@@ -58,4 +59,13 @@ public final class Organisation implements LdapEntry {
     public void setDn(Name dn) {
         this.dn = dn;
     }
+=======
+    public void setDn(Name dn) {
+        this.dn = dn;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+>>>>>>> dd98738f901fb7df54ad968164728c5b6a18542f
 }

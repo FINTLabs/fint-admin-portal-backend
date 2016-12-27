@@ -6,27 +6,25 @@
     <md-card-content>
       <div class="row">
         <div class="col-xs-8">
-          <!--md-input placeholder="" type="text" formControlName="name" style="width: 99%" required-->
-          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesFn()" formControlName="name" [(selectedItem)]="selectedOrganization"
-            style="width: 99%">
-            <md-hint [hidden]="organizationForm.controls['name'].valid || organizationForm.controls['name'].pristine" align="end" style="color: red">
+          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesByNameFn()" formControlName="displayName" [(selectedItem)]="selectedOrganization" style="width: 99%">
+            <md-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls['name'].hasError('required')">Påkrevd</span>
+              <span *ngIf="organizationForm.controls['displayName'].hasError('required')">Påkrevd</span>
             </md-hint>
           </fint-typeahead>
-          <!--/md-input-->
         </div>
         <div class="col-xs-4">
-          <md-input placeholder="Org.no." type="tel" formControlName="orgId" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
+          <fint-typeahead placeholder="Org.no." itemText="organisasjonsnummer" [items]="items" [getMatches]="getMatchesByNumberFn()" formControlName="orgNumber" [(selectedItem)]="selectedOrganization" style="width: 99%">
+            <md-hint [hidden]="organizationForm.controls['orgNumber'].valid || organizationForm.controls['orgNumber'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls['orgId'].hasError('required')">Påkrevd</span>
+              <span *ngIf="organizationForm.controls['orgNumber'].hasError('required')">Påkrevd</span>
             </md-hint>
-          </md-input>
+          </fint-typeahead>
         </div>
       </div>
     </md-card-content>
 
+<<<<<<< HEAD
     <md-card-content formGroupName="responsible">
       <h3>Ansvarlig for organisasjonen</h3>
       <div class="row">
@@ -60,24 +58,25 @@
           </md-input>
         </div>
       </div>
+=======
+    <md-card-subtitle>
+      <h3>Ansvarlige for organisasjonen</h3>
+    </md-card-subtitle>
+    <md-card-content>
+>>>>>>> dd98738f901fb7df54ad968164728c5b6a18542f
       <div class="row">
-        <div class="col-xs-8">
-          <md-input placeholder="Epost" type="email" formControlName="email" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['email'].valid || organizationForm.controls.responsible.controls['email'].pristine"
-              align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['email'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
+        <div class="col-6">
+          <h4>Juridisk ansvarlig</h4>
+          <app-edit-responsible [(responsible)]="legalContact"></app-edit-responsible>
         </div>
-        <div class="col-xs-4">
-          <md-input placeholder="Mobil" type="tel" formControlName="phone" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['phone'].valid || organizationForm.controls.responsible.controls['phone'].pristine"
-              align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['phone'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
+        <div class="col-6">
+          <h4>
+            Teknisk ansvarlig
+            <small class="pull-right">
+              <md-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event)">Samme som juridisk ansvarlig?</md-checkbox>
+            </small>
+          </h4>
+          <app-edit-responsible [(responsible)]="technicalContact"></app-edit-responsible>
         </div>
       </div>
     </md-card-content>

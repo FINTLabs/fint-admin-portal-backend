@@ -10,6 +10,7 @@ import { LibSharedModule } from 'fint-shared-components';
 import { ComponentRoutes } from './component.routes';
 import { ComponentComponent } from './component.component';
 import { EditComponentComponent } from './edit-component/edit-component.component';
+import { CommonComponentService } from './common-component.service';
 
 @NgModule({
   imports: [
@@ -18,12 +19,13 @@ import { EditComponentComponent } from './edit-component/edit-component.componen
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule,
+    LibSharedModule.forRoot(),
     RouterModule.forChild([...ComponentRoutes])
   ],
   declarations: [
     ComponentComponent,
     EditComponentComponent
-  ]
+  ],
+  providers: [CommonComponentService]
 })
 export class ComponentModule { }

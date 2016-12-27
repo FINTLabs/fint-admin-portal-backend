@@ -4,4 +4,4 @@ LABEL authors="Frode Sjovatsen <frode@fintprosjektet.no>, Øystein Amundsen <oys
 
 ADD ./fint-admin-portal-backend/build/libs/fint-admin-portal-backend*.jar /data/app.jar
 
-CMD ["java", "-jar", "/data/app.jar"]
+ENTRYPOINT java ${PARAMS} -jar /data/app.jar

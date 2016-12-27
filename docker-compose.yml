@@ -6,5 +6,7 @@ services:
     image: fint/adminportal
     container_name: ${DOCKER_CONTAINER}
     restart: unless-stopped
+    environment:
+      - PARAMS=${runParams}
     ports:
       - "${DOCKER_PORT}:8080"

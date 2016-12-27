@@ -61,6 +61,12 @@ nav {
       line-height: 20px;
       display: block;
       text-decoration: none;
+      span {
+        display: none;
+        @media (min-width: 800px) {
+          display: inline;
+        }
+      }
     }
     &.active a {
       background-color: $navbar-border-color;

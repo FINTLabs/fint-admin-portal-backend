@@ -100,7 +100,9 @@ public class LdapService {
         ldapTemplate.delete(ldapEntry);
     }
 
+    /*
     public void deleteRecursively(String dn) {
         ldapTemplate.deleteR
     }
+    */
 }

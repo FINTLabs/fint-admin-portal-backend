@@ -58,9 +58,20 @@ public class Contact implements LdapEntry {
         }
     }
 
+<<<<<<< HEAD
     public void setDn(String dn) {
         this.dn = LdapNameBuilder.newInstance(dn).build();
     }
+=======
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public String getNin() {
+        return nin;
+    }
+
+>>>>>>> dd98738f901fb7df54ad968164728c5b6a18542f
     public void setDn(Name dn) {
         this.dn = dn;
     }

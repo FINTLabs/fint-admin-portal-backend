@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
-import { CommonComponentService, ICommonComponent } from '../../../api/common-component.service';
+import { CommonComponentService } from '../common-component.service';
+import {ICommonComponent} from 'app/api/ICommonComponent';
 
 @Component({
   selector: 'app-edit-component',
@@ -20,24 +21,29 @@ export class EditComponentComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private CommonComponent: CommonComponentService,
+    private componentService: CommonComponentService,
     private sanitizer: DomSanitizer
   ) {
     this.component = <ICommonComponent>{};
     this.route.params.subscribe(params => {
       if (params['id']) {
-        let components = this.CommonComponent.all();
-        let index = components.findIndex(org => org.id === +params['id']);
-        if (index > -1) {
-          this.component = components[index];
-        }
+        this.componentService.get(params['id']).subscribe(component => {
+          this.component = component;
+          this.createForm();
+        });
       }
     });
   }
 
   ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
     this.componentForm = this.fb.group({
-      'name': [this.component.name, [Validators.required]],
+      'dn': [this.component.dn],
+      'id': [this.component.id],
+      'displayName': [this.component.displayName, [Validators.required]],
       'technicalName': [this.component.technicalName, [Validators.required]],
       'description': [this.component.description],
       'icon': [this.component.icon]
@@ -56,6 +62,9 @@ export class EditComponentComponent implements OnInit {
   }
 
   save(model: ICommonComponent) {
-    this.router.navigate(['../']);
+    this.componentService.save(model)
+      .subscribe(result => {
+        this.router.navigate(['../']);
+      });
   }
 }

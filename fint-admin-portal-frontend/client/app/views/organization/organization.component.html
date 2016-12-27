@@ -8,25 +8,29 @@
     <table>
       <thead>
         <tr>
+          <th>Org. Id</th>
           <th>Navn</th>
-          <th>Felleskomponenter</th>
-          <th>Ansvarlig</th>
+          <th>Org. nummer</th>
+          <th></th>
         </tr>
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let organization of organizations;" (click)="editOrganization(organization)">
+      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.orgId]">
         <tr>
-          <td>{{ organization.name }}</td>
-          <td>{{ organization.components }}</td>
-          <td>{{ organization.responsible.firstName }} {{ organization.responsible.lastName }}</td>
+          <td>{{ organization.orgId }}</td>
+          <td>{{ organization.displayName }}</td>
+          <td>{{ organization.orgNumber }}</td>
+          <td>
+            <button md-icon-button><fint-fa name="edit"></fint-fa></button>
+          </td>
         </tr>
       </tbody>
 
     </table>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button md-ripple (click)="addOrganization()" type="button">
+    <button md-raised-button md-ripple [routerLink]="['./', 'add']" type="button">
       <fint-fa name="plus"></fint-fa>
       Ny organisasjon
     </button>
