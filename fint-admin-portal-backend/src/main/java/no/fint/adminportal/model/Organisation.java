@@ -7,6 +7,7 @@ import org.springframework.ldap.odm.annotations.Attribute;
 import org.springframework.ldap.odm.annotations.DnAttribute;
 import org.springframework.ldap.odm.annotations.Entry;
 import org.springframework.ldap.odm.annotations.Id;
+import org.springframework.ldap.support.LdapNameBuilder;
 
 import javax.naming.Name;
 
@@ -22,8 +23,9 @@ public final class Organisation implements LdapEntry {
     @ApiModelProperty(
             value = "Unique identifier for the organisation (UUID). This is automatically generated and should not be set."
     )
-    @DnAttribute(value = "ou", index = 2)
-    private String id;
+    //@DnAttribute(value = "ou", index = 2)
+    @Attribute(name = "ou")
+    private String uuid;
 
     @ApiModelProperty(value = "The organisation number from Enhetsregisteret (https://w2.brreg.no/enhet/sok/index.jsp)")
     @Attribute(name = "fintOrgNumber")
@@ -47,5 +49,13 @@ public final class Organisation implements LdapEntry {
         } else {
             return null;
         }
+    }
+
+    public void setDn(String dn) {
+        this.dn = LdapNameBuilder.newInstance(dn).build();
+    }
+
+    public void setDn(Name dn) {
+        this.dn = dn;
     }
 }

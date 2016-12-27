@@ -31,9 +31,9 @@ public class ComponentController {
 
     @ApiOperation("Request new component")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity createComponent(@ModelAttribute Component component, @RequestHeader(name = "x-fint-role") Role role) {
+    public ResponseEntity createComponent(@RequestBody final Component component) {
         log.info("Component: {}", component);
 
         boolean compCreated = componentService.createComponent(component);
@@ -43,7 +43,7 @@ public class ComponentController {
                 .buildAndExpand(component.getTechnicalName()).toUri();
 
         if (compCreated) {
-            return ResponseEntity.created(location).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(component);
         } else {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body(location.toString());
@@ -69,5 +69,10 @@ public class ComponentController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //
+    // Exception handlers
+    //
+
 
 }

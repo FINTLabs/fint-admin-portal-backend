@@ -1,14 +1,17 @@
 package no.fint.adminportal.service;
 
+import no.fint.adminportal.model.Contact;
 import no.fint.adminportal.model.LdapEntry;
 import no.fint.adminportal.utilities.LdapIdUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.naming.Name;
+import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import java.util.List;
 
@@ -85,6 +88,19 @@ public class LdapService {
     }
 
     public <T> T getEntry(String dn, Class<T> type) {
-        return ldapTemplate.findByDn(LdapNameBuilder.newInstance(dn).build(), type);
+
+        try {
+            return ldapTemplate.findByDn(LdapNameBuilder.newInstance(dn).build(), type);
+        } catch (org.springframework.ldap.NamingException e) {
+            return null;
+        }
+    }
+
+    public void deleteEntry(LdapEntry ldapEntry) {
+        ldapTemplate.delete(ldapEntry);
+    }
+
+    public void deleteRecursively(String dn) {
+        ldapTemplate.deleteR
     }
 }

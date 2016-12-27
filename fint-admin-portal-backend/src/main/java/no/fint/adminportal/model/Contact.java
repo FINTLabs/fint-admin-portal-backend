@@ -3,9 +3,8 @@ package no.fint.adminportal.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.ldap.odm.annotations.Attribute;
-import org.springframework.ldap.odm.annotations.Entry;
-import org.springframework.ldap.odm.annotations.Id;
+import org.springframework.ldap.odm.annotations.*;
+import org.springframework.ldap.support.LdapNameBuilder;
 
 import javax.naming.Name;
 
@@ -20,14 +19,15 @@ public class Contact implements LdapEntry {
 
     @ApiModelProperty(value = "National Idenitification Number (NIN). This would be fødselsnummer (11 digits)")
     @Attribute(name = "cn")
+    //@DnAttribute(value = "cn", index = 3)
     private String nin;
 
     @ApiModelProperty(value = "First name of the contact.")
-    @Attribute(name = "givenName")
+    @Attribute(name = "givenName" )
     private String firstName;
 
     @ApiModelProperty(value = "Last name of the contact.")
-    @Attribute(name = "surname")
+    @Attribute(name = "sn")
     private String lastName;
 
     @ApiModelProperty(value = "Internet email address for the contact.")
@@ -38,7 +38,7 @@ public class Contact implements LdapEntry {
     @Attribute(name = "mobile")
     private String mobile;
 
-    @ApiModelProperty(value = "OrgId of the organisation the contact is connected to.")
+    @ApiModelProperty(value = "OrgId of the organisation the contact is connected to. This is automatically set.")
     @Attribute(name = "fintContactOrgId")
     private String orgId;
 
@@ -56,5 +56,12 @@ public class Contact implements LdapEntry {
         } else {
             return null;
         }
+    }
+
+    public void setDn(String dn) {
+        this.dn = LdapNameBuilder.newInstance(dn).build();
+    }
+    public void setDn(Name dn) {
+        this.dn = dn;
     }
 }

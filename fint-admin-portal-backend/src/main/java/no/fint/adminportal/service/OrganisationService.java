@@ -31,7 +31,7 @@ public class OrganisationService {
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
     }
 
-    public boolean createOrganization(Organisation organisation) {
+    public boolean createOrganisation(Organisation organisation) {
         log.info("Creating organisation: {}", organisation);
 
         if (organisation.getDn() == null) {
@@ -40,11 +40,15 @@ public class OrganisationService {
         return ldapService.create(organisation);
     }
 
-    public List<Organisation> getOrganizations() {
+    public boolean updateOrganisation(Organisation organisation) {
+        return ldapService.update(organisation);
+    }
+
+    public List<Organisation> getOrganisations() {
         return ldapService.getAll(organisationBase, Organisation.class);
     }
 
-    public Optional<Organisation> getOrganization(String orgId) {
+    public Optional<Organisation> getOrganisationByOrgId(String orgId) {
         Optional<String> stringDnById = Optional.ofNullable(ldapService.getStringDnById(orgId, organisationBase, Organisation.class));
 
         if (stringDnById.isPresent()) {
@@ -53,7 +57,55 @@ public class OrganisationService {
         return Optional.empty();
     }
 
-    public List<Contact> getOrganizationContacts(String id) {
-        return ldapService.getAll(dnService.getOrganisationDnById(id), Contact.class);
+
+    public List<Contact> getOrganisationContacts(String uuid) {
+        return ldapService.getAll(dnService.getOrganisationDnByUUID(uuid), Contact.class);
+    }
+
+    public boolean createOrganisationsContact(Contact contact, String orgUUID) {
+        log.info("Creating contact: {}", contact);
+
+        if (contact.getDn() == null) {
+            dnService.setContactDn(contact, orgUUID);
+        }
+        contact.setOrgId(getOrganisationId(orgUUID));
+        return ldapService.create(contact);
+    }
+
+    public Optional<Contact> getOrganisationContact(String orgUUID, String nin) {
+
+        return Optional.ofNullable(ldapService.getEntry(dnService.getContactDn(orgUUID, nin), Contact.class));
+    }
+
+    public boolean updateOrganisationContact(Contact contact) {
+        return ldapService.update(contact);
+    }
+
+    public void deleteOrganisationContact(Contact contact) {
+        ldapService.deleteEntry(contact);
+    }
+
+    public void deleteOrganisation(Organisation organisation) {
+        List<Contact> contacts = getOrganisationContacts(organisation.getUuid());
+
+        contacts.forEach(contact -> ldapService.deleteEntry(contact));
+
+        ldapService.deleteEntry(organisation);
+    }
+
+    public String getOrganisationId(String uuid) {
+        String dn = dnService.getOrganisationDnByUUID(uuid);
+        Organisation organisation = ldapService.getEntry(dn, Organisation.class);
+
+        return organisation.getOrgId();
+
+    }
+
+    public Optional<Organisation> getOrganisationByUUID(String uuid) {
+        String dn = dnService.getOrganisationDnByUUID(uuid);
+        Optional<Organisation> organisation = Optional.ofNullable(ldapService.getEntry(dn, Organisation.class));
+
+        return organisation;
+
     }
 }

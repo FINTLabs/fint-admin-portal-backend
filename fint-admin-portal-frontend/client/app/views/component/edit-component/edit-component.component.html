@@ -1,5 +1,5 @@
-<h2 *ngIf="component.id == null">Opprett ny felleskomponent</h2>
-<h2 *ngIf="component.id != null">Rediger felleskomponent</h2>
+<h2 *ngIf="component.uuid == null">Opprett ny felleskomponent</h2>
+<h2 *ngIf="component.uuid != null">Rediger felleskomponent</h2>
 
 <form [formGroup]="componentForm" novalidate (ngSubmit)="save(componentForm.value)">
   <md-card>

@@ -17,7 +17,7 @@
 
       <!-- Editor -->
       <tbody>
-        <tr *ngFor="let component of components;" [routerLink]="['./', component.id]">
+        <tr *ngFor="let component of components;" [routerLink]="['./', component.uuid]">
           <td>{{ component.name }}</td>
           <td class="status">
             <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">

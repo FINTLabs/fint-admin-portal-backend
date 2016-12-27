@@ -31,11 +31,11 @@
       <h3>Ansvarlig for organisasjonen</h3>
       <div class="row">
         <div class="col-xs-4">
-          <md-input placeholder="Fødselsnummer" type="tel" formControlName="id" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['id'].valid || organizationForm.controls.responsible.controls['id'].pristine"
+          <md-input placeholder="Fødselsnummer" type="tel" formControlName="uuid" style="width: 99%" required>
+            <md-hint [hidden]="organizationForm.controls.responsible.controls['uuid'].valid || organizationForm.controls.responsible.controls['uuid'].pristine"
               align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['id'].hasError('required')">Påkrevd</span>
+              <span *ngIf="organizationForm.controls.responsible.controls['uuid'].hasError('required')">Påkrevd</span>
             </md-hint>
           </md-input>
         </div>

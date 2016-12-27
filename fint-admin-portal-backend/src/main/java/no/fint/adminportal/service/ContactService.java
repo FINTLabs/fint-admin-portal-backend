@@ -34,7 +34,7 @@ public class ContactService {
         log.info("Creating contact: {}", contact);
 
         if (contact.getDn() == null) {
-            dnService.setContactDn(contact);
+            dnService.setContactDn(contact, null);
         }
         return ldapService.create(contact);
     }
