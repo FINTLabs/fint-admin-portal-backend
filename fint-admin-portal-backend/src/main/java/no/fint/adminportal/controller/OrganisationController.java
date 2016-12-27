@@ -93,7 +93,7 @@ public class OrganisationController {
 
 
   @ApiOperation("Get all organisations")
-  @HalResource(pageSize = 100)
+  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
   public HalPagedResources<Organisation> getOrganizations(@RequestParam(required = false) Integer page) {
     return new HalPagedResources<>(organisationService.getOrganisations(), page);
