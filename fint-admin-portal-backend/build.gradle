@@ -32,12 +32,12 @@ repositories {
     }
   }
   mavenLocal()
-  flatDir { dirs '../fint-admin-portal-frontend/build/libs' }
+  //flatDir { dirs '../fint-admin-portal-frontend/build/libs' }
 }
 
 
 dependencies {
-  compile name: 'fint-admin-portal-frontend'
+  //compile name: 'fint-admin-portal-frontend'
   compile('org.springframework.boot:spring-boot-starter-web')
   compile('org.springframework.ldap:spring-ldap-core:2.2.1.RELEASE')
 

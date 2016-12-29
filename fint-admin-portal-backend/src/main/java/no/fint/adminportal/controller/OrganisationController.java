@@ -49,8 +49,8 @@ public class OrganisationController {
     if (!organisationService.createOrganisation(organisation)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
-          .fromCurrentRequest().path("/{orgId}")
-          .buildAndExpand(organisation.getOrgId()).toUri().toString()
+          .fromCurrentRequest().path("/{uuid}")
+          .buildAndExpand(organisation.getUuid()).toUri().toString()
       );
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(organisation);
@@ -76,6 +76,7 @@ public class OrganisationController {
     return ResponseEntity.ok(organisation);
   }
 
+
   @ApiOperation("Delete an organisation")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{uuid}")
   public ResponseEntity deleteOrganization(@PathVariable final String uuid) {
@@ -99,6 +100,7 @@ public class OrganisationController {
     return new HalPagedResources<>(organisationService.getOrganisations(), page);
   }
 
+  /*
   @ApiOperation("Get organisation by orgId")
   @RequestMapping(method = RequestMethod.GET, value = "/{orgId:.+}")
   public ResponseEntity getOrganizationByOrgId(@PathVariable String orgId) {
@@ -112,6 +114,7 @@ public class OrganisationController {
       String.format("Organisation %s could not be found.", organisation.get().getOrgId())
     );
   }
+  */
 
   @ApiOperation("Get organisation by uuid")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}")
@@ -138,7 +141,9 @@ public class OrganisationController {
     Optional<Organisation> organisation = organisationService.getOrganisationByUUID(uuid);
 
     if (!organisation.isPresent()) {
-      throw new CreateEntityMismatchException("The organisation uuid in the endpoint does not exist.");
+      throw new CreateEntityMismatchException(
+        String.format("The organisation with uuid %s in the endpoint does not exist.", uuid)
+      );
     }
 
     if (contact.getOrgId() == null) {
@@ -250,7 +255,6 @@ public class OrganisationController {
   //
   // Exception handlers
   //
-
   @ExceptionHandler(UpdateEntityMismatchException.class)
   public ResponseEntity handleUpdateEntityMismatch(Exception e) {
     return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));

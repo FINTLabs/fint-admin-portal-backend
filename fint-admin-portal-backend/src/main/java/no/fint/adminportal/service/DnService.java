@@ -2,6 +2,7 @@ package no.fint.adminportal.service;
 
 import no.fint.adminportal.model.Component;
 import no.fint.adminportal.model.Contact;
+import no.fint.adminportal.model.LdapEntry;
 import no.fint.adminportal.model.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,66 +15,75 @@ import java.util.UUID;
 @Service
 public class DnService {
 
-    @Autowired
-    LdapService ldapService;
+  @Autowired
+  LdapService ldapService;
 
-    @Value("${fint.ldap.organisation-base}")
-    private String organisationBase;
+  @Value("${fint.ldap.organisation-base}")
+  private String organisationBase;
 
-    @Value("${fint.ldap.component-base}")
-    private String componentBase;
+  @Value("${fint.ldap.component-base}")
+  private String componentBase;
 
-    public void setOrganisationDn(Organisation organisation) {
+  public void setOrganisationInternals(Organisation organisation) {
+    Organisation organisationFromLdap = ldapService.getEntryById(organisation.getOrgId(), organisationBase, Organisation.class);
+    setInternals(organisation, organisationFromLdap);
+  }
 
-        Name dnById = ldapService.getDnById(organisation.getOrgId(), organisationBase, Organisation.class);
-        Name dn;
-        String uuid = UUID.randomUUID().toString();
+  private void setInternals(LdapEntry ldapEntry, LdapEntry ldapEntryFromLdap) {
+    Name dn;
+    String uuid = UUID.randomUUID().toString();
 
-        if (dnById == null) {
-            dn = LdapNameBuilder.newInstance(organisationBase)
-                    .add("ou", uuid)
-                    .build();
-            organisation.setUuid(uuid);
-        } else {
-            dn = dnById;
-        }
-        organisation.setDn(dn);
+    if (ldapEntryFromLdap == null) {
+      dn = LdapNameBuilder.newInstance(getBase(ldapEntry))
+        .add("ou", uuid)
+        .build();
+      ldapEntry.setUuid(uuid);
+      ldapEntry.setDn(dn);
+    } else {
+      ldapEntry.setDn(LdapNameBuilder.newInstance(ldapEntryFromLdap.getDn()).build());
+      ldapEntry.setUuid(ldapEntryFromLdap.getUuid());
+    }
+  }
+
+  private String getBase(LdapEntry ldapEntry) {
+    if (ldapEntry.getClass().equals(Component.class)) {
+      return componentBase;
+    }
+    if (ldapEntry.getClass().equals(Organisation.class)) {
+      return organisationBase;
     }
 
-    public void setComponentDn(Component component) {
+    return null;
+  }
 
-        Name dnById = ldapService.getDnById(component.getTechnicalName(), componentBase, Component.class);
-        Name dn;
+  public void setComponentInternals(Component component) {
+    Component componentFromLdap = ldapService.getEntryById(component.getTechnicalName(), componentBase, Component.class);
+    setInternals(component, componentFromLdap);
+  }
 
-        if (dnById == null) {
-            dn = LdapNameBuilder.newInstance(componentBase)
-                    .add("ou", UUID.randomUUID().toString())
-                    .build();
-        } else {
-            dn = dnById;
-        }
-        component.setDn(dn);
-    }
+  public void setContactDn(Contact contact, String orgUUID) {
+    Name dn = LdapNameBuilder.newInstance(getOrganisationDnByUUID(orgUUID))
+      .add("cn", contact.getNin())
+      .build();
+    contact.setDn(dn);
+  }
 
-    public void setContactDn(Contact contact, String orgUUID) {
+  public String getContactDn(String orgUUID, String nin) {
+    return LdapNameBuilder.newInstance(getOrganisationDnByUUID(orgUUID))
+      .add("cn", nin)
+      .build().toString();
+  }
 
-        //Name orgDn = ldapService.getDnById(contact.getOrgId(), organisationBase, Organisation.class);
-        Name dn = LdapNameBuilder.newInstance(getOrganisationDnByUUID(orgUUID))
-                .add("cn", contact.getNin())
-                .build();
-        contact.setDn(dn);
-    }
+  public String getOrganisationDnByUUID(String uuid) {
+    return LdapNameBuilder.newInstance(organisationBase)
+      .add("ou", uuid)
+      .build().toString();
+  }
 
-    public String getContactDn(String orgUUID, String nin) {
-        return LdapNameBuilder.newInstance(getOrganisationDnByUUID(orgUUID))
-                .add("cn", nin)
-                .build().toString();
-    }
-
-    public String getOrganisationDnByUUID(String uuid) {
-        return LdapNameBuilder.newInstance(organisationBase)
-                .add("ou", uuid)
-                .build().toString();
-    }
+  public String getComponentDnByUUID(String uuid) {
+    return LdapNameBuilder.newInstance(componentBase)
+      .add("ou", uuid)
+      .build().toString();
+  }
 
 }
