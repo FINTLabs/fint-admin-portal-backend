@@ -12,7 +12,7 @@ import org.springframework.ldap.core.support.LdapContextSource;
 public class LdapConfiguration {
 
   @Autowired
-  Environment env;
+  private Environment env;
 
   @Bean
   public LdapContextSource contextSource() {

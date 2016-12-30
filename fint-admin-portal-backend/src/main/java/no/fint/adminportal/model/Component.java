@@ -44,14 +44,14 @@ public class Component implements LdapEntry {
   }
 
   @Override
-  public void setDn(Name dn) {
-    this.dn = dn;
-
+  public void setDn(String dn) {
+    this.dn = LdapNameBuilder.newInstance(dn).build();
   }
 
   @Override
-  public void setDn(String dn) {
-    this.dn = LdapNameBuilder.newInstance(dn).build();
+  public void setDn(Name dn) {
+    this.dn = dn;
+
   }
 
   @Override

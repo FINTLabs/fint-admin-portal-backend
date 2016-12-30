@@ -8,9 +8,9 @@ import javax.naming.Name;
 public interface LdapEntry {
   String getDn();
 
-  void setDn(Name dn);
-
   void setDn(String dn);
+
+  void setDn(Name dn);
 
   String getUuid();
 

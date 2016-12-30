@@ -11,7 +11,6 @@ import no.fint.adminportal.exceptions.UpdateEntityMismatchException;
 import no.fint.adminportal.model.Contact;
 import no.fint.adminportal.model.ErrorResponse;
 import no.fint.adminportal.model.Organisation;
-import no.fint.adminportal.service.ContactService;
 import no.fint.adminportal.service.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
 import no.rogfk.hateoas.extension.annotations.HalResource;
@@ -25,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 @Slf4j
 @RestController
 @Api(tags = "Organisations")
@@ -33,10 +33,8 @@ import java.util.Optional;
 public class OrganisationController {
 
   @Autowired
+  private
   OrganisationService organisationService;
-
-  @Autowired
-  ContactService contactService;
 
   @ApiOperation("Request new organisation")
   @RequestMapping(method = RequestMethod.POST,
@@ -66,7 +64,7 @@ public class OrganisationController {
 
     if (!uuid.equals(organisation.getUuid())) {
       throw new UpdateEntityMismatchException(
-        String.format("Trying to update organisation %s on endpoint for organisation %s.", organisation.getUuid(), uuid)
+        String.format("Trying to updateEntry organisation %s on endpoint for organisation %s.", organisation.getUuid(), uuid)
       );
     }
 
@@ -100,22 +98,6 @@ public class OrganisationController {
     return new HalPagedResources<>(organisationService.getOrganisations(), page);
   }
 
-  /*
-  @ApiOperation("Get organisation by orgId")
-  @RequestMapping(method = RequestMethod.GET, value = "/{orgId:.+}")
-  public ResponseEntity getOrganizationByOrgId(@PathVariable String orgId) {
-    Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
-
-    if (organisation.isPresent()) {
-      return ResponseEntity.ok(organisation.get());
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found.", organisation.get().getOrgId())
-    );
-  }
-  */
-
   @ApiOperation("Get organisation by uuid")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}")
   public ResponseEntity getOrganizationByUuid(@PathVariable String uuid) {
@@ -146,19 +128,6 @@ public class OrganisationController {
       );
     }
 
-    if (contact.getOrgId() == null) {
-      contact.setOrgId(organisation.get().getOrgId());
-    }
-
-    if (!contact.getOrgId().equals(organisation.get().getOrgId())) {
-      throw new CreateEntityMismatchException(
-        String.format("Contact has orgId %s. Endpoint has orgId %s",
-          contact.getOrgId(),
-          organisation.get().getOrgId()
-        )
-      );
-    }
-
     if (!organisationService.createOrganisationsContact(contact, uuid)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
@@ -185,14 +154,10 @@ public class OrganisationController {
     }
 
     if (!nin.equals(contact.getNin())) {
-      throw new UpdateEntityMismatchException("The contact to update is not the contact in endpoint.");
+      throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
     }
 
-    if (contact.getOrgId() == null) {
-      contact.setOrgId(organisation.get().getOrgId());
-    }
-
-    if (!contact.getOrgId().equals(organisation.get().getOrgId())) {
+    if (!contact.getOrgId().equals(organisation.get().getOrgId()) || (contact.getOrgId() == null)) {
       throw new UpdateEntityMismatchException(
         String.format("Contact belongs to orgId: %s. This orgId is: %s",
           contact.getOrgId(),
@@ -208,12 +173,13 @@ public class OrganisationController {
   }
 
   @ApiOperation("Get the organisation contacts")
+  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts")
-  public ResponseEntity getOrganizationConcats(@PathVariable final String uuid) {
+  public HalPagedResources<Contact> getOrganizationConcats(@PathVariable final String uuid, @RequestParam(required = false) Integer page) {
     Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getOrganisationContacts(uuid));
 
     if (contacts.isPresent()) {
-      return ResponseEntity.ok(contacts.get());
+      return new HalPagedResources<>(contacts.get(), page);
     }
 
     throw new EntityNotFoundException(
@@ -223,7 +189,7 @@ public class OrganisationController {
 
   @ApiOperation("Get the organisation contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts/{nin}")
-  public ResponseEntity getOrganizationConcats(@PathVariable final String uuid, @PathVariable final String nin) {
+  public ResponseEntity getOrganizationConcat(@PathVariable final String uuid, @PathVariable final String nin) {
     Optional<Contact> contact = organisationService.getOrganisationContact(uuid, nin);
 
     if (contact.isPresent()) {

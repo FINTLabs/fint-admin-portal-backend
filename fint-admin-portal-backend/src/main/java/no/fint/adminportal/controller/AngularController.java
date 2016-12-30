@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Maps every request spring cannot handle to deliver index.html
  */
+@SuppressWarnings("ALL")
 @Controller
 class AngularController implements ErrorController {
   private static final String ERROR_PATH = "/error";

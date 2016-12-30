@@ -1,7 +1,7 @@
 package no.fint.adminportal.service;
 
 import no.fint.adminportal.model.LdapEntry;
-import no.fint.adminportal.utilities.LdapIdUtility;
+import no.fint.adminportal.utilities.LdapUniqueNameUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
@@ -14,50 +14,50 @@ import java.util.List;
 @Service
 public class LdapService {
 
+  private final SearchControls searchControls;
   @Autowired
-  LdapTemplate ldapTemplate;
-
-  private SearchControls searchControls;
+  private LdapTemplate ldapTemplate;
 
   public LdapService() {
     searchControls = new SearchControls();
     searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
   }
 
-  public boolean create(LdapEntry ldapEntry) {
+  public boolean createEntry(LdapEntry ldapEntry) {
 
-    if (!exists(ldapEntry.getDn())) {
+    if (!entryExists(ldapEntry.getDn())) {
       ldapTemplate.create(ldapEntry);
       return true;
     }
     return false;
   }
 
-  public boolean update(LdapEntry ldapEntry) {
-    if (exists(ldapEntry.getDn())) {
+  public boolean updateEntry(LdapEntry ldapEntry) {
+    if (entryExists(ldapEntry.getDn())) {
       ldapTemplate.update(ldapEntry);
       return true;
     }
     return false;
   }
 
-  public <T> T getEntryById(String id, String base, Class<T> type) {
-    List<T> ldapEntries = ldapTemplate.find(
-      LdapNameBuilder.newInstance(base).build(),
-      new EqualsFilter(LdapIdUtility.getIdAttribute(type), id),
-      searchControls, type);
+  public <T> T getEntryUniqueName(String name, String base, Class<T> type) {
+    if (name != null) {
+      List<T> ldapEntries = ldapTemplate.find(
+        LdapNameBuilder.newInstance(base).build(),
+        new EqualsFilter(LdapUniqueNameUtility.getUniqueNameAttribute(type), name),
+        searchControls, type);
 
-    if (ldapEntries.size() == 1) {
-      return ldapEntries.get(0);
-    } else {
-      return null;
+      if (ldapEntries.size() == 1) {
+        return ldapEntries.get(0);
+      }
     }
+    return null;
   }
 
   public <T> String getStringDnById(String id, String base, Class<T> type) {
     List<T> ldapEntries = ldapTemplate.find(
       LdapNameBuilder.newInstance(base).build(),
-      new EqualsFilter(LdapIdUtility.getIdAttribute(type), id),
+      new EqualsFilter(LdapUniqueNameUtility.getUniqueNameAttribute(type), id),
       searchControls, type);
 
     if (ldapEntries.size() == 1) {
@@ -67,7 +67,7 @@ public class LdapService {
     }
   }
 
-  private boolean exists(String dn) {
+  private boolean entryExists(String dn) {
     try {
       ldapTemplate.lookup(LdapNameBuilder.newInstance(dn).build());
       return true;
@@ -77,7 +77,7 @@ public class LdapService {
   }
 
   public <T> List<T> getAll(String base, Class<T> type) {
-    if (exists(base)) {
+    if (entryExists(base)) {
       return ldapTemplate.findAll(LdapNameBuilder.newInstance(base).build(), searchControls, type);
     }
     return null;

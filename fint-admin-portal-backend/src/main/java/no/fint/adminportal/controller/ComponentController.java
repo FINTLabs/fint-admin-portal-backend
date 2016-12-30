@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,10 +32,10 @@ import java.util.Optional;
 public class ComponentController {
 
   @Autowired
-  ComponentService componentService;
+  private ComponentService componentService;
 
   @Autowired
-  OrganisationService organisationService;
+  private OrganisationService organisationService;
 
   @ApiOperation("Request new component")
   @RequestMapping(method = RequestMethod.POST,
@@ -65,7 +66,7 @@ public class ComponentController {
 
     if (!uuid.equals(component.getUuid())) {
       throw new UpdateEntityMismatchException(
-        String.format("Trying to update component %s on endpoint for component %s.", component.getUuid(), uuid)
+        String.format("Trying to updateEntry component %s on endpoint for component %s.", component.getUuid(), uuid)
       );
     }
 
@@ -97,9 +98,9 @@ public class ComponentController {
     );
   }
 
-  @ApiOperation("Delete an organisation contact")
+  @ApiOperation("Delete component")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{uuid}")
-  public ResponseEntity deleteOrganizationContacts(@PathVariable final String uuid) {
+  public ResponseEntity deleteComponent(@PathVariable final String uuid) {
     Optional<Component> component = componentService.getComponentByUUID(uuid);
 
     if (component.isPresent()) {
@@ -139,25 +140,12 @@ public class ComponentController {
 
     componentService.addOrganisationToComponent(compUuid, orgUuid);
     return ResponseEntity.ok().build();
-    /*
-    if (componentService.createComponent(component)) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(component);
-    }
-
-    throw new EntityFoundException(
-      ServletUriComponentsBuilder
-        .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(component.getUuid()).toUri().toString()
-    );
-    */
-
   }
 
   @ApiOperation("Remove organisation to component")
   @RequestMapping(method = RequestMethod.DELETE,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     value = "/{compUuid}/organisation/{orgUuid}"
-
   )
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @PathVariable final String orgUuid) {
 
@@ -180,7 +168,6 @@ public class ComponentController {
     return ResponseEntity.accepted().build();
 
   }
-
   ////////////////////////////////////////////////////////////////
 
   //
@@ -201,4 +188,8 @@ public class ComponentController {
     return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
   }
 
+  @ExceptionHandler(NameNotFoundException.class)
+  public ResponseEntity handleNameNotFound(Exception e) {
+    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+  }
 }

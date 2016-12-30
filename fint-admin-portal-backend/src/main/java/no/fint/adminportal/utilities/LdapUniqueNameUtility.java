@@ -4,10 +4,10 @@ import no.fint.adminportal.model.Component;
 import no.fint.adminportal.model.Contact;
 import no.fint.adminportal.model.Organisation;
 
-public enum LdapIdUtility {
+public enum LdapUniqueNameUtility {
   ;
 
-  public static <T> String getIdAttribute(Class<T> type) {
+  public static <T> String getUniqueNameAttribute(Class<T> type) {
 
     if (type.getName().equals(Organisation.class.getName())) {
       return "fintOrgId";

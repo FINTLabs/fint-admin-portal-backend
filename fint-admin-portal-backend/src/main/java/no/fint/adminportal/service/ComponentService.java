@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.naming.directory.SearchControls;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,40 +15,34 @@ import java.util.Optional;
 public class ComponentService {
 
   @Autowired
-  LdapService ldapService;
+  private LdapService ldapService;
 
   @Autowired
-  private DnService dnService;
-
-  private SearchControls searchControls;
+  private ObjectService objectService;
 
   @Value("${fint.ldap.component-base}")
   private String componentBase;
-
-  public ComponentService() {
-    searchControls = new SearchControls();
-    searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-  }
 
   public boolean createComponent(Component component) {
     log.info("Creating component: {}", component);
 
     if (component.getDn() == null) {
-      dnService.setComponentInternals(component);
+      objectService.setupComponent(component);
     }
-    return ldapService.create(component);
+    return ldapService.createEntry(component);
   }
 
   public boolean updateComponent(Component component) {
     log.info("Updating component: {}", component);
 
-    return ldapService.update(component);
+    return ldapService.updateEntry(component);
   }
 
   public List<Component> getComponents() {
     return ldapService.getAll(componentBase, Component.class);
   }
 
+  /*
   public Optional<Component> getComponentByTechnicalName(String technicalName) {
     Optional<String> stringDnById = Optional.ofNullable(ldapService.getStringDnById(technicalName, componentBase, Component.class));
 
@@ -58,13 +51,12 @@ public class ComponentService {
     }
     return Optional.empty();
   }
+  */
 
   public Optional<Component> getComponentByUUID(String uuid) {
-    String dn = dnService.getComponentDnByUUID(uuid);
-    Optional<Component> component = Optional.ofNullable(ldapService.getEntry(dn, Component.class));
+    String dn = objectService.getComponentDnByUUID(uuid);
 
-    return component;
-
+    return Optional.ofNullable(ldapService.getEntry(dn, Component.class));
   }
 
   public void deleteComponent(Component component) {
@@ -80,14 +72,14 @@ public class ComponentService {
     clientContainer.setOu("Clients");
     adapterContainer.setOu("Adapters");
 
-    dnService.setOrganisationContainerDN(organisationContainer, componentUuid);
-    ldapService.create(organisationContainer);
+    objectService.setOrganisationContainerDN(organisationContainer, componentUuid);
+    ldapService.createEntry(organisationContainer);
 
-    dnService.setClientContainerDN(clientContainer, organisationContainer);
-    ldapService.create(clientContainer);
+    objectService.setClientContainerDN(clientContainer, organisationContainer);
+    ldapService.createEntry(clientContainer);
 
-    dnService.setAdapterContainerDN(adapterContainer, organisationContainer);
-    ldapService.create(adapterContainer);
+    objectService.setAdapterContainerDN(adapterContainer, organisationContainer);
+    ldapService.createEntry(adapterContainer);
   }
 
   public void removeOrganisationFromComponent(String componentUuid, String organistionUuid) {
@@ -99,12 +91,12 @@ public class ComponentService {
     clientContainer.setOu("Clients");
     adapterContainer.setOu("Adapters");
 
-    dnService.setOrganisationContainerDN(organisationContainer, componentUuid);
+    objectService.setOrganisationContainerDN(organisationContainer, componentUuid);
 
-    dnService.setClientContainerDN(clientContainer, organisationContainer);
+    objectService.setClientContainerDN(clientContainer, organisationContainer);
     ldapService.deleteEntry(clientContainer);
 
-    dnService.setAdapterContainerDN(adapterContainer, organisationContainer);
+    objectService.setAdapterContainerDN(adapterContainer, organisationContainer);
     ldapService.deleteEntry(adapterContainer);
 
     ldapService.deleteEntry(organisationContainer);

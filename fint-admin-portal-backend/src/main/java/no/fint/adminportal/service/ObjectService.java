@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import javax.naming.Name;
 import java.util.UUID;
 
+@SuppressWarnings("ALL")
 @Service
-public class DnService {
+public class ObjectService {
 
   @Autowired
+  private
   LdapService ldapService;
 
   @Value("${fint.ldap.organisation-base}")
@@ -21,12 +23,17 @@ public class DnService {
   @Value("${fint.ldap.component-base}")
   private String componentBase;
 
-  public void setOrganisationInternals(Organisation organisation) {
-    Organisation organisationFromLdap = ldapService.getEntryById(organisation.getOrgId(), organisationBase, Organisation.class);
-    setInternals(organisation, organisationFromLdap);
+  public void setupOrganisation(Organisation organisation) {
+    Organisation organisationFromLdap = ldapService.getEntryUniqueName(organisation.getOrgId(), organisationBase, Organisation.class);
+    setupObject(organisation, organisationFromLdap);
   }
 
-  private void setInternals(LdapEntry ldapEntry, LdapEntry ldapEntryFromLdap) {
+  public void setupComponent(Component component) {
+    Component componentFromLdap = ldapService.getEntryUniqueName(component.getTechnicalName(), componentBase, Component.class);
+    setupObject(component, componentFromLdap);
+  }
+
+  private void setupObject(LdapEntry ldapEntry, LdapEntry ldapEntryFromLdap) {
     Name dn;
     String uuid = UUID.randomUUID().toString();
 
@@ -51,11 +58,6 @@ public class DnService {
     }
 
     return null;
-  }
-
-  public void setComponentInternals(Component component) {
-    Component componentFromLdap = ldapService.getEntryById(component.getTechnicalName(), componentBase, Component.class);
-    setInternals(component, componentFromLdap);
   }
 
   public void setContactDn(Contact contact, String orgUUID) {

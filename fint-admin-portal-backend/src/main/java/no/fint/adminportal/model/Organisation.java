@@ -11,6 +11,7 @@ import org.springframework.ldap.support.LdapNameBuilder;
 import javax.naming.Name;
 
 
+@SuppressWarnings("ALL")
 @ApiModel
 @Data
 @Entry(objectClasses = {"organizationalUnit", "top", "fintOrg"})
@@ -22,7 +23,6 @@ public final class Organisation implements LdapEntry {
   @ApiModelProperty(
     value = "Unique identifier for the organisation (UUID). This is automatically generated and should not be set."
   )
-  //@DnAttribute(value = "ou", index = 2)
   @Attribute(name = "ou")
   private String uuid;
 
@@ -57,13 +57,13 @@ public final class Organisation implements LdapEntry {
   }
 
   @Override
-  public void setDn(Name dn) {
-    this.dn = dn;
+  public void setDn(String dn) {
+    this.dn = LdapNameBuilder.newInstance(dn).build();
   }
 
   @Override
-  public void setDn(String dn) {
-    this.dn = LdapNameBuilder.newInstance(dn).build();
+  public void setDn(Name dn) {
+    this.dn = dn;
   }
 
 

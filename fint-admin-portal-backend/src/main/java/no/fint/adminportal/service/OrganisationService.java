@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.naming.directory.SearchControls;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("ALL")
 @Slf4j
 @Service
 public class OrganisationService {
@@ -19,29 +19,22 @@ public class OrganisationService {
   private LdapService ldapService;
 
   @Autowired
-  private DnService dnService;
-
-  private SearchControls searchControls;
+  private ObjectService objectService;
 
   @Value("${fint.ldap.organisation-base}")
   private String organisationBase;
-
-  public OrganisationService() {
-    searchControls = new SearchControls();
-    searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-  }
 
   public boolean createOrganisation(Organisation organisation) {
     log.info("Creating organisation: {}", organisation);
 
     if (organisation.getDn() == null) {
-      dnService.setOrganisationInternals(organisation);
+      objectService.setupOrganisation(organisation);
     }
-    return ldapService.create(organisation);
+    return ldapService.createEntry(organisation);
   }
 
   public boolean updateOrganisation(Organisation organisation) {
-    return ldapService.update(organisation);
+    return ldapService.updateEntry(organisation);
   }
 
   public List<Organisation> getOrganisations() {
@@ -60,26 +53,26 @@ public class OrganisationService {
   */
 
   public List<Contact> getOrganisationContacts(String uuid) {
-    return ldapService.getAll(dnService.getOrganisationDnByUUID(uuid), Contact.class);
+    return ldapService.getAll(objectService.getOrganisationDnByUUID(uuid), Contact.class);
   }
 
   public boolean createOrganisationsContact(Contact contact, String orgUUID) {
     log.info("Creating contact: {}", contact);
 
     if (contact.getDn() == null) {
-      dnService.setContactDn(contact, orgUUID);
+      objectService.setContactDn(contact, orgUUID);
     }
     contact.setOrgId(getOrganisationId(orgUUID));
-    return ldapService.create(contact);
+    return ldapService.createEntry(contact);
   }
 
   public Optional<Contact> getOrganisationContact(String orgUUID, String nin) {
 
-    return Optional.ofNullable(ldapService.getEntry(dnService.getContactDn(orgUUID, nin), Contact.class));
+    return Optional.ofNullable(ldapService.getEntry(objectService.getContactDn(orgUUID, nin), Contact.class));
   }
 
   public boolean updateOrganisationContact(Contact contact) {
-    return ldapService.update(contact);
+    return ldapService.updateEntry(contact);
   }
 
   public void deleteOrganisationContact(Contact contact) {
@@ -94,8 +87,8 @@ public class OrganisationService {
     ldapService.deleteEntry(organisation);
   }
 
-  public String getOrganisationId(String uuid) {
-    String dn = dnService.getOrganisationDnByUUID(uuid);
+  private String getOrganisationId(String uuid) {
+    String dn = objectService.getOrganisationDnByUUID(uuid);
     Organisation organisation = ldapService.getEntry(dn, Organisation.class);
 
     return organisation.getOrgId();
@@ -103,10 +96,9 @@ public class OrganisationService {
   }
 
   public Optional<Organisation> getOrganisationByUUID(String uuid) {
-    String dn = dnService.getOrganisationDnByUUID(uuid);
-    Optional<Organisation> organisation = Optional.ofNullable(ldapService.getEntry(dn, Organisation.class));
+    String dn = objectService.getOrganisationDnByUUID(uuid);
 
-    return organisation;
+    return Optional.ofNullable(ldapService.getEntry(dn, Organisation.class));
 
   }
 }
