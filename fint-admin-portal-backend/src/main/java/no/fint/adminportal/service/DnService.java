@@ -1,9 +1,6 @@
 package no.fint.adminportal.service;
 
-import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.Contact;
-import no.fint.adminportal.model.LdapEntry;
-import no.fint.adminportal.model.Organisation;
+import no.fint.adminportal.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapNameBuilder;
@@ -86,4 +83,27 @@ public class DnService {
       .build().toString();
   }
 
+  public void setOrganisationContainerDN(Container organisationContainer, String componentUuid) {
+    organisationContainer.setDn(
+      LdapNameBuilder.newInstance(getComponentDnByUUID(componentUuid))
+        .add("ou", organisationContainer.getOu())
+        .build()
+    );
+  }
+
+  public void setClientContainerDN(Container clientContainer, Container organisationContainer) {
+    clientContainer.setDn(
+      LdapNameBuilder.newInstance(organisationContainer.getDn())
+        .add("ou", clientContainer.getOu())
+        .build()
+    );
+  }
+
+  public void setAdapterContainerDN(Container adapterContainer, Container organisationContainer) {
+    adapterContainer.setDn(
+      LdapNameBuilder.newInstance(organisationContainer.getDn())
+        .add("ou", adapterContainer.getOu())
+        .build()
+    );
+  }
 }

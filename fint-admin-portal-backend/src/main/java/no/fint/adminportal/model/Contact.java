@@ -22,7 +22,6 @@ public class Contact implements LdapEntry {
 
   @ApiModelProperty(value = "National Idenitification Number (NIN). This would be fødselsnummer (11 digits)")
   @Attribute(name = "cn")
-  //@DnAttribute(value = "cn", index = 3)
   private String nin;
 
   @ApiModelProperty(value = "First name of the contact.")

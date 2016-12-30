@@ -2,6 +2,7 @@ package no.fint.adminportal.service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.adminportal.model.Component;
+import no.fint.adminportal.model.Container;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,44 @@ public class ComponentService {
 
   public void deleteComponent(Component component) {
     ldapService.deleteEntry(component);
+  }
+
+  public void addOrganisationToComponent(String componentUuid, String organistionUuid) {
+    Container organisationContainer = new Container();
+    Container clientContainer = new Container();
+    Container adapterContainer = new Container();
+
+    organisationContainer.setOu(organistionUuid);
+    clientContainer.setOu("Clients");
+    adapterContainer.setOu("Adapters");
+
+    dnService.setOrganisationContainerDN(organisationContainer, componentUuid);
+    ldapService.create(organisationContainer);
+
+    dnService.setClientContainerDN(clientContainer, organisationContainer);
+    ldapService.create(clientContainer);
+
+    dnService.setAdapterContainerDN(adapterContainer, organisationContainer);
+    ldapService.create(adapterContainer);
+  }
+
+  public void removeOrganisationFromComponent(String componentUuid, String organistionUuid) {
+    Container organisationContainer = new Container();
+    Container clientContainer = new Container();
+    Container adapterContainer = new Container();
+
+    organisationContainer.setOu(organistionUuid);
+    clientContainer.setOu("Clients");
+    adapterContainer.setOu("Adapters");
+
+    dnService.setOrganisationContainerDN(organisationContainer, componentUuid);
+
+    dnService.setClientContainerDN(clientContainer, organisationContainer);
+    ldapService.deleteEntry(clientContainer);
+
+    dnService.setAdapterContainerDN(adapterContainer, organisationContainer);
+    ldapService.deleteEntry(adapterContainer);
+
+    ldapService.deleteEntry(organisationContainer);
   }
 }

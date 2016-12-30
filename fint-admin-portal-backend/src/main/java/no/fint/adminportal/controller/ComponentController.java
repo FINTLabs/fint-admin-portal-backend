@@ -9,7 +9,9 @@ import no.fint.adminportal.exceptions.EntityNotFoundException;
 import no.fint.adminportal.exceptions.UpdateEntityMismatchException;
 import no.fint.adminportal.model.Component;
 import no.fint.adminportal.model.ErrorResponse;
+import no.fint.adminportal.model.Organisation;
 import no.fint.adminportal.service.ComponentService;
+import no.fint.adminportal.service.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
 import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class ComponentController {
 
   @Autowired
   ComponentService componentService;
+
+  @Autowired
+  OrganisationService organisationService;
 
   @ApiOperation("Request new component")
   @RequestMapping(method = RequestMethod.POST,
@@ -106,6 +111,77 @@ public class ComponentController {
       String.format("Component %s not found", uuid)
     );
   }
+
+  //////////// Should be moved to customer portal /////////////////
+
+  @ApiOperation("Add organisation to component")
+  @RequestMapping(method = RequestMethod.POST,
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    value = "/{compUuid}/organisation/{orgUuid}"
+
+  )
+  public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @PathVariable final String orgUuid) {
+
+    Optional<Component> component = componentService.getComponentByUUID(compUuid);
+    Optional<Organisation> organisation = organisationService.getOrganisationByUUID(orgUuid);
+
+    if (!component.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Component %s could not be found", compUuid)
+      );
+    }
+
+    if (!organisation.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Organisation %s could not be found", orgUuid)
+      );
+    }
+
+    componentService.addOrganisationToComponent(compUuid, orgUuid);
+    return ResponseEntity.ok().build();
+    /*
+    if (componentService.createComponent(component)) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(component);
+    }
+
+    throw new EntityFoundException(
+      ServletUriComponentsBuilder
+        .fromCurrentRequest().path("/{uuid}")
+        .buildAndExpand(component.getUuid()).toUri().toString()
+    );
+    */
+
+  }
+
+  @ApiOperation("Remove organisation to component")
+  @RequestMapping(method = RequestMethod.DELETE,
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    value = "/{compUuid}/organisation/{orgUuid}"
+
+  )
+  public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @PathVariable final String orgUuid) {
+
+    Optional<Component> component = componentService.getComponentByUUID(compUuid);
+    Optional<Organisation> organisation = organisationService.getOrganisationByUUID(orgUuid);
+
+    if (!component.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Component %s could not be found", compUuid)
+      );
+    }
+
+    if (!organisation.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Organisation %s could not be found", orgUuid)
+      );
+    }
+
+    componentService.removeOrganisationFromComponent(compUuid, orgUuid);
+    return ResponseEntity.accepted().build();
+
+  }
+
+  ////////////////////////////////////////////////////////////////
 
   //
   // Exception handlers

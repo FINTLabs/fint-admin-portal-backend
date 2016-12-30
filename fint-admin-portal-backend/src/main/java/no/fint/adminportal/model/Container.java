@@ -1,5 +1,6 @@
 package no.fint.adminportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,27 +13,15 @@ import javax.naming.Name;
 
 @ApiModel
 @Data
-@Entry(objectClasses = {"organizationalUnit", "top", "fintComponent"})
-public class Component implements LdapEntry {
+@Entry(objectClasses = {"organizationalUnit", "top"})
+public class Container implements LdapEntry {
 
   @Id
   private Name dn;
 
-  @ApiModelProperty(value = "Unique identifier for the component (UUID). This is automatically generated and should not be set")
+  @ApiModelProperty(value = "This should be the name of the container.")
   @Attribute(name = "ou")
-  private String uuid;
-
-  @ApiModelProperty(value = "Technical name of the component.")
-  @Attribute(name = "fintCompTechnicalName")
-  private String technicalName;
-
-  @ApiModelProperty(value = "Displayname of the component.")
-  @Attribute(name = "fintCompDisplayName")
-  private String displayName;
-
-  @ApiModelProperty(value = "A description of what the component does.")
-  @Attribute(name = "description")
-  private String description;
+  private String ou;
 
   @Override
   public String getDn() {
@@ -54,14 +43,16 @@ public class Component implements LdapEntry {
     this.dn = LdapNameBuilder.newInstance(dn).build();
   }
 
+  @JsonIgnore
   @Override
   public String getUuid() {
-    return uuid;
+    throw new UnsupportedOperationException("This method is not supported for Contact.");
   }
 
+  @JsonIgnore
   @Override
   public void setUuid(String uuid) {
-    this.uuid = uuid;
+    throw new UnsupportedOperationException("This method is not supported for Contact.");
   }
 }
 
