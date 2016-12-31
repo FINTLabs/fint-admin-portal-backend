@@ -28,12 +28,16 @@ public class Adapter implements BasicLdapEntry {
   private String shortDescription;
 
   @ApiModelProperty(value = "OrgId of the organisation the adapter is connected to. This is automatically set.")
-  @Attribute(name = "fintContactOrgId")
+  @Attribute(name = "company")
   private String orgId;
 
   @ApiModelProperty(value = "A note of the adapter.")
   @Attribute(name = "description")
   private String note;
+
+  @ApiModelProperty(value = "Adapter password.")
+  @Attribute(name = "userPassword")
+  private String password;
 
   public String getDn() {
     if (dn != null) {

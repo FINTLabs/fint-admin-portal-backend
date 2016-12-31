@@ -28,12 +28,16 @@ public class Client implements BasicLdapEntry {
   private String shortDescription;
 
   @ApiModelProperty(value = "OrgId of the organisation the client is connected to. This is automatically set.")
-  @Attribute(name = "fintContactOrgId")
+  @Attribute(name = "company")
   private String orgId;
 
   @ApiModelProperty(value = "A note of the client.")
   @Attribute(name = "description")
   private String note;
+
+  @ApiModelProperty(value = "Client password.")
+  @Attribute(name = "userPassword")
+  private String password;
 
   public String getDn() {
     if (dn != null) {

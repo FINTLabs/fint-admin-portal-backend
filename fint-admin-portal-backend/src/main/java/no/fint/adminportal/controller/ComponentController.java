@@ -7,9 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.adminportal.exceptions.EntityFoundException;
 import no.fint.adminportal.exceptions.EntityNotFoundException;
 import no.fint.adminportal.exceptions.UpdateEntityMismatchException;
-import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.ErrorResponse;
-import no.fint.adminportal.model.Organisation;
+import no.fint.adminportal.model.*;
 import no.fint.adminportal.service.ComponentService;
 import no.fint.adminportal.service.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
@@ -168,6 +166,74 @@ public class ComponentController {
     componentService.removeOrganisationFromComponent(compUuid, orgUuid);
     return ResponseEntity.accepted().build();
 
+  }
+
+  @ApiOperation("Add client to component")
+  @RequestMapping(method = RequestMethod.POST,
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    value = "/{compUuid}/organisation/{orgUuid}/clients"
+
+  )
+  public ResponseEntity addClientToComponent(@RequestBody final Client client, @PathVariable final String compUuid, @PathVariable final String orgUuid) {
+
+    Optional<Component> component = componentService.getComponentByUUID(compUuid);
+    Optional<Organisation> organisation = organisationService.getOrganisationByUUID(orgUuid);
+
+    if (!component.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Component %s could not be found", compUuid)
+      );
+    }
+
+    if (!organisation.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Organisation %s could not be found", orgUuid)
+      );
+    }
+
+    if (componentService.addClientToComponent(client, compUuid, orgUuid)) {
+      return ResponseEntity.ok().build();
+    }
+
+    throw new EntityFoundException(
+      ServletUriComponentsBuilder
+        .fromCurrentRequest().path("/{uuid}")
+        .buildAndExpand(client.getUuid()).toUri().toString()
+    );
+  }
+
+  @ApiOperation("Add adapter to component")
+  @RequestMapping(method = RequestMethod.POST,
+    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    value = "/{compUuid}/organisation/{orgUuid}/adapters"
+
+  )
+  public ResponseEntity addAdapterToComponent(@RequestBody final Adapter adapter, @PathVariable final String compUuid, @PathVariable final String orgUuid) {
+
+    Optional<Component> component = componentService.getComponentByUUID(compUuid);
+    Optional<Organisation> organisation = organisationService.getOrganisationByUUID(orgUuid);
+
+    if (!component.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Component %s could not be found", compUuid)
+      );
+    }
+
+    if (!organisation.isPresent()) {
+      throw new EntityNotFoundException(
+        String.format("Organisation %s could not be found", orgUuid)
+      );
+    }
+
+    if (componentService.addAdapterToComponent(adapter, compUuid, orgUuid)) {
+      return ResponseEntity.ok().build();
+    }
+
+    throw new EntityFoundException(
+      ServletUriComponentsBuilder
+        .fromCurrentRequest().path("/{uuid}")
+        .buildAndExpand(adapter.getUuid()).toUri().toString()
+    );
   }
   ////////////////////////////////////////////////////////////////
 

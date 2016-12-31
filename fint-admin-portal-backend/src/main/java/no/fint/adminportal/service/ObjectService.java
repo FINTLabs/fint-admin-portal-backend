@@ -25,15 +25,15 @@ public class ObjectService {
 
   public void setupOrganisation(Organisation organisation) {
     Organisation organisationFromLdap = ldapService.getEntryUniqueName(organisation.getOrgId(), organisationBase, Organisation.class);
-    setupUuidObject(organisation, organisationFromLdap);
+    setupUuidContainerObject(organisation, organisationFromLdap);
   }
 
   public void setupComponent(Component component) {
     Component componentFromLdap = ldapService.getEntryUniqueName(component.getTechnicalName(), componentBase, Component.class);
-    setupUuidObject(component, componentFromLdap);
+    setupUuidContainerObject(component, componentFromLdap);
   }
 
-  private void setupUuidObject(UuidLdapEntry uuidLdapEntry, UuidLdapEntry uuidEntryFromLdap) {
+  private void setupUuidContainerObject(UuidLdapEntry uuidLdapEntry, UuidLdapEntry uuidEntryFromLdap) {
     Name dn;
     String uuid = UUID.randomUUID().toString();
 
@@ -107,5 +107,45 @@ public class ObjectService {
         .add("ou", adapterContainer.getOu())
         .build()
     );
+  }
+
+  public void setupClient(Client client, String compUuid, String orgUuid) {
+    client.setUuid(UUID.randomUUID().toString());
+    client.setDn(
+      LdapNameBuilder.newInstance(getClientBase(compUuid, orgUuid))
+        .add("cn", client.getUuid())
+        .build()
+    );
+    client.setPassword(
+      UUID.randomUUID().toString().replace("-", "")
+    );
+  }
+
+  public void setupAdapter(Adapter adapter, String compUuid, String orgUuid) {
+    adapter.setUuid(UUID.randomUUID().toString());
+    adapter.setDn(
+      LdapNameBuilder.newInstance(getAdapterBase(compUuid, orgUuid))
+        .add("cn", adapter.getUuid())
+        .build()
+    );
+    adapter.setPassword(
+      UUID.randomUUID().toString().replace("-", "")
+    );
+  }
+
+  public Name getClientBase(String compUuid, String orgUuid) {
+    return LdapNameBuilder.newInstance(componentBase)
+      .add("ou", compUuid)
+      .add("ou", orgUuid)
+      .add("ou", "clients")
+      .build();
+  }
+
+  public Name getAdapterBase(String compUuid, String orgUuid) {
+    return LdapNameBuilder.newInstance(componentBase)
+      .add("ou", compUuid)
+      .add("ou", orgUuid)
+      .add("ou", "adapters")
+      .build();
   }
 }

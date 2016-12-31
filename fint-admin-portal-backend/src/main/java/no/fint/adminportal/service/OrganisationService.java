@@ -1,6 +1,7 @@
 package no.fint.adminportal.service;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fint.adminportal.model.Client;
 import no.fint.adminportal.model.Contact;
 import no.fint.adminportal.model.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;

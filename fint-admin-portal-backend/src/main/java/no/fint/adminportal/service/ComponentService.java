@@ -1,6 +1,8 @@
 package no.fint.adminportal.service;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fint.adminportal.model.Adapter;
+import no.fint.adminportal.model.Client;
 import no.fint.adminportal.model.Component;
 import no.fint.adminportal.model.Container;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +71,8 @@ public class ComponentService {
     Container adapterContainer = new Container();
 
     organisationContainer.setOu(organistionUuid);
-    clientContainer.setOu("Clients");
-    adapterContainer.setOu("Adapters");
+    clientContainer.setOu("clients");
+    adapterContainer.setOu("adapters");
 
     objectService.setOrganisationContainerDN(organisationContainer, componentUuid);
     ldapService.createEntry(organisationContainer);
@@ -88,8 +90,14 @@ public class ComponentService {
     Container adapterContainer = new Container();
 
     organisationContainer.setOu(organistionUuid);
-    clientContainer.setOu("Clients");
-    adapterContainer.setOu("Adapters");
+    clientContainer.setOu("clients");
+    adapterContainer.setOu("adapters");
+
+    List<Client> clients = getOrganisastionComponentClients(componentUuid, organistionUuid);
+    clients.forEach(client -> ldapService.deleteEntry(client));
+
+    List<Adapter> adapters = getOrganisastionComponentAdapters(componentUuid, organistionUuid);
+    adapters.forEach(adapter -> ldapService.deleteEntry(adapter));
 
     objectService.setOrganisationContainerDN(organisationContainer, componentUuid);
 
@@ -100,5 +108,23 @@ public class ComponentService {
     ldapService.deleteEntry(adapterContainer);
 
     ldapService.deleteEntry(organisationContainer);
+  }
+
+  public boolean addClientToComponent(Client client, String compUuid, String orgUuid) {
+    objectService.setupClient(client, compUuid, orgUuid);
+    return ldapService.createEntry(client);
+  }
+
+  public boolean addAdapterToComponent(Adapter adapter, String compUuid, String orgUuid) {
+    objectService.setupAdapter(adapter, compUuid, orgUuid);
+    return ldapService.createEntry(adapter);
+  }
+
+  public List<Client> getOrganisastionComponentClients(String compUuid, String orgUuid) {
+    return ldapService.getAll(objectService.getClientBase(compUuid, orgUuid).toString(), Client.class);
+  }
+
+  public List<Adapter> getOrganisastionComponentAdapters(String compUuid, String orgUuid) {
+    return ldapService.getAll(objectService.getAdapterBase(compUuid, orgUuid).toString(), Adapter.class);
   }
 }
