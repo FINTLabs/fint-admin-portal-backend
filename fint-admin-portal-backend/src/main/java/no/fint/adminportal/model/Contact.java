@@ -1,6 +1,5 @@
 package no.fint.adminportal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +13,7 @@ import javax.naming.Name;
 @ApiModel
 @Data
 @Entry(objectClasses = {"inetOrgPerson", "organizationalPerson", "person", "top", "fintContact"})
-public class Contact implements LdapEntry {
+public class Contact implements BasicLdapEntry {
 
   @ApiModelProperty(value = "DN of the contact. This is automatically set.")
   @Id
@@ -61,25 +60,12 @@ public class Contact implements LdapEntry {
   }
 
   @Override
-  public void setDn(String dn) {
-    this.dn = LdapNameBuilder.newInstance(dn).build();
-  }
-
-  @Override
   public void setDn(Name dn) {
     this.dn = dn;
   }
 
-  @JsonIgnore
   @Override
-  public String getUuid() {
-    throw new UnsupportedOperationException("This method is not supported for Contact.");
+  public void setDn(String dn) {
+    this.dn = LdapNameBuilder.newInstance(dn).build();
   }
-
-  @JsonIgnore
-  @Override
-  public void setUuid(String uuid) {
-    throw new UnsupportedOperationException("This method is not supported for Contact.");
-  }
-
 }

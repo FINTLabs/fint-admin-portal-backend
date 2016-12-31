@@ -13,7 +13,7 @@ import javax.naming.Name;
 @ApiModel
 @Data
 @Entry(objectClasses = {"inetOrgPerson", "organizationalPerson", "person", "top"})
-public class Adapter implements LdapEntry {
+public class Adapter implements BasicLdapEntry {
 
   @ApiModelProperty(value = "DN of the adapter. This is automatically set.")
   @Id
@@ -52,15 +52,4 @@ public class Adapter implements LdapEntry {
   public void setDn(String dn) {
     this.dn = LdapNameBuilder.newInstance(dn).build();
   }
-
-  @Override
-  public String getUuid() {
-    return uuid;
-  }
-
-  @Override
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
-  }
-
 }

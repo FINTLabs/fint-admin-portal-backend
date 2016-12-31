@@ -22,6 +22,7 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 @Slf4j
@@ -191,5 +192,10 @@ public class ComponentController {
   @ExceptionHandler(NameNotFoundException.class)
   public ResponseEntity handleNameNotFound(Exception e) {
     return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+  }
+
+  @ExceptionHandler(UnknownHostException.class)
+  public ResponseEntity handleUnkownHost(Exception e) {
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
   }
 }

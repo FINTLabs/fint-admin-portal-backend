@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,7 +110,7 @@ public class OrganisationController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found.", organisation.get().getUuid())
+      String.format("Organisation %s could not be found.", uuid)
     );
   }
 
@@ -239,5 +241,15 @@ public class OrganisationController {
   @ExceptionHandler(EntityFoundException.class)
   public ResponseEntity handleEntityFound(Exception e) {
     return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+  }
+
+  @ExceptionHandler(NameNotFoundException.class)
+  public ResponseEntity handleNameNotFound(Exception e) {
+    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+  }
+
+  @ExceptionHandler(UnknownHostException.class)
+  public ResponseEntity handleUnkownHost(Exception e) {
+    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
   }
 }

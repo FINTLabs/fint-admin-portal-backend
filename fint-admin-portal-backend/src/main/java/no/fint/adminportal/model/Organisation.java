@@ -15,7 +15,7 @@ import javax.naming.Name;
 @ApiModel
 @Data
 @Entry(objectClasses = {"organizationalUnit", "top", "fintOrg"})
-public final class Organisation implements LdapEntry {
+public final class Organisation implements UuidLdapEntry {
 
   @Id
   private Name dn;
@@ -57,23 +57,12 @@ public final class Organisation implements LdapEntry {
   }
 
   @Override
-  public void setDn(String dn) {
-    this.dn = LdapNameBuilder.newInstance(dn).build();
+  public void setDn(Name dn) {
+    this.dn = dn;
   }
 
   @Override
-  public void setDn(Name dn) {
-    this.dn = dn;
-  }
-
-
-/*
-  public void setDn(Name dn) {
-    this.dn = dn;
-  }
-
   public void setDn(String dn) {
     this.dn = LdapNameBuilder.newInstance(dn).build();
   }
-  */
 }

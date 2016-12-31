@@ -25,35 +25,35 @@ public class ObjectService {
 
   public void setupOrganisation(Organisation organisation) {
     Organisation organisationFromLdap = ldapService.getEntryUniqueName(organisation.getOrgId(), organisationBase, Organisation.class);
-    setupObject(organisation, organisationFromLdap);
+    setupUuidObject(organisation, organisationFromLdap);
   }
 
   public void setupComponent(Component component) {
     Component componentFromLdap = ldapService.getEntryUniqueName(component.getTechnicalName(), componentBase, Component.class);
-    setupObject(component, componentFromLdap);
+    setupUuidObject(component, componentFromLdap);
   }
 
-  private void setupObject(LdapEntry ldapEntry, LdapEntry ldapEntryFromLdap) {
+  private void setupUuidObject(UuidLdapEntry uuidLdapEntry, UuidLdapEntry uuidEntryFromLdap) {
     Name dn;
     String uuid = UUID.randomUUID().toString();
 
-    if (ldapEntryFromLdap == null) {
-      dn = LdapNameBuilder.newInstance(getBase(ldapEntry))
+    if (uuidEntryFromLdap == null) {
+      dn = LdapNameBuilder.newInstance(getBase(uuidLdapEntry))
         .add("ou", uuid)
         .build();
-      ldapEntry.setUuid(uuid);
-      ldapEntry.setDn(dn);
+      uuidLdapEntry.setUuid(uuid);
+      uuidLdapEntry.setDn(dn);
     } else {
-      ldapEntry.setDn(LdapNameBuilder.newInstance(ldapEntryFromLdap.getDn()).build());
-      ldapEntry.setUuid(ldapEntryFromLdap.getUuid());
+      uuidLdapEntry.setDn(LdapNameBuilder.newInstance(uuidEntryFromLdap.getDn()).build());
+      uuidLdapEntry.setUuid(uuidEntryFromLdap.getUuid());
     }
   }
 
-  private String getBase(LdapEntry ldapEntry) {
-    if (ldapEntry.getClass().equals(Component.class)) {
+  private String getBase(BasicLdapEntry basicLdapEntry) {
+    if (basicLdapEntry.getClass().equals(Component.class)) {
       return componentBase;
     }
-    if (ldapEntry.getClass().equals(Organisation.class)) {
+    if (basicLdapEntry.getClass().equals(Organisation.class)) {
       return organisationBase;
     }
 

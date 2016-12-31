@@ -1,6 +1,6 @@
 package no.fint.adminportal.service;
 
-import no.fint.adminportal.model.LdapEntry;
+import no.fint.adminportal.model.BasicLdapEntry;
 import no.fint.adminportal.utilities.LdapUniqueNameUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.LdapTemplate;
@@ -23,18 +23,18 @@ public class LdapService {
     searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
   }
 
-  public boolean createEntry(LdapEntry ldapEntry) {
+  public boolean createEntry(BasicLdapEntry basicLdapEntry) {
 
-    if (!entryExists(ldapEntry.getDn())) {
-      ldapTemplate.create(ldapEntry);
+    if (!entryExists(basicLdapEntry.getDn())) {
+      ldapTemplate.create(basicLdapEntry);
       return true;
     }
     return false;
   }
 
-  public boolean updateEntry(LdapEntry ldapEntry) {
-    if (entryExists(ldapEntry.getDn())) {
-      ldapTemplate.update(ldapEntry);
+  public boolean updateEntry(BasicLdapEntry basicLdapEntry) {
+    if (entryExists(basicLdapEntry.getDn())) {
+      ldapTemplate.update(basicLdapEntry);
       return true;
     }
     return false;
@@ -61,7 +61,7 @@ public class LdapService {
       searchControls, type);
 
     if (ldapEntries.size() == 1) {
-      return ((LdapEntry) ldapEntries.get(0)).getDn();
+      return ((BasicLdapEntry) ldapEntries.get(0)).getDn();
     } else {
       return null;
     }
@@ -92,8 +92,8 @@ public class LdapService {
     }
   }
 
-  public void deleteEntry(LdapEntry ldapEntry) {
-    ldapTemplate.delete(ldapEntry);
+  public void deleteEntry(BasicLdapEntry basicLdapEntry) {
+    ldapTemplate.delete(basicLdapEntry);
   }
 
 }

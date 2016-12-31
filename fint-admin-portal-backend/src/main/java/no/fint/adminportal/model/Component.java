@@ -13,7 +13,7 @@ import javax.naming.Name;
 @ApiModel
 @Data
 @Entry(objectClasses = {"organizationalUnit", "top", "fintComponent"})
-public class Component implements LdapEntry {
+public class Component implements UuidLdapEntry {
 
   @Id
   private Name dn;
@@ -44,14 +44,14 @@ public class Component implements LdapEntry {
   }
 
   @Override
-  public void setDn(String dn) {
-    this.dn = LdapNameBuilder.newInstance(dn).build();
-  }
-
-  @Override
   public void setDn(Name dn) {
     this.dn = dn;
 
+  }
+
+  @Override
+  public void setDn(String dn) {
+    this.dn = LdapNameBuilder.newInstance(dn).build();
   }
 
   @Override
