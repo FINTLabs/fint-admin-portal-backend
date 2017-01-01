@@ -1,16 +1,17 @@
-package no.fint.adminportal.service;
+package no.fint.portal.service;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fint.adminportal.model.Adapter;
-import no.fint.adminportal.model.Client;
-import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.Container;
+import no.fint.portal.model.Adapter;
+import no.fint.portal.model.Client;
+import no.fint.portal.model.Component;
+import no.fint.portal.model.Container;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -93,7 +94,7 @@ public class ComponentService {
     clientContainer.setOu("clients");
     adapterContainer.setOu("adapters");
 
-    List<Client> clients = getOrganisastionComponentClients(componentUuid, organistionUuid);
+    List<Client> clients = getClients(componentUuid, organistionUuid);
     clients.forEach(client -> ldapService.deleteEntry(client));
 
     List<Adapter> adapters = getOrganisastionComponentAdapters(componentUuid, organistionUuid);
@@ -110,21 +111,61 @@ public class ComponentService {
     ldapService.deleteEntry(organisationContainer);
   }
 
-  public boolean addClientToComponent(Client client, String compUuid, String orgUuid) {
+  public boolean addClient(Client client, String compUuid, String orgUuid) {
     objectService.setupClient(client, compUuid, orgUuid);
     return ldapService.createEntry(client);
   }
 
-  public boolean addAdapterToComponent(Adapter adapter, String compUuid, String orgUuid) {
+  public boolean addAdapter(Adapter adapter, String compUuid, String orgUuid) {
     objectService.setupAdapter(adapter, compUuid, orgUuid);
     return ldapService.createEntry(adapter);
   }
 
-  public List<Client> getOrganisastionComponentClients(String compUuid, String orgUuid) {
+  public List<Client> getClients(String compUuid, String orgUuid) {
     return ldapService.getAll(objectService.getClientBase(compUuid, orgUuid).toString(), Client.class);
   }
 
   public List<Adapter> getOrganisastionComponentAdapters(String compUuid, String orgUuid) {
     return ldapService.getAll(objectService.getAdapterBase(compUuid, orgUuid).toString(), Adapter.class);
+  }
+
+  public Optional<Client> getClient(String clientUuid, String compUuid, String orgUuid) {
+    return Optional.ofNullable(ldapService.getEntry(
+      objectService.getClientDn(clientUuid, compUuid, orgUuid),
+      Client.class
+    ));
+  }
+
+  public Optional<Adapter> getAdapter(String adapterUuid, String compUuid, String orgUuid) {
+    return Optional.ofNullable(ldapService.getEntry(
+      objectService.getAdapterDn(adapterUuid, compUuid, orgUuid),
+      Adapter.class
+    ));
+  }
+
+  public boolean updateClient(Client client) {
+    return ldapService.updateEntry(client);
+  }
+
+  public boolean updateAdapter(Adapter adapter) {
+    return ldapService.updateEntry(adapter);
+  }
+
+  public void deleteClient(Client client) {
+    ldapService.deleteEntry(client);
+  }
+
+  public void deleteAdapter(Adapter adapter) {
+    ldapService.deleteEntry(adapter);
+  }
+
+  public void resetClientPassword(Client client) {
+    client.setPassword(UUID.randomUUID().toString().replace("-", ""));
+    ldapService.updateEntry(client);
+  }
+
+  public void resetAdapterPassword(Adapter adapter) {
+    adapter.setPassword(UUID.randomUUID().toString().replace("-", ""));
+    ldapService.updateEntry(adapter);
   }
 }

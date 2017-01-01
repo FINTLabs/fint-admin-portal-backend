@@ -1,8 +1,8 @@
-package no.fint.adminportal.utilities;
+package no.fint.portal.utilities;
 
-import no.fint.adminportal.model.Component;
-import no.fint.adminportal.model.Contact;
-import no.fint.adminportal.model.Organisation;
+import no.fint.portal.model.Component;
+import no.fint.portal.model.Contact;
+import no.fint.portal.model.Organisation;
 
 public enum LdapUniqueNameUtility {
   ;

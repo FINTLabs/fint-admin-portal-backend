@@ -1,4 +1,4 @@
-package no.fint.adminportal.exceptions;
+package no.fint.portal.exceptions;
 
 @SuppressWarnings("ALL")
 public class UpdateEntityMismatchException extends RuntimeException {

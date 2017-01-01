@@ -1,4 +1,4 @@
-package no.fint.adminportal.controller;
+package no.fint.portal.admin.controller;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;

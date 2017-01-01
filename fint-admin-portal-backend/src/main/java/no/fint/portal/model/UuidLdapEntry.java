@@ -1,4 +1,4 @@
-package no.fint.adminportal.model;
+package no.fint.portal.model;
 
 public interface UuidLdapEntry extends BasicLdapEntry {
   String getUuid();

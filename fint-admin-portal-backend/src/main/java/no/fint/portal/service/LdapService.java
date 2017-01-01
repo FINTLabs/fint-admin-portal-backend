@@ -1,7 +1,7 @@
-package no.fint.adminportal.service;
+package no.fint.portal.service;
 
-import no.fint.adminportal.model.BasicLdapEntry;
-import no.fint.adminportal.utilities.LdapUniqueNameUtility;
+import no.fint.portal.model.BasicLdapEntry;
+import no.fint.portal.utilities.LdapUniqueNameUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;

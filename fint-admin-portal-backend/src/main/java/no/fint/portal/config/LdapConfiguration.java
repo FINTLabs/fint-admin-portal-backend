@@ -1,4 +1,4 @@
-package no.fint.adminportal.config;
+package no.fint.portal.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

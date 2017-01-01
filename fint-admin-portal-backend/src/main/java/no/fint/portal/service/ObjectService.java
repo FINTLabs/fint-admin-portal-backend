@@ -1,6 +1,6 @@
-package no.fint.adminportal.service;
+package no.fint.portal.service;
 
-import no.fint.adminportal.model.*;
+import no.fint.portal.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.support.LdapNameBuilder;
@@ -147,5 +147,19 @@ public class ObjectService {
       .add("ou", orgUuid)
       .add("ou", "adapters")
       .build();
+  }
+
+  public String getClientDn(String clientUuid, String compUuid, String orgUuid) {
+    return LdapNameBuilder.newInstance(getClientBase(compUuid, orgUuid))
+      .add("cn", clientUuid)
+      .build()
+      .toString();
+  }
+
+  public String getAdapterDn(String adapterUuid, String compUuid, String orgUuid) {
+    return LdapNameBuilder.newInstance(getAdapterBase(compUuid, orgUuid))
+      .add("cn", adapterUuid)
+      .build()
+      .toString();
   }
 }

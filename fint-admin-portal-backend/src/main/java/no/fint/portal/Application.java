@@ -1,4 +1,4 @@
-package no.fint.adminportal;
+package no.fint.portal;
 
 import com.github.springfox.loader.EnableSpringfox;
 import no.rogfk.hateoas.extension.annotations.EnableHalHypermediaSupport;

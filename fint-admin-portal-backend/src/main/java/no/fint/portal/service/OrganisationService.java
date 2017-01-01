@@ -1,9 +1,8 @@
-package no.fint.adminportal.service;
+package no.fint.portal.service;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fint.adminportal.model.Client;
-import no.fint.adminportal.model.Contact;
-import no.fint.adminportal.model.Organisation;
+import no.fint.portal.model.Contact;
+import no.fint.portal.model.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,6 @@ public class OrganisationService {
     return ldapService.getAll(organisationBase, Organisation.class);
   }
 
-  /*
   public Optional<Organisation> getOrganisationByOrgId(String orgId) {
     Optional<String> stringDnById = Optional.ofNullable(ldapService.getStringDnById(orgId, organisationBase, Organisation.class));
 
@@ -51,7 +49,6 @@ public class OrganisationService {
     }
     return Optional.empty();
   }
-  */
 
   public List<Contact> getOrganisationContacts(String uuid) {
     return ldapService.getAll(objectService.getOrganisationDnByUUID(uuid), Contact.class);

@@ -1,17 +1,17 @@
-package no.fint.adminportal.controller;
+package no.fint.portal.admin.controller;
 
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.adminportal.exceptions.CreateEntityMismatchException;
-import no.fint.adminportal.exceptions.EntityFoundException;
-import no.fint.adminportal.exceptions.EntityNotFoundException;
-import no.fint.adminportal.exceptions.UpdateEntityMismatchException;
-import no.fint.adminportal.model.Contact;
-import no.fint.adminportal.model.ErrorResponse;
-import no.fint.adminportal.model.Organisation;
-import no.fint.adminportal.service.OrganisationService;
+import no.fint.portal.exceptions.CreateEntityMismatchException;
+import no.fint.portal.exceptions.EntityFoundException;
+import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.exceptions.UpdateEntityMismatchException;
+import no.fint.portal.model.Contact;
+import no.fint.portal.model.ErrorResponse;
+import no.fint.portal.model.Organisation;
+import no.fint.portal.service.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
 import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
