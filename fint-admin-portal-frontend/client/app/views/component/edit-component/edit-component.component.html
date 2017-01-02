@@ -39,7 +39,7 @@
     <md-card-actions>
       <button md-raised-button md-ripple color="primary" type="submit" color="primary" [disabled]="!componentForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
       <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
-      <button md-raised-button md-ripple color="warn" type="button" [routerLink]="['../']" class="pull-right"><fint-fa name="trash"></fint-fa>Slett component</button>
+      <button md-raised-button md-ripple color="warn" type="button" (click)="deleteComponent()" class="pull-right"><fint-fa name="trash"></fint-fa>Slett component</button>
     </md-card-actions>
   </md-card>
 </form>

@@ -37,4 +37,13 @@ export class CommonComponentService extends ApiBase {
     }
     return call.map(item => item.json()).catch(this.handleError);
   }
+
+  delete(model: ICommonComponent) {
+    delete model.icon;
+    let headers = new Headers();
+    headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
+
+    return this.http.delete(this.base + '/' + model.uuid, { headers: headers})
+      .catch(this.handleError);
+  }
 }

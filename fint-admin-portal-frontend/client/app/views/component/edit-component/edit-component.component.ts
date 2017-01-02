@@ -3,9 +3,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { MdDialogRef, MdDialog } from '@angular/material';
 
 import { CommonComponentService } from '../common-component.service';
-import {ICommonComponent} from 'app/api/ICommonComponent';
+import { ICommonComponent } from 'app/api/ICommonComponent';
+import { ConfirmDeleteComponent } from 'app/shared/dialogs/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-edit-component',
@@ -17,12 +19,15 @@ export class EditComponentComponent implements OnInit {
   componentForm: FormGroup;
   iconFile: File;
 
+  dialogRef: MdDialogRef<ConfirmDeleteComponent>;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private componentService: CommonComponentService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private dialog: MdDialog
   ) {
     this.component = <ICommonComponent>{};
     this.route.params.subscribe(params => {
@@ -67,5 +72,21 @@ export class EditComponentComponent implements OnInit {
       .subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route});
       });
+  }
+
+  deleteComponent() {
+    this.dialogRef = this.dialog.open(ConfirmDeleteComponent, {
+      disableClose: false
+    });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.componentService.delete(this.component)
+          .subscribe(result => {
+            this.router.navigate(['../'], { relativeTo: this.route });
+          });
+      }
+      this.dialogRef = null;
+    });
   }
 }
