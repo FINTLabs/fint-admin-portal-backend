@@ -10,6 +10,7 @@
       <thead>
         <tr>
           <th>Navn</th>
+          <th>Teknisk navn</th>
           <th>Beskrivelse</th>
           <th></th>
         </tr>
@@ -17,8 +18,9 @@
 
       <!-- Editor -->
       <tbody>
-        <tr *ngFor="let component of components;" [routerLink]="['./', component.technicalName]">
+        <tr *ngFor="let component of components;" [routerLink]="['./', component.uuid]">
           <td>{{ component.displayName }}</td>
+          <td>{{ component.technicalName }}</td>
           <td>{{ component.description }}</td>
           <td>
             <button md-icon-button><fint-fa name="edit"></fint-fa></button>

@@ -10,39 +10,39 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-6">
-      <md-input placeholder="Fornavn" type="text" formControlName="firstName" style="width: 99%" required (blur)="onChange()">
-        <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine" align="end" style="color: red">
-          <fint-fa name="warning"></fint-fa>
-          <span *ngIf="responsibleForm.controls['firstName'].hasError('required')">Påkrevd</span>
-        </md-hint>
-      </md-input>
-    </div>
-    <div class="col-xs-6">
-      <md-input placeholder="Etternavn" type="text" formControlName="lastName" style="width: 99%" required (blur)="onChange()">
-        <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine" align="end" style="color: red">
-          <fint-fa name="warning"></fint-fa>
-          <span *ngIf="responsibleForm.controls['lastName'].hasError('required')">Påkrevd</span>
-        </md-hint>
-      </md-input>
-    </div>
+    <md-input-container class="col-xs-6">
+      <md-placeholder>Fornavn</md-placeholder>
+      <input md-input type="text" formControlName="firstName" style="width: 99%" required (blur)="onChange()">
+      <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine" align="end" style="color: red">
+        <fint-fa name="warning"></fint-fa>
+        <span *ngIf="responsibleForm.controls['firstName'].hasError('required')">Påkrevd</span>
+      </md-hint>
+    </md-input-container>
+    <md-input-container class="col-xs-6">
+      <md-placeholder>Etternavn</md-placeholder>
+      <input md-input type="text" formControlName="lastName" style="width: 99%" required (blur)="onChange()">
+      <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine" align="end" style="color: red">
+        <fint-fa name="warning"></fint-fa>
+        <span *ngIf="responsibleForm.controls['lastName'].hasError('required')">Påkrevd</span>
+      </md-hint>
+    </md-input-container>
   </div>
   <div class="row">
-    <div class="col-xs-8">
-      <md-input placeholder="Epost" type="email" formControlName="mail" style="width: 99%" required (blur)="onChange()">
-        <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine" align="end" style="color: red">
-          <fint-fa name="warning"></fint-fa>
-          <span *ngIf="responsibleForm.controls['mail'].hasError('required')">Påkrevd</span>
-        </md-hint>
-      </md-input>
-    </div>
-    <div class="col-xs-4">
-      <md-input placeholder="Mobil" type="tel" formControlName="mobile" required (blur)="onChange()">
-        <md-hint [hidden]="responsibleForm.controls['mobile'].valid || responsibleForm.controls['mobile'].pristine" align="end" style="color: red">
-          <fint-fa name="warning"></fint-fa>
-          <span *ngIf="responsibleForm.controls['mobile'].hasError('required')">Påkrevd</span>
-        </md-hint>
-      </md-input>
-    </div>
+    <md-input-container class="col-xs-8">
+      <md-placeholder>Epost</md-placeholder>
+      <input md-input type="email" formControlName="mail" style="width: 99%" required (blur)="onChange()">
+      <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine" align="end" style="color: red">
+        <fint-fa name="warning"></fint-fa>
+        <span *ngIf="responsibleForm.controls['mail'].hasError('required')">Påkrevd</span>
+      </md-hint>
+    </md-input-container>
+    <md-input-container class="col-xs-4">
+      <md-placeholder>Mobil</md-placeholder>
+      <input md-input type="tel" formControlName="mobile" required (blur)="onChange()">
+      <md-hint [hidden]="responsibleForm.controls['mobile'].valid || responsibleForm.controls['mobile'].pristine" align="end" style="color: red">
+        <fint-fa name="warning"></fint-fa>
+        <span *ngIf="responsibleForm.controls['mobile'].hasError('required')">Påkrevd</span>
+      </md-hint>
+    </md-input-container>
   </div>
 </form>

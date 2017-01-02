@@ -42,7 +42,7 @@ export class EditComponentComponent implements OnInit {
   createForm() {
     this.componentForm = this.fb.group({
       'dn': [this.component.dn],
-      'id': [this.component.id],
+      'uuid': [this.component.uuid],
       'displayName': [this.component.displayName, [Validators.required]],
       'technicalName': [this.component.technicalName, [Validators.required]],
       'description': [this.component.description],
@@ -62,9 +62,10 @@ export class EditComponentComponent implements OnInit {
   }
 
   save(model: ICommonComponent) {
+    if (!model.uuid) { delete model.dn; }
     this.componentService.save(model)
       .subscribe(result => {
-        this.router.navigate(['../']);
+        this.router.navigate(['../'], { relativeTo: this.route});
       });
   }
 }
