@@ -1,27 +1,27 @@
 <h2 *ngIf="component.uuid == null">Opprett ny felleskomponent</h2>
 <h2 *ngIf="component.uuid != null">Rediger felleskomponent</h2>
 
-<form [formGroup]="componentForm" novalidate (ngSubmit)="save(componentForm.value)">
+<form [formGroup]="componentForm" (ngSubmit)="save(componentForm.value)">
   <md-card>
     <md-card-content>
       <div class="row">
-        <div class="col-xs-8">
-          <md-input placeholder="Navn" type="text" formControlName="displayName" style="width: 99%" required>
-            <md-hint [hidden]="componentForm.controls['displayName'].valid || componentForm.controls['displayName'].pristine" align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="componentForm.controls['displayName'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
-        </div>
-        <div class="col-xs-4">
-          <md-input placeholder="Teknisk navn" type="text" formControlName="technicalName" style="width: 99%" required>
-            <md-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end"
-              style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="componentForm.controls['technicalName'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
-        </div>
+        <md-input-container class="col-xs-8">
+          <md-placeholder>Navn</md-placeholder>
+          <input md-input type="text" formControlName="displayName" style="width: 99%" required>
+          <md-hint [hidden]="componentForm.controls['displayName'].valid || componentForm.controls['displayName'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="componentForm.controls['displayName'].hasError('required')">Påkrevd</span>
+          </md-hint>
+        </md-input-container>
+        <md-input-container class="col-xs-4">
+          <md-placeholder>Teknisk navn</md-placeholder>
+          <input md-input type="text" formControlName="technicalName" style="width: 99%" required>
+          <md-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end"
+            style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="componentForm.controls['technicalName'].hasError('required')">Påkrevd</span>
+          </md-hint>
+        </md-input-container>
       </div>
       <div class="row">
         <label class="col img-placeholder" for="iconFile">
@@ -29,16 +29,17 @@
           <div *ngIf="!component.icon" class="img no-src">&nbsp;</div>
           <input id="iconFile" type="file" name="icon" (change)="setIcon($event)">
         </label>
-        <div class="col">
-          <md-textarea placeholder="Beskrivelse" rows="6" type="text" formControlName="description" style="width: 99%">
-          </md-textarea>
-        </div>
+        <md-input-container class="col">
+          <md-placeholder>Beskrivelse</md-placeholder>
+          <textarea md-input rows="6" type="text" formControlName="description" style="width: 99%"></textarea>
+        </md-input-container>
       </div>
     </md-card-content>
 
     <md-card-actions>
-      <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!componentForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
+      <button md-raised-button md-ripple color="primary" type="submit" color="primary" [disabled]="!componentForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
       <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
+      <button md-raised-button md-ripple color="warn" type="button" (click)="deleteComponent()" class="pull-right"><fint-fa name="trash"></fint-fa>Slett component</button>
     </md-card-actions>
   </md-card>
 </form>

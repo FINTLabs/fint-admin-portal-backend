@@ -24,46 +24,10 @@
       </div>
     </md-card-content>
 
-<<<<<<< HEAD
-    <md-card-content formGroupName="responsible">
-      <h3>Ansvarlig for organisasjonen</h3>
-      <div class="row">
-        <div class="col-xs-4">
-          <md-input placeholder="Fødselsnummer" type="tel" formControlName="uuid" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['uuid'].valid || organizationForm.controls.responsible.controls['uuid'].pristine"
-              align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['uuid'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6">
-          <md-input placeholder="Fornavn" type="text" formControlName="firstName" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['firstName'].valid || organizationForm.controls.responsible.controls['firstName'].pristine"
-              align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['firstName'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
-        </div>
-        <div class="col-xs-6">
-          <md-input placeholder="Etternavn" type="text" formControlName="lastName" style="width: 99%" required>
-            <md-hint [hidden]="organizationForm.controls.responsible.controls['lastName'].valid || organizationForm.controls.responsible.controls['lastName'].pristine"
-              align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls.responsible.controls['lastName'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </md-input>
-        </div>
-      </div>
-=======
     <md-card-subtitle>
       <h3>Ansvarlige for organisasjonen</h3>
     </md-card-subtitle>
     <md-card-content>
->>>>>>> dd98738f901fb7df54ad968164728c5b6a18542f
       <div class="row">
         <div class="col-6">
           <h4>Juridisk ansvarlig</h4>

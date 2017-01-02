@@ -1,0 +1,3 @@
+{
+  "typescript.tsdk": "./fint-admin-portal-frontend/node_modules/typescript/lib"
+}

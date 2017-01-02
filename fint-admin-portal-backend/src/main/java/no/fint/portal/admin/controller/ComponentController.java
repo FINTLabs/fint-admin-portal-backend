@@ -56,7 +56,7 @@ public class ComponentController {
   }
 
   @ApiOperation("Update component")
-  @RequestMapping(value = "/{uuid}",
+    @RequestMapping(value = "/{uuid}",
     method = RequestMethod.PUT,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )

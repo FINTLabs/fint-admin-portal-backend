@@ -21,7 +21,7 @@ export class EditOrganizationComponent implements OnInit {
   get legalContact(): IContact {
     if (!this._legalContact) {
       let index          = this.responsible.findIndex(r => r.primaryLegal === true);
-      let c              = index > -1 ? this.responsible[index] : <IContact>{};
+      let c              = index > -1 ? this.responsible[index] : new EmptyContact();
       this._legalContact = c;
     }
     return this._legalContact;
@@ -41,7 +41,7 @@ export class EditOrganizationComponent implements OnInit {
   get technicalContact(): IContact {
     if (!this._technicalContact) {
       let index              = this.responsible.findIndex(r => r.primaryTechnical === true);
-      let c                  = index > -1 ? this.responsible[index] : <IContact>{};
+      let c                  = index > -1 ? this.responsible[index] : new EmptyContact();
       this._technicalContact = c;
     }
     return this._technicalContact;
@@ -84,8 +84,8 @@ export class EditOrganizationComponent implements OnInit {
             // Get contact data
             organizationService.getContacts(this.organization.id)
               .subscribe(result => {
-                this._legalContact = new EmptyContact();
-                this._technicalContact = new EmptyContact();
+                this._legalContact = null;
+                this._technicalContact = null;
                 this.responsible = result;
               });
           });

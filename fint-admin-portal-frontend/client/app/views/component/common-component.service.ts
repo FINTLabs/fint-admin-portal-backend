@@ -17,8 +17,8 @@ export class CommonComponentService extends ApiBase {
       .catch(this.handleError);
   }
 
-  get(technicalName: string): Observable<ICommonComponent> {
-    return this.http.get(this.base + '/' + technicalName)
+  get(uuid: string): Observable<ICommonComponent> {
+    return this.http.get(this.base + '/' + uuid)
       .map(result => result.json())
       .catch(this.handleError);
   }
@@ -29,7 +29,21 @@ export class CommonComponentService extends ApiBase {
     headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
 
     // If exists, put - else post
-    let call = (model.id) ? this.http.put(this.base, model, { headers: headers}) : this.http.post(this.base, model, { headers: headers});
+    let call;
+    if (model.uuid) {
+      call = this.http.put(this.base + '/' + model.uuid, model, { headers: headers});
+    } else {
+      call = this.http.post(this.base, model, { headers: headers});
+    }
     return call.map(item => item.json()).catch(this.handleError);
+  }
+
+  delete(model: ICommonComponent) {
+    delete model.icon;
+    let headers = new Headers();
+    headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
+
+    return this.http.delete(this.base + '/' + model.uuid, { headers: headers})
+      .catch(this.handleError);
   }
 }

@@ -10,6 +10,7 @@
       <thead>
         <tr>
           <th>Navn</th>
+          <th>Teknisk navn</th>
           <th>Beskrivelse</th>
           <th></th>
         </tr>
@@ -17,20 +18,10 @@
 
       <!-- Editor -->
       <tbody>
-<<<<<<< HEAD
         <tr *ngFor="let component of components;" [routerLink]="['./', component.uuid]">
-          <td>{{ component.name }}</td>
-          <td class="status">
-            <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
-              <i class="fa fa-circle-o fa-stack-2x"></i>
-              <i class="fa fa-circle fa-stack-1x"></i>
-            </span>
-          </td>
-=======
-        <tr *ngFor="let component of components;" [routerLink]="['./', component.technicalName]">
           <td>{{ component.displayName }}</td>
+          <td>{{ component.technicalName }}</td>
           <td>{{ component.description }}</td>
->>>>>>> dd98738f901fb7df54ad968164728c5b6a18542f
           <td>
             <button md-icon-button><fint-fa name="edit"></fint-fa></button>
           </td>
