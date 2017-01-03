@@ -15,9 +15,9 @@ node {
     }
 
     stage('build') {
-      //if (env.RUN_TYPE != 'default') {
-      //  sh 'cd fint-admin-portal-frontend && npm i github:fintprosjektet/fint-shared-components' + (env.BRANCH_NAME != 'master' ? '#' + env.BRANCH_NAME : '') + ' -S'
-      //}
+      if (env.RUN_TYPE != 'default') {
+        sh 'cd fint-admin-portal-frontend && npm i github:fintprosjektet/fint-shared-components' + (env.BRANCH_NAME != 'master' ? '#' + env.BRANCH_NAME : '') + ' -S'
+      }
       sh "./gradlew fint-admin-portal-backend:clean fint-admin-portal-backend:build"
     }
 
