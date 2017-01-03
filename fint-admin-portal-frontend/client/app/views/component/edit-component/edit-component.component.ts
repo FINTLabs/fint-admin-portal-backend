@@ -67,7 +67,6 @@ export class EditComponentComponent implements OnInit {
   }
 
   save(model: ICommonComponent) {
-    if (!model.uuid) { delete model.dn; }
     this.componentService.save(model)
       .subscribe(result => {
         this.router.navigate(['../'], { relativeTo: this.route});

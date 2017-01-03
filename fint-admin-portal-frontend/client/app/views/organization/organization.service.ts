@@ -39,8 +39,18 @@ export class OrganizationService extends ApiBase {
   }
 
   save(org: IOrganization) {
-    let call = (org.id) ? this.http.put(this.base, org) : this.http.post(this.base, org); // If exists, put - else post
+    if (!org.uuid) { delete org.dn; }
+    let call = (org.uuid) ? this.http.put(this.base + '/' + org.uuid, org) : this.http.post(this.base, org); // If exists, put - else post
     return call.map(item => item.json()).catch(this.handleError);
+  }
+
+  saveContact(orgId: string, responsible: IContact) {
+    if (!responsible.uuid) { delete responsible.dn; }
+    let url = this.base + '/' + orgId + '/contacts';
+    let call = (responsible.dn) ? this.http.put(url + '/' + responsible.uuid, responsible) : this.http.post(url, responsible); // If exists, put - else post
+    return call
+      .map(result => result.json())
+      .catch(this.handleError);
   }
 
   // --------------------------

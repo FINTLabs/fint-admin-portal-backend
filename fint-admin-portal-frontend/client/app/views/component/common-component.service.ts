@@ -28,6 +28,8 @@ export class CommonComponentService extends ApiBase {
     let headers = new Headers();
     headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
 
+    if (!model.uuid) { delete model.dn; }
+
     // If exists, put - else post
     let call;
     if (model.uuid) {

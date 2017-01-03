@@ -1,6 +1,7 @@
 import {IHAL} from './ApiBase';
 
 export interface IContact {
+  uuid: string;
   dn: string;                 // DN of the contact. This is automatically set.
   nin: string;                // National Idenitification Number (NIN). This would be fødselsnummer (11 digits)
   firstName: string;          // First name of the contact.
@@ -19,6 +20,7 @@ export interface IContactHALPage extends IHAL {
 }
 
 export class EmptyContact implements IContact {
+  uuid = null;
   dn = null;
   nin = null;
   firstName = null;

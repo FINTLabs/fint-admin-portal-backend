@@ -23,7 +23,9 @@ export class OrganizationComponent implements OnInit {
         this.total = result.total_items;
         this.pages = result.page_count;
         this.pageSize = result.page_size;
-        this.organizations = result._embedded.organisationList;
+        if (result._embedded) {
+          this.organizations = result._embedded.organisationList;
+        }
       });
   }
 }

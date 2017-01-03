@@ -1,18 +1,18 @@
 <form [formGroup]="responsibleForm" novalidate>
   <div class="row">
-    <div class="col-xs-4">
-      <md-input placeholder="Fødselsnummer" type="tel" formControlName="nin" style="width: 99%" required (blur)="onChange()">
-        <md-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine" align="end" style="color: red">
-          <fint-fa name="warning"></fint-fa>
-          <span *ngIf="responsibleForm.controls['nin'].hasError('required')">Påkrevd</span>
-        </md-hint>
-      </md-input>
-    </div>
+    <md-input-container class="col-xs-4">
+      <md-placeholder>Fødselsnummer</md-placeholder>
+      <input md-input type="tel" formControlName="nin" required (blur)="onChange()" autocomplete="off">
+      <md-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine" align="end" style="color: red">
+        <fint-fa name="warning"></fint-fa>
+        <span *ngIf="responsibleForm.controls['nin'].hasError('required')">Påkrevd</span>
+      </md-hint>
+    </md-input-container>
   </div>
   <div class="row">
     <md-input-container class="col-xs-6">
       <md-placeholder>Fornavn</md-placeholder>
-      <input md-input type="text" formControlName="firstName" style="width: 99%" required (blur)="onChange()">
+      <input md-input type="text" formControlName="firstName" required (blur)="onChange()" (keypress)="moveNextOnSpace($event, lastName)" #firstName>
       <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['firstName'].hasError('required')">Påkrevd</span>
@@ -20,7 +20,7 @@
     </md-input-container>
     <md-input-container class="col-xs-6">
       <md-placeholder>Etternavn</md-placeholder>
-      <input md-input type="text" formControlName="lastName" style="width: 99%" required (blur)="onChange()">
+      <input md-input type="text" formControlName="lastName" required (blur)="onChange()" #lastName>
       <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['lastName'].hasError('required')">Påkrevd</span>
@@ -30,7 +30,7 @@
   <div class="row">
     <md-input-container class="col-xs-8">
       <md-placeholder>Epost</md-placeholder>
-      <input md-input type="email" formControlName="mail" style="width: 99%" required (blur)="onChange()">
+      <input md-input type="email" formControlName="mail" required (blur)="onChange()">
       <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['mail'].hasError('required')">Påkrevd</span>

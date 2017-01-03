@@ -8,7 +8,7 @@ export const OrganizationRoutes: Routes = [
     path: 'organisations', data: { label: 'Organisasjoner', icon: 'sitemap' }, children: [
       { path: '', component: OrganizationComponent, pathMatch: 'full' },
       { path: 'add', component: EditOrganizationComponent },
-      { path: ':orgId', component: EditOrganizationComponent },
+      { path: ':id', component: EditOrganizationComponent },
     ]
   }
 ];

@@ -1,11 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { MdCheckboxChange } from '@angular/material';
+import { each } from 'lodash';
 
 import { OrganizationService } from '../organization.service';
-import {IOrganization} from 'app/api/IOrganization';
-import {IContact, EmptyContact} from 'app/api/IContact';
-import {MdCheckboxChange} from '@angular/material';
+import { IOrganization } from 'app/api/IOrganization';
+import { IContact, EmptyContact } from 'app/api/IContact';
 
 @Component({
   selector: 'app-edit-organization',
@@ -74,15 +75,15 @@ export class EditOrganizationComponent implements OnInit {
     private organizationService: OrganizationService
   ) {
     this.route.params.subscribe(params => {
-      if (params['orgId']) {
+      if (params['id']) {
         // Get organisation data
-        organizationService.get(params['orgId'])
+        organizationService.get(params['id'])
           .subscribe(organization => {
             this.organization = organization;
             this.organizationForm.setValue(organization);
 
             // Get contact data
-            organizationService.getContacts(this.organization.id)
+            organizationService.getContacts(this.organization.uuid)
               .subscribe(result => {
                 this._legalContact = null;
                 this._technicalContact = null;
@@ -91,12 +92,12 @@ export class EditOrganizationComponent implements OnInit {
           });
       }
     });
-
   }
+
   ngOnInit() {
     this.organizationForm = this.fb.group({
       dn         : [this.organization.dn],
-      id         : [this.organization.id],
+      uuid       : [this.organization.uuid],
       displayName: [this.organization.displayName, [Validators.required]],
       orgNumber  : [this.organization.orgNumber, [Validators.required]],
       orgId      : [this.organization.orgId, [Validators.required]]
@@ -106,8 +107,17 @@ export class EditOrganizationComponent implements OnInit {
   save(model: IOrganization) {
     this.organizationService.save(model)
       .subscribe(result => {
-        this.router.navigate(['../']);
+        if (this.responsible.length) {
+          each(this.responsible, (responsible: IContact) => {
+            this.organizationService.saveContact(result.orgId, responsible)
+              .subscribe(result => console.log('Contact saved! ' + result));
+          });
+        } else { this.goBack(); }
       });
+  }
+
+  goBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   toggleMergeContact($event: MdCheckboxChange) {

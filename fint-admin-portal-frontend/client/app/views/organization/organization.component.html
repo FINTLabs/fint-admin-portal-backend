@@ -16,7 +16,7 @@
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.orgId]">
+      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.uuid]">
         <tr>
           <td>{{ organization.orgId }}</td>
           <td>{{ organization.displayName }}</td>
@@ -28,6 +28,9 @@
       </tbody>
 
     </table>
+  </md-card-content>
+  <md-card-content *ngIf="!organizations.length">
+    Ingen registrerte organisasjoner enda.
   </md-card-content>
   <md-card-actions>
     <button md-raised-button md-ripple [routerLink]="['./', 'add']" type="button">

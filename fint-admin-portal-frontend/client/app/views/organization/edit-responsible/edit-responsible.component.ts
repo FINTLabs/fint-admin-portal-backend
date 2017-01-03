@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {IContact} from 'app/api/IContact';
 
@@ -41,5 +41,11 @@ export class EditResponsibleComponent implements OnInit {
   onChange() {
     let contact = this.responsibleForm.value;
     this.responsible = contact;
+  }
+
+  moveNextOnSpace($event, element: HTMLElement) {
+    if ($event.keyCode === 32) {
+      element.focus();
+    }
   }
 }

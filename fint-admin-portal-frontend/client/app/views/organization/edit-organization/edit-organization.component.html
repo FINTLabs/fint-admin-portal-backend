@@ -5,7 +5,7 @@
   <md-card>
     <md-card-content>
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-6">
           <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesByNameFn()" formControlName="displayName" [(selectedItem)]="selectedOrganization" style="width: 99%">
             <md-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
@@ -13,7 +13,15 @@
             </md-hint>
           </fint-typeahead>
         </div>
-        <div class="col-xs-4">
+        <md-input-container class="col-xs-3">
+          <md-placeholder>OrgID</md-placeholder>
+          <input md-input formControlName="orgId">
+          <md-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="organizationForm.controls['orgId'].hasError('required')">Påkrevd</span>
+          </md-hint>
+        </md-input-container>
+        <div class="col-xs-3">
           <fint-typeahead placeholder="Org.no." itemText="organisasjonsnummer" [items]="items" [getMatches]="getMatchesByNumberFn()" formControlName="orgNumber" [(selectedItem)]="selectedOrganization" style="width: 99%">
             <md-hint [hidden]="organizationForm.controls['orgNumber'].valid || organizationForm.controls['orgNumber'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
