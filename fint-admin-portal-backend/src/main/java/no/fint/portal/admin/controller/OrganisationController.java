@@ -8,10 +8,10 @@ import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
-import no.fint.portal.model.Contact;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.model.Organisation;
-import no.fint.portal.service.OrganisationService;
+import no.fint.portal.organisation.Contact;
+import no.fint.portal.organisation.Organisation;
+import no.fint.portal.organisation.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
 import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +130,7 @@ public class OrganisationController {
       );
     }
 
-    if (!organisationService.createOrganisationsContact(contact, uuid)) {
+    if (!organisationService.addContact(contact, uuid)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
           .fromCurrentRequest().path("/{nin}")
@@ -167,7 +167,7 @@ public class OrganisationController {
       );
     }
 
-    if (!organisationService.updateOrganisationContact(contact)) {
+    if (!organisationService.updateContact(contact)) {
       throw new EntityNotFoundException(String.format("Could not find contact: %s", contact));
     }
 
@@ -178,7 +178,7 @@ public class OrganisationController {
   @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts")
   public HalPagedResources<Contact> getOrganizationConcats(@PathVariable final String uuid, @RequestParam(required = false) Integer page) {
-    Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getOrganisationContacts(uuid));
+    Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getContacts(uuid));
 
     if (contacts.isPresent()) {
       return new HalPagedResources<>(contacts.get(), page);
@@ -192,7 +192,7 @@ public class OrganisationController {
   @ApiOperation("Get the organisation contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts/{nin}")
   public ResponseEntity getOrganizationConcat(@PathVariable final String uuid, @PathVariable final String nin) {
-    Optional<Contact> contact = organisationService.getOrganisationContact(uuid, nin);
+    Optional<Contact> contact = organisationService.getContact(uuid, nin);
 
     if (contact.isPresent()) {
       return ResponseEntity.ok(contact.get());
@@ -207,10 +207,10 @@ public class OrganisationController {
   @ApiOperation("Delete an organisation contact")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{uuid}/contacts/{nin}")
   public ResponseEntity deleteOrganizationContacts(@PathVariable final String uuid, @PathVariable final String nin) {
-    Optional<Contact> contact = organisationService.getOrganisationContact(uuid, nin);
+    Optional<Contact> contact = organisationService.getContact(uuid, nin);
 
     if (contact.isPresent()) {
-      organisationService.deleteOrganisationContact(contact.get());
+      organisationService.deleteContact(contact.get());
       return ResponseEntity.accepted().build();
     }
 
