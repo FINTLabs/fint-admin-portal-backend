@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { Http, URLSearchParams, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -26,14 +26,8 @@ export class OrganizationService extends ApiBase {
       .catch(this.handleError);
   }
 
-  get(orgId: string): Observable<IOrganization> {
-    return this.http.get(this.base + '/' + orgId)
-      .map(item => item.json())
-      .catch(this.handleError);
-  }
-
-  getContacts(id: string): Observable<IContact[]> {
-    return this.http.get(this.base + '/' + id + '/contacts')
+  get(orgUuid: string): Observable<IOrganization> {
+    return this.http.get(this.base + '/' + orgUuid)
       .map(item => item.json())
       .catch(this.handleError);
   }
@@ -44,10 +38,19 @@ export class OrganizationService extends ApiBase {
     return call.map(item => item.json()).catch(this.handleError);
   }
 
-  saveContact(orgId: string, responsible: IContact) {
-    if (!responsible.uuid) { delete responsible.dn; }
-    let url = this.base + '/' + orgId + '/contacts';
-    let call = (responsible.dn) ? this.http.put(url + '/' + responsible.uuid, responsible) : this.http.post(url, responsible); // If exists, put - else post
+  // --------------------------
+  // Contacts
+  // --------------------------
+  getContacts(orgUuid: string): Observable<IContact[]> {
+    return this.http.get(this.base + '/' + orgUuid + '/contacts')
+      .map(item => item.json())
+      .catch(this.handleError);
+  }
+
+  saveContact(uuid: string, responsible: IContact): Observable<Response> {
+    if (!responsible.dn) { delete responsible.dn; }
+    let url = this.base + '/' + uuid + '/contacts';
+    let call = (responsible.dn) ? this.http.put(url + '/' + responsible.nin, responsible) : this.http.post(url, responsible); // If exists, put - else post
     return call
       .map(result => result.json())
       .catch(this.handleError);

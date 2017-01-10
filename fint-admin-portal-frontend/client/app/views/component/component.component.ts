@@ -22,7 +22,9 @@ export class ComponentComponent implements OnInit {
       this.total = result.total_items;
       this.pages = result.page_count;
       this.pageSize = result.page_size;
-      this.components = result._embedded.componentList;
+      if (result._embedded) {
+        this.components = result._embedded.componentList;
+      }
     });
   }
 

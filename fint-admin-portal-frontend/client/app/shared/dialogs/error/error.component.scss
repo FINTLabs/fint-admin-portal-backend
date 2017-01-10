@@ -1,0 +1,9 @@
+@import '../../../../variables';
+
+h1, em {
+  color: $accent;
+}
+h2 {
+  font-size: 100%;
+  margin-top: -20px;
+}

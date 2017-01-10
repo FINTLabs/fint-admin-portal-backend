@@ -1,12 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { MdCheckboxChange } from '@angular/material';
+import { MdCheckboxChange, MdDialogRef, MdDialog } from '@angular/material';
 import { each } from 'lodash';
 
 import { OrganizationService } from '../organization.service';
 import { IOrganization } from 'app/api/IOrganization';
 import { IContact, EmptyContact } from 'app/api/IContact';
+import { ErrorComponent } from 'app/shared/dialogs/error/error.component';
 
 @Component({
   selector: 'app-edit-organization',
@@ -16,6 +17,8 @@ import { IContact, EmptyContact } from 'app/api/IContact';
 export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
   organization: IOrganization = <IOrganization>{};
+
+  errorDialogRef: MdDialogRef<ErrorComponent>;
 
   responsible: IContact[] = [];
   _legalContact: IContact = <IContact>{};
@@ -72,7 +75,8 @@ export class EditOrganizationComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private organizationService: OrganizationService
+    private organizationService: OrganizationService,
+    private dialog: MdDialog
   ) {
     this.route.params.subscribe(params => {
       if (params['id']) {
@@ -84,11 +88,17 @@ export class EditOrganizationComponent implements OnInit {
 
             // Get contact data
             organizationService.getContacts(this.organization.uuid)
-              .subscribe(result => {
-                this._legalContact = null;
-                this._technicalContact = null;
-                this.responsible = result;
-              });
+              .subscribe(
+                result => {
+                  this._legalContact = null;
+                  this._technicalContact = null;
+                  this.responsible = result;
+                },
+                error => {
+                  this.errorDialogRef = this.dialog.open(ErrorComponent);
+                  this.errorDialogRef.componentInstance.errorSubtitle = 'Under lasting av organisasjonens kontakter';
+                  this.errorDialogRef.componentInstance.errorMessage = error;
+                });
           });
       }
     });
@@ -108,10 +118,20 @@ export class EditOrganizationComponent implements OnInit {
     this.organizationService.save(model)
       .subscribe(result => {
         if (this.responsible.length) {
-          each(this.responsible, (responsible: IContact) => {
-            this.organizationService.saveContact(result.orgId, responsible)
-              .subscribe(result => console.log('Contact saved! ' + result));
-          });
+          // Save all contacts
+          Promise.all(this.responsible.map((responsible: IContact) => {
+            return this.organizationService.saveContact(result.uuid, responsible).toPromise();
+          }))
+            // Then return
+            .then(result => {
+              console.log('Contacts saved!');
+              this.goBack();
+            })
+            .catch(error => {
+              console.error(error);
+              this.errorDialogRef = this.dialog.open(ErrorComponent);
+              this.errorDialogRef.componentInstance.errorMessage = error;
+            });
         } else { this.goBack(); }
       });
   }

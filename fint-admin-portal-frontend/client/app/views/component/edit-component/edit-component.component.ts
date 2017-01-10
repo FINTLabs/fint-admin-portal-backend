@@ -8,6 +8,7 @@ import { MdDialogRef, MdDialog } from '@angular/material';
 import { CommonComponentService } from '../common-component.service';
 import { ICommonComponent } from 'app/api/ICommonComponent';
 import { ConfirmDeleteComponent } from 'app/shared/dialogs/confirm-delete/confirm-delete.component';
+import { ErrorComponent } from 'app/shared/dialogs/error/error.component';
 
 @Component({
   selector: 'app-edit-component',
@@ -20,6 +21,7 @@ export class EditComponentComponent implements OnInit {
   iconFile: File;
 
   dialogRef: MdDialogRef<ConfirmDeleteComponent>;
+  errorDialogRef: MdDialogRef<ErrorComponent>;
 
   constructor(
     private fb: FormBuilder,
@@ -68,9 +70,14 @@ export class EditComponentComponent implements OnInit {
 
   save(model: ICommonComponent) {
     this.componentService.save(model)
-      .subscribe(result => {
-        this.router.navigate(['../'], { relativeTo: this.route});
-      });
+      .subscribe(
+        result => this.router.navigate(['../'], { relativeTo: this.route}),
+        err => {
+          this.errorDialogRef = this.dialog.open(ErrorComponent);
+          this.errorDialogRef.componentInstance.errorSubtitle = 'Under lagring av kontakter';
+          this.errorDialogRef.componentInstance.errorMessage = err;
+        }
+      );
   }
 
   deleteComponent() {
