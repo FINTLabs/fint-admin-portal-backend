@@ -7,7 +7,7 @@ services:
     container_name: ${DOCKER_CONTAINER}
     restart: unless-stopped
     environment:
-      - PARAMS=${runParams}
+      PARAMS: ${runParams}
       TZ: Europe/Oslo
       logging.level.root: INFO
     ports:
