@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {IContact} from 'app/api/IContact';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IContact } from 'app/api/IContact';
 
 @Component({
   selector: 'app-edit-responsible',
@@ -11,6 +11,7 @@ export class EditResponsibleComponent implements OnInit {
   @Output()
   responsibleChange: EventEmitter<IContact> = new EventEmitter<IContact>();
   _responsible: IContact = <IContact>{};
+
   @Input()
   get responsible() { return this._responsible };
   set responsible(c: IContact) {
@@ -22,19 +23,19 @@ export class EditResponsibleComponent implements OnInit {
   }
   responsibleForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {  }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.responsibleForm = this.fb.group({
-      dn              : [this.responsible.dn],
-      firstName       : [this.responsible.firstName, [Validators.required]],
-      lastName        : [this.responsible.lastName, [Validators.required]],
-      mail            : [this.responsible.mail, [Validators.required]],
-      mobile          : [this.responsible.mobile, [Validators.required]],
-      nin             : [this.responsible.nin, [Validators.required]],
-      orgId           : [this.responsible.orgId, [Validators.required]],
+      dn: [this.responsible.dn],
+      firstName: [this.responsible.firstName, [Validators.required]],
+      lastName: [this.responsible.lastName, [Validators.required]],
+      mail: [this.responsible.mail, [Validators.required]],
+      mobile: [this.responsible.mobile, [Validators.required]],
+      nin: [this.responsible.nin, [Validators.required]],
+      orgId: [this.responsible.orgId, [Validators.required]],
       primaryTechnical: [this.responsible.primaryTechnical],
-      primaryLegal    : [this.responsible.primaryLegal],
+      primaryLegal: [this.responsible.primaryLegal],
     });
   }
 

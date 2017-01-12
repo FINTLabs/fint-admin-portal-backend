@@ -1,4 +1,4 @@
-import {IHAL} from './ApiBase';
+import {IHAL} from './IHAL';
 
 export interface IContact {
   oldNin?: string;            // Backup of nin.

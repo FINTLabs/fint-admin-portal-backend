@@ -1,51 +1,45 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
-import {Http, Headers} from '@angular/http';
-import {ApiBase} from 'app/api/ApiBase';
-import {IComponentHALPage, ICommonComponent} from 'app/api/ICommonComponent';
+import { Observable } from 'rxjs';
+import { Http } from '@angular/http';
+import { FintDialogService } from 'fint-shared-components';
+
+import { IComponentHALPage, ICommonComponent } from 'app/api/ICommonComponent';
 
 @Injectable()
-export class CommonComponentService extends ApiBase {
+export class CommonComponentService {
   base: string = '/api/components';
-  constructor(private http: Http) {
-    super();
-  }
+  constructor(private http: Http, private fintDialog: FintDialogService) { }
 
   all(): Observable<IComponentHALPage> {
     return this.http.get(this.base)
       .map(result => result.json())
-      .catch(this.handleError);
+      .catch(error => this.handleError(error));
   }
 
   get(uuid: string): Observable<ICommonComponent> {
     return this.http.get(this.base + '/' + uuid)
       .map(result => result.json())
-      .catch(this.handleError);
+      .catch(error => this.handleError(error));
   }
 
   save(model: ICommonComponent) {
     delete model.icon;
-    let headers = new Headers();
-    headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
-
     if (!model.uuid) { delete model.dn; }
 
     // If exists, put - else post
-    let call;
-    if (model.uuid) {
-      call = this.http.put(this.base + '/' + model.uuid, model, { headers: headers});
-    } else {
-      call = this.http.post(this.base, model, { headers: headers});
-    }
-    return call.map(item => item.json()).catch(this.handleError);
+    return (model.uuid ? this.http.put(this.base + '/' + model.uuid, model) : this.http.post(this.base, model))
+      .map(item => item.json())
+      .catch(error => this.handleError(error));
   }
 
   delete(model: ICommonComponent) {
     delete model.icon;
-    let headers = new Headers();
-    headers.append('x-fint-role', 'FINT_ADMIN_PORTAL');
+    return this.http.delete(this.base + '/' + model.uuid)
+      .catch(error => this.handleError(error));
+  }
 
-    return this.http.delete(this.base + '/' + model.uuid, { headers: headers})
-      .catch(this.handleError);
+  handleError(error) {
+    this.fintDialog.displayHttpError(error);
+    return Observable.throw(error);
   }
 }

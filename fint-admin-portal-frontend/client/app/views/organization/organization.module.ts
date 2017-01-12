@@ -15,6 +15,7 @@ import { EditOrganizationComponent } from './edit-organization/edit-organization
 import { EditResponsibleComponent } from './edit-responsible/edit-responsible.component';
 
 // Services
+import { FintDialogService } from 'fint-shared-components';
 import { OrganizationService } from './organization.service';
 
 export class NoXSRFStrategy {
@@ -38,6 +39,6 @@ export class NoXSRFStrategy {
     EditOrganizationComponent,
     EditResponsibleComponent
   ],
-  providers: [OrganizationService, { provide: XSRFStrategy, useClass: NoXSRFStrategy }] // !!HACK!!
+  providers: [OrganizationService, FintDialogService, { provide: XSRFStrategy, useClass: NoXSRFStrategy }] // !!HACK!!
 })
 export class OrganizationModule { }

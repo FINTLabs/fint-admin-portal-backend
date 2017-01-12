@@ -1,7 +1,8 @@
 import { CommonComponentService } from './common-component.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {ICommonComponent} from 'app/api/ICommonComponent';
+
+import { ICommonComponent } from 'app/api/ICommonComponent';
 
 @Component({
   selector: 'app-component',
@@ -17,18 +18,19 @@ export class ComponentComponent implements OnInit {
 
   constructor(private titleService: Title, private CommonComponent: CommonComponentService) {
     this.titleService.setTitle('Fint | Components');
-    CommonComponent.all().subscribe(result => {
-      this.page = result.page;
-      this.total = result.total_items;
-      this.pages = result.page_count;
-      this.pageSize = result.page_size;
-      if (result._embedded) {
-        this.components = result._embedded.componentList;
-      }
-    });
   }
 
   ngOnInit() {
+    this.CommonComponent.all().subscribe(
+      result => {
+        this.page = result.page;
+        this.total = result.total_items;
+        this.pages = result.page_count;
+        this.pageSize = result.page_size;
+        if (result._embedded) {
+          this.components = result._embedded.componentList;
+        }
+      }
+    );
   }
-
 }

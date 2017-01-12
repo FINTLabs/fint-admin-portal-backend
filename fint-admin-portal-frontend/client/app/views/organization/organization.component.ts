@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
-import {OrganizationService} from './organization.service';
+import { OrganizationService } from './organization.service';
 import { Component, OnInit } from '@angular/core';
-import {IOrganization} from 'app/api/IOrganization';
+
+import { IOrganization } from 'app/api/IOrganization';
 
 @Component({
   selector: 'app-organization',
@@ -14,6 +15,7 @@ export class OrganizationComponent implements OnInit {
   pages: number;
   total: number;
   pageSize: number = 10;
+
   constructor(private organizationService: OrganizationService, private router: Router) { }
 
   ngOnInit() {

@@ -4,10 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { MdCheckboxChange, MdDialogRef, MdDialog } from '@angular/material';
 import { each } from 'lodash';
 
+import { FintDialogService } from 'fint-shared-components';
 import { OrganizationService } from '../organization.service';
 import { IOrganization } from 'app/api/IOrganization';
 import { IContact, EmptyContact } from 'app/api/IContact';
-import { ErrorComponent } from 'app/shared/dialogs/error/error.component';
 
 @Component({
   selector: 'app-edit-organization',
@@ -18,14 +18,12 @@ export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
   organization: IOrganization = <IOrganization>{};
 
-  errorDialogRef: MdDialogRef<ErrorComponent>;
-
   responsible: IContact[] = [];
   _legalContact: IContact = <IContact>{};
   get legalContact(): IContact {
     if (!this._legalContact) {
-      let index          = this.responsible.findIndex(r => r.primaryLegal === true);
-      let c              = index > -1 ? this.responsible[index] : new EmptyContact();
+      let index = this.responsible.findIndex(r => r.primaryLegal === true);
+      let c = index > -1 ? this.responsible[index] : new EmptyContact();
       this._legalContact = c;
     }
     return this._legalContact;
@@ -44,8 +42,8 @@ export class EditOrganizationComponent implements OnInit {
   _technicalContact: IContact = <IContact>{};
   get technicalContact(): IContact {
     if (!this._technicalContact) {
-      let index              = this.responsible.findIndex(r => r.primaryTechnical === true);
-      let c                  = index > -1 ? this.responsible[index] : new EmptyContact();
+      let index = this.responsible.findIndex(r => r.primaryTechnical === true);
+      let c = index > -1 ? this.responsible[index] : new EmptyContact();
       this._technicalContact = c;
     }
     return this._technicalContact;
@@ -76,7 +74,7 @@ export class EditOrganizationComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
-    private dialog: MdDialog
+    private fintDialog: FintDialogService
   ) {
     this.route.params.subscribe(params => {
       if (params['id']) {
@@ -88,17 +86,11 @@ export class EditOrganizationComponent implements OnInit {
 
             // Get contact data
             organizationService.getContacts(this.organization.uuid)
-              .subscribe(
-                result => {
-                  this._legalContact = null;
-                  this._technicalContact = null;
-                  this.responsible = result;
-                },
-                error => {
-                  this.errorDialogRef = this.dialog.open(ErrorComponent);
-                  this.errorDialogRef.componentInstance.errorSubtitle = 'Under lasting av organisasjonens kontakter';
-                  this.errorDialogRef.componentInstance.errorMessage = error;
-                });
+              .subscribe(result => {
+                this._legalContact = null;
+                this._technicalContact = null;
+                this.responsible = result;
+              });
           });
       }
     });
@@ -106,11 +98,11 @@ export class EditOrganizationComponent implements OnInit {
 
   ngOnInit() {
     this.organizationForm = this.fb.group({
-      dn         : [this.organization.dn],
-      uuid       : [this.organization.uuid],
+      dn: [this.organization.dn],
+      uuid: [this.organization.uuid],
       displayName: [this.organization.displayName, [Validators.required]],
-      orgNumber  : [this.organization.orgNumber, [Validators.required]],
-      orgId      : [this.organization.orgId, [Validators.required]]
+      orgNumber: [this.organization.orgNumber, [Validators.required]],
+      orgId: [this.organization.orgId, [Validators.required]]
     });
   }
 
@@ -127,11 +119,7 @@ export class EditOrganizationComponent implements OnInit {
               console.log('Contacts saved!');
               this.goBack();
             })
-            .catch(error => {
-              console.error(error);
-              this.errorDialogRef = this.dialog.open(ErrorComponent);
-              this.errorDialogRef.componentInstance.errorMessage = error;
-            });
+            .catch(error => this.fintDialog.displayError('Error saving contacts', error));
         } else { this.goBack(); }
       });
   }

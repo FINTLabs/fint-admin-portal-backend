@@ -7,7 +7,6 @@ import { MaterialModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LibSharedModule, EventService } from 'fint-shared-components';
-import { SharedModule } from './shared/shared.module';
 
 // Components
 import { AppComponent } from './app.component';
@@ -25,7 +24,6 @@ import { AppComponent } from './app.component';
     MaterialModule.forRoot(),
 
     LibSharedModule.forRoot(),
-    SharedModule,
     AppRoutingModule
   ],
   providers: [EventService],
