@@ -175,13 +175,12 @@ public class OrganisationController {
   }
 
   @ApiOperation("Get the organisation contacts")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts")
-  public HalPagedResources<Contact> getOrganizationConcats(@PathVariable final String uuid, @RequestParam(required = false) Integer page) {
+  public List<Contact> getOrganizationConcats(@PathVariable final String uuid) {
     Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getContacts(uuid));
 
     if (contacts.isPresent()) {
-      return new HalPagedResources<>(contacts.get(), page);
+      return contacts.get();
     }
 
     throw new EntityNotFoundException(
