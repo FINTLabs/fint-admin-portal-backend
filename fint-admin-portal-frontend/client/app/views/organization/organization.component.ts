@@ -3,6 +3,7 @@ import { OrganizationService } from './organization.service';
 import { Component, OnInit } from '@angular/core';
 
 import { IOrganization } from 'app/api/IOrganization';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-organization',
@@ -16,7 +17,9 @@ export class OrganizationComponent implements OnInit {
   total: number;
   pageSize: number = 10;
 
-  constructor(private organizationService: OrganizationService, private router: Router) { }
+  constructor(private organizationService: OrganizationService, private router: Router, private titleService: Title) {
+    this.titleService.setTitle('Organisasjoner | Fint-Adminportal');
+  }
 
   ngOnInit() {
     this.organizationService.all(this.page, this.pageSize)

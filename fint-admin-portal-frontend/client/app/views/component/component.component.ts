@@ -17,7 +17,7 @@ export class ComponentComponent implements OnInit {
   pageSize: number = 10;
 
   constructor(private titleService: Title, private CommonComponent: CommonComponentService) {
-    this.titleService.setTitle('Fint | Components');
+    this.titleService.setTitle('Komponenter | Fint');
   }
 
   ngOnInit() {
