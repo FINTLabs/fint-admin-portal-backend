@@ -1,10 +1,10 @@
-import { FintAdminportalMockupsPage } from './app.po';
+import { FintAdminportalPage } from './app.po';
 
-describe('fint-adminportal-mockups App', function() {
-  let page: FintAdminportalMockupsPage;
+describe('fint-adminportal App', function() {
+  let page: FintAdminportalPage;
 
   beforeEach(() => {
-    page = new FintAdminportalMockupsPage();
+    page = new FintAdminportalPage();
   });
 
   it('should display message saying app works', () => {

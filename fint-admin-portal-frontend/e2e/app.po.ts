@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class FintAdminportalMockupsPage {
+export class FintAdminportalPage {
   navigateTo() {
     return browser.get('/');
   }
