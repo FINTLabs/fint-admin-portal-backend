@@ -32,26 +32,43 @@
       </div>
     </md-card-content>
 
-    <md-card-subtitle>
-      <h3>Ansvarlige for organisasjonen</h3>
-    </md-card-subtitle>
-    <md-card-content>
-      <div class="row">
-        <div class="col-6">
-          <h4>Juridisk ansvarlig</h4>
-          <app-edit-responsible [(responsible)]="legalContact"></app-edit-responsible>
+    <section class="responsible">
+      <md-card-subtitle>
+        <h3>Ansvarlige for organisasjonen</h3>
+      </md-card-subtitle>
+      <md-card-content>
+        <div class="row">
+          <div class="col-6">
+            <md-card>
+              <md-card-header>
+                <fint-fa name="legal" md-card-avatar></fint-fa>
+                <md-card-title>Juridisk ansvarlig</md-card-title>
+                <md-card-subtitle>
+                  <md-checkbox [checked]="technicalContact.primaryLegal" (change)="toggleMergeContact($event, 'legal')">Samme som teknisk ansvarlig?</md-checkbox>
+                </md-card-subtitle>
+              </md-card-header>
+              <md-card-content>
+                <app-edit-responsible [(responsible)]="legalContact"></app-edit-responsible>
+              </md-card-content>
+            </md-card>
+          </div>
+          <div class="col-6">
+            <md-card>
+              <md-card-header>
+                <fint-fa name="power-off" md-card-avatar></fint-fa>
+                <md-card-title>Teknisk ansvarlig</md-card-title>
+                <md-card-subtitle>
+                  <md-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event, 'technical')">Samme som juridisk ansvarlig?</md-checkbox>
+                </md-card-subtitle>
+              </md-card-header>
+              <md-card-content>
+                <app-edit-responsible [(responsible)]="technicalContact"></app-edit-responsible>
+              </md-card-content>
+            </md-card>
+          </div>
         </div>
-        <div class="col-6">
-          <h4>
-            Teknisk ansvarlig
-            <small class="pull-right">
-              <md-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event)">Samme som juridisk ansvarlig?</md-checkbox>
-            </small>
-          </h4>
-          <app-edit-responsible [(responsible)]="technicalContact"></app-edit-responsible>
-        </div>
-      </div>
-    </md-card-content>
+      </md-card-content>
+    </section>
     <md-card-actions>
       <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!organizationForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
       <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>

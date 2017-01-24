@@ -16,7 +16,6 @@ import { ICommonComponent } from 'app/api/ICommonComponent';
 export class EditComponentComponent implements OnInit {
   component: ICommonComponent;
   componentForm: FormGroup;
-  iconFile: File;
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +23,7 @@ export class EditComponentComponent implements OnInit {
     private route: ActivatedRoute,
     private componentService: CommonComponentService,
     private sanitizer: DomSanitizer,
-    private fintDialog: FintDialogService
+    private FintDialog: FintDialogService
   ) {
     this.component = <ICommonComponent>{};
     this.route.params.subscribe(params => {
@@ -52,24 +51,13 @@ export class EditComponentComponent implements OnInit {
     });
   }
 
-  getIcon(): SafeStyle {
-    return this.sanitizer.bypassSecurityTrustStyle('background-image: url(' + this.component.icon + ')');
-  }
-
-  setIcon($event: Event) {
-    let files: FileList = event.srcElement['files'];
-    if (files && files.length) {
-      console.log(files[0].name);
-    }
-  }
-
   save(model: ICommonComponent) {
     this.componentService.save(model)
       .subscribe(result => this.router.navigate(['../'], { relativeTo: this.route }));
   }
 
   deleteComponent() {
-    this.fintDialog.confirmDelete().afterClosed().subscribe(result => {
+    this.FintDialog.confirmDelete().afterClosed().subscribe(result => {
       if (result === 'yes') {
         this.componentService.delete(this.component).subscribe(response => {
           this.router.navigate(['../'], { relativeTo: this.route });

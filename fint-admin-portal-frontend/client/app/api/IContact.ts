@@ -11,7 +11,6 @@ export interface IContact {
   orgId: string;              // OrgId of the organisation the contact is connected to.
   primaryTechnical: boolean;  // Indicates if the contact is the primary technical contact for the organisation.
   primaryLegal: boolean;      // Indicates if the contact is the primary legal contact for the organisation.
-  isEditing?: boolean;        // Used only for ux
 }
 export interface IContactHALPage extends IHAL {
   _embedded: {
@@ -20,7 +19,6 @@ export interface IContactHALPage extends IHAL {
 }
 
 export class EmptyContact implements IContact {
-  uuid = null;
   dn = null;
   nin = null;
   firstName = null;
@@ -30,4 +28,12 @@ export class EmptyContact implements IContact {
   orgId = null;
   primaryTechnical = false;
   primaryLegal = false;
+
+  get isEmpty() {
+    return (!this.dn || !this.nin || !this.firstName || !this.lastName || !this.mail || !this.mobile || !this.orgId);
+  }
+
+  constructor(obj: any) {
+    Object.assign(this, obj);
+  }
 }

@@ -1,8 +1,8 @@
-<form [formGroup]="responsibleForm" novalidate>
+<form [formGroup]="responsibleForm" novalidate (change)="onChange()">
   <div class="row">
     <md-input-container class="col-xs-4">
       <md-placeholder>Fødselsnummer</md-placeholder>
-      <input md-input type="tel" formControlName="nin" required (blur)="onChange()" autocomplete="off">
+      <input md-input type="tel" formControlName="nin" required autocomplete="off">
       <md-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['nin'].hasError('required')">Påkrevd</span>
@@ -12,7 +12,7 @@
   <div class="row">
     <md-input-container class="col-xs-6">
       <md-placeholder>Fornavn</md-placeholder>
-      <input md-input type="text" formControlName="firstName" required (blur)="onChange()" (keypress)="moveNextOnSpace($event, lastName)" #firstName>
+      <input md-input type="text" formControlName="firstName" required (keypress)="moveNextOnSpace($event, lastName)" #firstName>
       <md-hint [hidden]="responsibleForm.controls['firstName'].valid || responsibleForm.controls['firstName'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['firstName'].hasError('required')">Påkrevd</span>
@@ -20,7 +20,7 @@
     </md-input-container>
     <md-input-container class="col-xs-6">
       <md-placeholder>Etternavn</md-placeholder>
-      <input md-input type="text" formControlName="lastName" required (blur)="onChange()" #lastName>
+      <input md-input type="text" formControlName="lastName" required #lastName>
       <md-hint [hidden]="responsibleForm.controls['lastName'].valid || responsibleForm.controls['lastName'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['lastName'].hasError('required')">Påkrevd</span>
@@ -30,7 +30,7 @@
   <div class="row">
     <md-input-container class="col-xs-8">
       <md-placeholder>Epost</md-placeholder>
-      <input md-input type="email" formControlName="mail" required (blur)="onChange()">
+      <input md-input type="email" formControlName="mail" required>
       <md-hint [hidden]="responsibleForm.controls['mail'].valid || responsibleForm.controls['mail'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['mail'].hasError('required')">Påkrevd</span>
@@ -38,7 +38,7 @@
     </md-input-container>
     <md-input-container class="col-xs-4">
       <md-placeholder>Mobil</md-placeholder>
-      <input md-input type="tel" formControlName="mobile" required (blur)="onChange()">
+      <input md-input type="tel" formControlName="mobile" required>
       <md-hint [hidden]="responsibleForm.controls['mobile'].valid || responsibleForm.controls['mobile'].pristine" align="end" style="color: red">
         <fint-fa name="warning"></fint-fa>
         <span *ngIf="responsibleForm.controls['mobile'].hasError('required')">Påkrevd</span>

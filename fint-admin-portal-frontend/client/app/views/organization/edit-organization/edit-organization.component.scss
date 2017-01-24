@@ -1,0 +1,23 @@
+.responsible {
+  md-card-header {
+    md-card-title {
+      font-weight: bold;
+    }
+    @media (min-width: 900px) {
+      md-card-title {
+        display: inline-block;
+      }
+      md-card-subtitle {
+        position: absolute;
+        top: 30px;
+        right: 20px;
+      }
+    }
+  }
+  div[class*="col-"] {
+    padding: 5px;
+  }
+  > md-card-content {
+    margin: 0 -24px;
+  }
+}

@@ -24,11 +24,6 @@
         </md-input-container>
       </div>
       <div class="row">
-        <label class="col img-placeholder" for="iconFile">
-          <div *ngIf="component.icon" class="img with-src" [attr.style]="getIcon()"></div>
-          <div *ngIf="!component.icon" class="img no-src">&nbsp;</div>
-          <input id="iconFile" type="file" name="icon" (change)="setIcon($event)">
-        </label>
         <md-input-container class="col">
           <md-placeholder>Beskrivelse</md-placeholder>
           <textarea md-input rows="6" type="text" formControlName="description" style="width: 99%"></textarea>
