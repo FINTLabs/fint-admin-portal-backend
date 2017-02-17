@@ -15,14 +15,17 @@ export class ComponentComponent implements OnInit {
   pages: number;
   total: number;
   pageSize: number = 10;
+  isLoading: boolean = false;
 
   constructor(private titleService: Title, private CommonComponent: CommonComponentService) {
     this.titleService.setTitle('Komponenter | Fint');
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.CommonComponent.all().subscribe(
       result => {
+        this.isLoading = false;
         this.page = result.page;
         this.total = result.total_items;
         this.pages = result.page_count;
@@ -30,7 +33,8 @@ export class ComponentComponent implements OnInit {
         if (result._embedded) {
           this.components = result._embedded.componentList;
         }
-      }
+      },
+      error => this.isLoading = false
     );
   }
 }

@@ -4,6 +4,10 @@
 </div>
 
 <md-card>
+  <div class="md-spinner-container" *ngIf="isLoading">
+    <md-spinner class="center"></md-spinner>
+  </div>
+
   <md-card-content class="table-container" *ngIf="organizations.length">
     <table>
       <thead>

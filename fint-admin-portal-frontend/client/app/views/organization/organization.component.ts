@@ -16,14 +16,17 @@ export class OrganizationComponent implements OnInit {
   pages: number;
   total: number;
   pageSize: number = 10;
+  isLoading: boolean = false;
 
   constructor(private organizationService: OrganizationService, private router: Router, private titleService: Title) {
     this.titleService.setTitle('Organisasjoner | Fint-Adminportal');
   }
 
   ngOnInit() {
-    this.organizationService.all(this.page, this.pageSize)
-      .subscribe(result => {
+    this.isLoading = true;
+    this.organizationService.all(this.page, this.pageSize).subscribe(
+      result => {
+        this.isLoading = false;
         this.page = result.page;
         this.total = result.total_items;
         this.pages = result.page_count;
@@ -31,6 +34,8 @@ export class OrganizationComponent implements OnInit {
         if (result._embedded) {
           this.organizations = result._embedded.organisationList;
         }
-      });
+      },
+      error => this.isLoading = false
+    );
   }
 }
