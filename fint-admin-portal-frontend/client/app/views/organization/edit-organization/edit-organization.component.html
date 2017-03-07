@@ -15,7 +15,7 @@
         </div>
         <md-input-container class="col-xs-3">
           <md-placeholder>OrgID</md-placeholder>
-          <input md-input formControlName="orgId">
+          <input md-input mdInput formControlName="orgId">
           <md-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="organizationForm.controls['orgId'].hasError('required')">Påkrevd</span>

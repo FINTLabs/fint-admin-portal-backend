@@ -7,7 +7,7 @@
       <div class="row">
         <md-input-container class="col-xs-8">
           <md-placeholder>Navn</md-placeholder>
-          <input md-input type="text" formControlName="displayName" style="width: 99%" required>
+          <input md-input mdInput type="text" formControlName="displayName" style="width: 99%" required>
           <md-hint [hidden]="componentForm.controls['displayName'].valid || componentForm.controls['displayName'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="componentForm.controls['displayName'].hasError('required')">Påkrevd</span>
@@ -15,9 +15,8 @@
         </md-input-container>
         <md-input-container class="col-xs-4">
           <md-placeholder>Teknisk navn</md-placeholder>
-          <input md-input type="text" formControlName="technicalName" style="width: 99%" required>
-          <md-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end"
-            style="color: red">
+          <input md-input mdInput type="text" formControlName="technicalName" style="width: 99%" required>
+          <md-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="componentForm.controls['technicalName'].hasError('required')">Påkrevd</span>
           </md-hint>
@@ -26,7 +25,7 @@
       <div class="row">
         <md-input-container class="col">
           <md-placeholder>Beskrivelse</md-placeholder>
-          <textarea md-input rows="6" type="text" formControlName="description" style="width: 99%"></textarea>
+          <textarea md-input mdInput rows="6" type="text" formControlName="description" style="width: 99%"></textarea>
         </md-input-container>
       </div>
     </md-card-content>
