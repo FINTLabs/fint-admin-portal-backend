@@ -1,19 +1,27 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-
 html {
   background-color: $navbar-color;
 }
+
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f9f9f9;
   color: $text-color;
   min-height: 100vh;
   position: relative;
-  margin: 0; padding:0;
+  margin: 0;
+  padding: 0;
 }
-h1, h2, h3, h4, h5, h6 {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: darken($text-color, 5%);
 }
+
 * {
   box-sizing: border-box;
 }
@@ -36,13 +44,13 @@ h1, h2, h3, h4, h5, h6 {
   background: yellow;
 }
 
-.center{
+.center {
   margin: 0 auto;
 }
 
 ul.unstyled {
-    list-style: none;
-    padding: 0 8px 8px 0;
+  list-style: none;
+  padding: 0 8px 8px 0;
 }
 
 .fa-sm {
@@ -54,14 +62,16 @@ ul.unstyled {
   visibility: hidden;
 }
 
-md-input-container .md-input-underline {
+md-input-container .mat-input-underline {
   max-width: 99%;
 }
 
 .md-spinner-container {
   position: absolute;
-  top: 0; bottom: 0;
-  left: 0; right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: rgba(white, 0.7);
   z-index: 5;
 }
