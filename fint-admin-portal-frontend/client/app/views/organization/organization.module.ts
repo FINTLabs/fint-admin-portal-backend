@@ -31,7 +31,7 @@ export class NoXSRFStrategy {
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule.forRoot(),
+    LibSharedModule,
     RouterModule.forChild([...OrganizationRoutes])
   ],
   declarations: [

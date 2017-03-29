@@ -21,9 +21,9 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     HttpModule,
     FormsModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
 
-    LibSharedModule.forRoot(),
+    LibSharedModule,
     AppRoutingModule
   ],
   providers: [EventService],
