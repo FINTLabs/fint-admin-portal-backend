@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 import { LibSharedModule } from 'fint-shared-components';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { OrganizationRoutes } from './organization.routes';
 import { HttpModule, XSRFStrategy, Request} from '@angular/http';
@@ -31,6 +32,7 @@ export class NoXSRFStrategy {
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    BrowserAnimationsModule,
     LibSharedModule,
     RouterModule.forChild([...OrganizationRoutes])
   ],

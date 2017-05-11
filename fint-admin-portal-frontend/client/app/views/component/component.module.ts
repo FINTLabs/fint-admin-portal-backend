@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { LibSharedModule } from 'fint-shared-components';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ComponentRoutes } from './component.routes';
 import { ComponentComponent } from './component.component';
@@ -19,6 +20,7 @@ import { CommonComponentService } from './common-component.service';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    BrowserAnimationsModule,
     LibSharedModule,
     RouterModule.forChild([...ComponentRoutes])
   ],

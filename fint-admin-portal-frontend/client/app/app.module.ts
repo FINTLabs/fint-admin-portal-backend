@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LibSharedModule, EventService } from 'fint-shared-components';
@@ -22,6 +23,7 @@ import { AppComponent } from './app.component';
     HttpModule,
     FormsModule,
     MaterialModule,
+    BrowserAnimationsModule,
 
     LibSharedModule,
     AppRoutingModule
