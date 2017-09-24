@@ -4,12 +4,13 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.contact.Contact;
+import no.fint.portal.contact.ContactService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.organisation.Contact;
 import no.fint.portal.organisation.Organisation;
 import no.fint.portal.organisation.OrganisationService;
 import no.rogfk.hateoas.extension.HalPagedResources;
@@ -35,8 +36,10 @@ import java.util.Optional;
 public class OrganisationController {
 
   @Autowired
-  private
-  OrganisationService organisationService;
+  private OrganisationService organisationService;
+
+  @Autowired
+  private ContactService contactService;
 
   @ApiOperation("Request new organisation")
   @RequestMapping(method = RequestMethod.POST,
@@ -130,7 +133,7 @@ public class OrganisationController {
       );
     }
 
-    if (!organisationService.addContact(contact, uuid)) {
+    if (!contactService.addContact(contact, organisation.get())) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
           .fromCurrentRequest().path("/{nin}")
@@ -167,7 +170,7 @@ public class OrganisationController {
       );
     }
 
-    if (!organisationService.updateContact(contact)) {
+    if (!contactService.updateContact(contact)) {
       throw new EntityNotFoundException(String.format("Could not find contact: %s", contact));
     }
 
@@ -177,7 +180,7 @@ public class OrganisationController {
   @ApiOperation("Get the organisation contacts")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts")
   public List<Contact> getOrganizationConcats(@PathVariable final String uuid) {
-    Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getContacts(uuid));
+    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts(uuid));
 
     if (contacts.isPresent()) {
       return contacts.get();
@@ -191,7 +194,7 @@ public class OrganisationController {
   @ApiOperation("Get the organisation contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{uuid}/contacts/{nin}")
   public ResponseEntity getOrganizationConcat(@PathVariable final String uuid, @PathVariable final String nin) {
-    Optional<Contact> contact = organisationService.getContact(uuid, nin);
+    Optional<Contact> contact = contactService.getContact(uuid, nin);
 
     if (contact.isPresent()) {
       return ResponseEntity.ok(contact.get());
@@ -206,10 +209,10 @@ public class OrganisationController {
   @ApiOperation("Delete an organisation contact")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{uuid}/contacts/{nin}")
   public ResponseEntity deleteOrganizationContacts(@PathVariable final String uuid, @PathVariable final String nin) {
-    Optional<Contact> contact = organisationService.getContact(uuid, nin);
+    Optional<Contact> contact = contactService.getContact(uuid, nin);
 
     if (contact.isPresent()) {
-      organisationService.deleteContact(contact.get());
+      contactService.deleteContact(contact.get());
       return ResponseEntity.accepted().build();
     }
 

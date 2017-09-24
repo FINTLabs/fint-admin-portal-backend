@@ -34,9 +34,6 @@ public class ComponentController {
   @Autowired
   private ComponentService componentService;
 
-  @Autowired
-  private OrganisationService organisationService;
-
   @ApiOperation("Request new component")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
