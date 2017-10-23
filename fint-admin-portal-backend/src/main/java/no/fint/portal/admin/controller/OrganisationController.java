@@ -53,7 +53,7 @@ public class OrganisationController {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
           .fromCurrentRequest().path("/{uuid}")
-          .buildAndExpand(organisation.getUuid()).toUri().toString()
+          .buildAndExpand(organisation.getName()).toUri().toString()
       );
     }
     return ResponseEntity.status(HttpStatus.CREATED).body(organisation);
@@ -67,9 +67,9 @@ public class OrganisationController {
   public ResponseEntity updateOrganization(@RequestBody Organisation organisation, @PathVariable final String uuid) {
     log.info("Organisation: {}", organisation);
 
-    if (!uuid.equals(organisation.getUuid())) {
+    if (!uuid.equals(organisation.getName())) {
       throw new UpdateEntityMismatchException(
-        String.format("Trying to updateEntry organisation %s on endpoint for organisation %s.", organisation.getUuid(), uuid)
+        String.format("Trying to updateEntry organisation %s on endpoint for organisation %s.", organisation.getName(), uuid)
       );
     }
 
@@ -91,7 +91,7 @@ public class OrganisationController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found.", organisation.get().getUuid())
+      String.format("Organisation %s could not be found.", organisation.get().getName())
     );
   }
 

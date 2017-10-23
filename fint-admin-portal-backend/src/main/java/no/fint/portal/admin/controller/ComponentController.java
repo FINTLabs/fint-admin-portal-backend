@@ -49,7 +49,7 @@ public class ComponentController {
     throw new EntityFoundException(
       ServletUriComponentsBuilder
         .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(component.getUuid()).toUri().toString()
+        .buildAndExpand(component.getName()).toUri().toString()
     );
   }
 
@@ -61,9 +61,9 @@ public class ComponentController {
   public ResponseEntity updateComponent(@RequestBody final Component component, @PathVariable final String uuid) {
     log.info("Component: {}", component);
 
-    if (!uuid.equals(component.getUuid())) {
+    if (!uuid.equals(component.getName())) {
       throw new UpdateEntityMismatchException(
-        String.format("Trying to updateEntry component %s on endpoint for component %s.", component.getUuid(), uuid)
+        String.format("Trying to updateEntry component %s on endpoint for component %s.", component.getName(), uuid)
       );
     }
 
