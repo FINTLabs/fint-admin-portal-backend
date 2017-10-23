@@ -6,6 +6,7 @@ RUN yarn install && npm rebuild node-sass && yarn build
 FROM gradle:jdk8-alpine as java
 USER root
 COPY . .
+COPY --from=node /src/client/dist/ src/main/resources/
 RUN gradle -b client/build-client.gradle webjar && gradle --no-daemon build
 
 FROM openjdk:8-jre-alpine
