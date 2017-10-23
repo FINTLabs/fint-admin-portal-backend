@@ -2,76 +2,83 @@
 <h2 *ngIf="organization.orgId">Rediger organisasjon</h2>
 
 <form [formGroup]="organizationForm" novalidate (ngSubmit)="save(organizationForm.value)">
-  <md-card>
-    <md-card-content>
+  <mat-card>
+    <mat-card-content>
       <div class="row">
-        <div class="col-xs-6">
-          <fint-typeahead placeholder="Navn" itemText="navn" [items]="items" [getMatches]="getMatchesByNameFn()" formControlName="displayName" [(selectedItem)]="selectedOrganization" style="width: 99%">
-            <md-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls['displayName'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </fint-typeahead>
-        </div>
-        <md-input-container class="col-xs-3">
-          <md-placeholder>OrgID</md-placeholder>
-          <input md-input mdInput formControlName="orgId">
-          <md-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
-            <fint-fa name="warning"></fint-fa>
+        <mat-form-field class="col-xs-6">
+          <input matInput type="text" placeholder="Organisasjonsnavn" formControlName="displayName" [matAutocomplete]="orgTypeahead">
+          <mat-autocomplete #orgTypeahead="matAutocomplete" (optionSelected)="setSelectedOrganization($event)">
+            <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+          </mat-autocomplete>
+          <mat-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
+            <fa name="warning"></fa>
+            <span *ngIf="organizationForm.controls['displayName'].hasError('required')">Påkrevd</span>
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-xs-3">
+          <input matInput placeholder="OrgID" formControlName="orgId">
+          <mat-hint [hidden]="organizationForm.controls['orgId'].valid || organizationForm.controls['orgId'].pristine" align="end" style="color: red">
+            <fa name="warning"></fa>
             <span *ngIf="organizationForm.controls['orgId'].hasError('required')">Påkrevd</span>
-          </md-hint>
-        </md-input-container>
-        <div class="col-xs-3">
-          <fint-typeahead placeholder="Org.no." itemText="organisasjonsnummer" [items]="items" [getMatches]="getMatchesByNumberFn()" formControlName="orgNumber" [(selectedItem)]="selectedOrganization" style="width: 99%">
-            <md-hint [hidden]="organizationForm.controls['orgNumber'].valid || organizationForm.controls['orgNumber'].pristine" align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="organizationForm.controls['orgNumber'].hasError('required')">Påkrevd</span>
-            </md-hint>
-          </fint-typeahead>
-        </div>
+          </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-xs-3">
+          <input matInput type="text" placeholder="Org.no." formControlName="orgNumber" [matAutocomplete]="orgNumTypeahead">
+          <mat-autocomplete #orgNumTypeahead="matAutocomplete" (optionSelected)="setSelectedOrganization($event)">
+            <mat-option *ngFor="let org of organizations" [value]="org">{{ org.orgNumber }}</mat-option>
+          </mat-autocomplete>
+          <!-- <fint-typeahead placeholder="Org.no." itemText="organisasjonsnummer" [items]="items" [getMatches]="getMatchesByNumberFn()" formControlName="orgNumber" [(selectedItem)]="selectedOrganization" style="width: 99%"> -->
+          <mat-hint [hidden]="organizationForm.controls['orgNumber'].valid || organizationForm.controls['orgNumber'].pristine" align="end" style="color: red">
+            <fa name="warning"></fa>
+            <span *ngIf="organizationForm.controls['orgNumber'].hasError('required')">Påkrevd</span>
+          </mat-hint>
+          <!-- </fint-typeahead> -->
+        </mat-form-field>
+
       </div>
-    </md-card-content>
+    </mat-card-content>
 
     <section class="responsible">
-      <md-card-subtitle>
+      <mat-card-subtitle>
         <h3>Ansvarlige for organisasjonen</h3>
-      </md-card-subtitle>
-      <md-card-content>
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="row">
           <div class="col-6">
-            <md-card>
-              <md-card-header>
-                <fint-fa name="legal" md-card-avatar></fint-fa>
-                <md-card-title>Juridisk ansvarlig</md-card-title>
-                <md-card-subtitle>
-                  <md-checkbox [checked]="technicalContact.primaryLegal" (change)="toggleMergeContact($event, 'legal')">Samme som teknisk ansvarlig?</md-checkbox>
-                </md-card-subtitle>
-              </md-card-header>
-              <md-card-content>
+            <mat-card>
+              <mat-card-header>
+                <fa name="legal" mat-card-avatar></fa>
+                <mat-card-title>Juridisk ansvarlig</mat-card-title>
+                <mat-card-subtitle>
+                  <mat-checkbox [checked]="technicalContact.primaryLegal" (change)="toggleMergeContact($event, 'legal')">Samme som teknisk ansvarlig?</mat-checkbox>
+                </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
                 <app-edit-responsible [(responsible)]="legalContact"></app-edit-responsible>
-              </md-card-content>
-            </md-card>
+              </mat-card-content>
+            </mat-card>
           </div>
           <div class="col-6">
-            <md-card>
-              <md-card-header>
-                <fint-fa name="power-off" md-card-avatar></fint-fa>
-                <md-card-title>Teknisk ansvarlig</md-card-title>
-                <md-card-subtitle>
-                  <md-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event, 'technical')">Samme som juridisk ansvarlig?</md-checkbox>
-                </md-card-subtitle>
-              </md-card-header>
-              <md-card-content>
+            <mat-card>
+              <mat-card-header>
+                <fa name="power-off" mat-card-avatar></fa>
+                <mat-card-title>Teknisk ansvarlig</mat-card-title>
+                <mat-card-subtitle>
+                  <mat-checkbox [checked]="legalContact.primaryTechnical" (change)="toggleMergeContact($event, 'technical')">Samme som juridisk ansvarlig?</mat-checkbox>
+                </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
                 <app-edit-responsible [(responsible)]="technicalContact"></app-edit-responsible>
-              </md-card-content>
-            </md-card>
+              </mat-card-content>
+            </mat-card>
           </div>
         </div>
-      </md-card-content>
+      </mat-card-content>
     </section>
-    <md-card-actions>
-      <button md-raised-button md-ripple type="submit" color="primary" [disabled]="!organizationForm.valid"><fint-fa name="save"></fint-fa>Lagre</button>
-      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
-    </md-card-actions>
-  </md-card>
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary" [disabled]="!organizationForm.valid"><fa name="save"></fa>Lagre</button>
+      <button mat-raised-button type="button" [routerLink]="['../']"><fa name="ban"></fa>Avbryt</button>
+    </mat-card-actions>
+  </mat-card>
 </form>

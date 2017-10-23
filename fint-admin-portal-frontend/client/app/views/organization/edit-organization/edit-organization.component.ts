@@ -1,13 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { MdCheckboxChange } from '@angular/material';
 
 import { FintDialogService } from 'fint-shared-components';
 import { OrganizationService } from '../organization.service';
 import { IOrganization } from 'app/api/IOrganization';
 import { IContact } from 'app/api/IContact';
 import { ContactStore } from 'app/views/organization/edit-organization/ContactStore';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
   selector: 'app-edit-organization',
@@ -27,15 +27,6 @@ export class EditOrganizationComponent implements OnInit {
   get technicalContact(): IContact { return this.contactStore.technicalContact; }
   set technicalContact(c: IContact) { this.contactStore.technicalContact = c;  }
 
-  _selectedOrganization;
-  get selectedOrganization() { return this._selectedOrganization; }
-  set selectedOrganization(value) {
-    this._selectedOrganization = value;
-    this.organizationForm.controls['displayName'].setValue(value.navn);
-    this.organizationForm.controls['orgNumber'].setValue(value.organisasjonsnummer);
-  }
-
-  items = [];
 
   constructor(
     private fb: FormBuilder,
@@ -71,6 +62,12 @@ export class EditOrganizationComponent implements OnInit {
       orgNumber:    [this.organization.orgNumber,   [Validators.required]],
       orgId:        [this.organization.orgId,       [Validators.required]]
     });
+
+    const nameCtrl = this.organizationForm.controls['displayName'];
+    nameCtrl.valueChanges
+      .distinctUntilChanged()
+      .debounceTime(200)  // Do not hammer http request. Wait until user has typed a bit
+      .subscribe(v => this.organizationService.fetchRegistryOrgByName(v))
   }
 
   save(model: IOrganization) {
@@ -92,22 +89,17 @@ export class EditOrganizationComponent implements OnInit {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  toggleMergeContact($event: MdCheckboxChange, type: string) {
+  setSelectedOrganization(value) {
+    this.organizationForm.controls['displayName'].setValue(value.navn);
+    this.organizationForm.controls['orgNumber'].setValue(value.organisasjonsnummer);
+  }
+
+  toggleMergeContact($event: MatCheckboxChange, type: string) {
     this.contactStore.merge($event.checked, type);
   }
 
-  getMatchesByNameFn() {
-    let me = this;
-    return function (items, currentValue: string, matchText: string) {
-      if (!currentValue || currentValue.length < 2) {
-        return items;
-      }
-      return me.organizationService.fetchRegistryOrgByName(currentValue);
-    }
-  }
-
   getMatchesByNumberFn() {
-    let me = this;
+    const me = this;
     return function (items, currentValue: number, matchText: string) {
       if (!currentValue || currentValue.toString().length < 9) {
         return items;

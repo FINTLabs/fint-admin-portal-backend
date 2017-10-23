@@ -3,9 +3,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
-import { LibSharedModule } from 'fint-shared-components';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule, MatButtonModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatOptionModule, MatCheckboxModule } from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
+
+import { LibSharedModule } from 'fint-shared-components';
 
 import { OrganizationRoutes } from './organization.routes';
 import { HttpModule, XSRFStrategy, Request} from '@angular/http';
@@ -31,8 +33,19 @@ export class NoXSRFStrategy {
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
     BrowserAnimationsModule,
+
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+
+    AngularFontAwesomeModule,
+
     LibSharedModule,
     RouterModule.forChild([...OrganizationRoutes])
   ],

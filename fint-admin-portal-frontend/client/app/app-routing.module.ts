@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
 
 import { EventModule } from 'fint-shared-components';
 import { ComponentModule } from './views/component/component.module';
@@ -18,7 +17,6 @@ const routes: Routes = [
     HomeComponent
   ],
   imports: [
-    MaterialModule,
     ComponentModule,    // Including routes
     OrganizationModule, // Including routes
     EventModule.forRoot(), // Including routes

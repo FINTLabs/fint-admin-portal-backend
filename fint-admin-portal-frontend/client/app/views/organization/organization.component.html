@@ -3,12 +3,12 @@
 <div>
 </div>
 
-<md-card>
-  <div class="md-spinner-container" *ngIf="isLoading">
-    <md-spinner class="center"></md-spinner>
+<mat-card>
+  <div class="mat-spinner-container" *ngIf="isLoading">
+    <mat-spinner class="center"></mat-spinner>
   </div>
 
-  <md-card-content class="table-container" *ngIf="organizations.length">
+  <mat-card-content class="table-container" *ngIf="organizations.length">
     <table>
       <thead>
         <tr>
@@ -26,20 +26,20 @@
           <td>{{ organization.displayName }}</td>
           <td>{{ organization.orgNumber }}</td>
           <td>
-            <button md-icon-button><fint-fa name="edit"></fint-fa></button>
+            <button mat-icon-button><fa name="edit"></fa></button>
           </td>
         </tr>
       </tbody>
 
     </table>
-  </md-card-content>
-  <md-card-content *ngIf="!organizations.length">
+  </mat-card-content>
+  <mat-card-content *ngIf="!organizations.length">
     Ingen registrerte organisasjoner enda.
-  </md-card-content>
-  <md-card-actions>
-    <button md-raised-button md-ripple [routerLink]="['./', 'add']" type="button">
-      <fint-fa name="plus"></fint-fa>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button [routerLink]="['./', 'add']" type="button">
+      <fa name="plus"></fa>
       Ny organisasjon
     </button>
-  </md-card-actions>
-</md-card>
+  </mat-card-actions>
+</mat-card>

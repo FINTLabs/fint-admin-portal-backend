@@ -1,12 +1,14 @@
 // Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+import { MatCardModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { LibSharedModule } from 'fint-shared-components';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
+
+import { LibSharedModule } from 'fint-shared-components';
 
 import { ComponentRoutes } from './component.routes';
 import { ComponentComponent } from './component.component';
@@ -17,10 +19,13 @@ import { CommonComponentService } from './common-component.service';
   imports: [
     CommonModule,
     HttpModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
-    BrowserAnimationsModule,
+
+    AngularFontAwesomeModule,
+    MatCardModule,
+
     LibSharedModule,
     RouterModule.forChild([...ComponentRoutes])
   ],
