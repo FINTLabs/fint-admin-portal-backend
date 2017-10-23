@@ -1,4 +1,5 @@
 pipeline {
+    agent none
     stages {
         stage('Build') {
             agent { label 'docker' }
@@ -6,7 +7,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh "docker build -t 'dtr.rogfk.no/fint-beta/admin-portal:latest ."
+                sh "docker build -t 'dtr.rogfk.no/fint-beta/admin-portal:latest' ."
             }
         }
         stage('Publish') {
