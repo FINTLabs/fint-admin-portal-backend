@@ -24,30 +24,31 @@ export class OrganizationService {
       .catch(error => this.handleError(error));
   }
 
-  get(orgUuid: string): Observable<IOrganization> {
-    return this.http.get(this.base + '/' + orgUuid)
+  get(orgName: string): Observable<IOrganization> {
+    return this.http.get(this.base + '/' + orgName)
       .map(item => item.json())
       .catch(error => this.handleError(error));
   }
 
   save(org: IOrganization): Observable<IOrganization> {
-    if (!org.uuid) { delete org.dn; }
-    let call = (org.uuid) ? this.http.put(this.base + '/' + org.uuid, org) : this.http.post(this.base, org); // If exists, put - else post
+    //if (!org.name) { delete org.dn; }
+    if (org.dn == null) { delete org.dn; }
+    let call = (org.dn) ? this.http.put(this.base + '/' + org.name, org) : this.http.post(this.base, org); // If exists, put - else post
     return call.map(item => item.json()).catch(this.handleError);
   }
 
   // --------------------------
   // Contacts
   // --------------------------
-  getContacts(orgUuid: string): Observable<IContact[]> {
-    return this.http.get(this.base + '/' + orgUuid + '/contacts')
+  getContacts(orgName: string): Observable<IContact[]> {
+    return this.http.get(this.base + '/' + orgName + '/contacts')
       .map(item => item.json())
       .catch(error => this.handleError(error));
   }
 
-  saveContact(uuid: string, responsible: IContact): Observable<Response> {
+  saveContact(orgName: string, responsible: IContact): Observable<Response> {
     if (!responsible.dn) { delete responsible.dn; }
-    let url = this.base + '/' + uuid + '/contacts';
+    let url = this.base + '/' + orgName + '/contacts';
     let call = (responsible.dn) ? this.http.put(url + '/' + responsible.nin, responsible) : this.http.post(url, responsible); // If exists, put - else post
     return call
       .map(result => result.json())

@@ -22,7 +22,7 @@
 
       <!-- Editor -->
       <tbody>
-        <tr *ngFor="let component of components;" [routerLink]="['./', component.uuid]">
+        <tr *ngFor="let component of components;" [routerLink]="['./', component.name]">
           <td>{{ component.displayName }}</td>
           <td>{{ component.technicalName }}</td>
           <td>{{ component.description }}</td>

@@ -45,7 +45,7 @@ export class EditOrganizationComponent implements OnInit {
             this.organizationForm.setValue(organization);
 
             // Get contact data
-            organizationService.getContacts(this.organization.uuid)
+            organizationService.getContacts(this.organization.name)
               .subscribe(result => {
                 this.responsible = result;
                 this.contactStore.value = JSON.parse(JSON.stringify(this.responsible));
@@ -58,10 +58,11 @@ export class EditOrganizationComponent implements OnInit {
   ngOnInit() {
     this.organizationForm = this.fb.group({
       dn:           [this.organization.dn],
-      uuid:         [this.organization.uuid],
+      name:         [this.organization.name],
       displayName:  [this.organization.displayName, [Validators.required]],
       orgNumber:    [this.organization.orgNumber,   [Validators.required]],
-      orgId:        [this.organization.orgId,       [Validators.required]]
+      orgId:        [this.organization.orgId,       [Validators.required]],
+      components:   [this.organization.components]
     });
 
     const nameCtrl = this.organizationForm.controls['displayName'];
@@ -79,7 +80,7 @@ export class EditOrganizationComponent implements OnInit {
         if (this.contactStore.value.length) {
           // Save all contacts
           Promise.all(this.contactStore.value.map((responsible: IContact) => {
-            return this.organizationService.saveContact(result.uuid, responsible).toPromise();
+            return this.organizationService.saveContact(result.name, responsible).toPromise();
           }))
             // Then return
             .then(result => this.goBack())

@@ -16,25 +16,25 @@ export class CommonComponentService {
       .catch(error => this.handleError(error));
   }
 
-  get(uuid: string): Observable<ICommonComponent> {
-    return this.http.get(this.base + '/' + uuid)
+  get(name: string): Observable<ICommonComponent> {
+    return this.http.get(this.base + '/' + name)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
   save(model: ICommonComponent) {
     delete model.icon;
-    if (!model.uuid) { delete model.dn; }
+    if (model.dn == null) { delete model.dn; }
 
     // If exists, put - else post
-    return (model.uuid ? this.http.put(this.base + '/' + model.uuid, model) : this.http.post(this.base, model))
+    return (model.dn ? this.http.put(this.base + '/' + model.name, model) : this.http.post(this.base, model))
       .map(item => item.json())
       .catch(error => this.handleError(error));
   }
 
   delete(model: ICommonComponent) {
     delete model.icon;
-    return this.http.delete(this.base + '/' + model.uuid)
+    return this.http.delete(this.base + '/' + model.name)
       .catch(error => this.handleError(error));
   }
 

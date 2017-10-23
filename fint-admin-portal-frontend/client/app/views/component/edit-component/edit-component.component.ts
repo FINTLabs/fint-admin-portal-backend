@@ -42,12 +42,14 @@ export class EditComponentComponent implements OnInit {
 
   createForm() {
     this.componentForm = this.fb.group({
-      'dn': [this.component.dn],
-      'uuid': [this.component.uuid],
-      'displayName': [this.component.displayName, [Validators.required]],
-      'technicalName': [this.component.technicalName, [Validators.required]],
-      'description': [this.component.description],
-      'icon': [this.component.icon]
+      dn: [this.component.dn],
+      name: [this.component.name, [Validators.required]],
+      displayName: [this.component.displayName, [Validators.required]],
+      description: [this.component.description],
+      organisations: [this.component.organisations],
+      clients: [this.component.clients],
+      adapters: [this.component.adapters],
+      icon: [this.component.icon]
     });
   }
 

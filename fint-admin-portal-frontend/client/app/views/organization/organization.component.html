@@ -20,7 +20,7 @@
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.uuid]">
+      <tbody *ngFor="let organization of organizations;" [routerLink]="['./', organization.name]">
         <tr>
           <td>{{ organization.orgId }}</td>
           <td>{{ organization.displayName }}</td>

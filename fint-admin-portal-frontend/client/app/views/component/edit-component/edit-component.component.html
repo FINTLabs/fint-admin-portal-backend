@@ -1,5 +1,5 @@
-<h2 *ngIf="component.uuid == null">Opprett ny felleskomponent</h2>
-<h2 *ngIf="component.uuid != null">Rediger felleskomponent</h2>
+<h2 *ngIf="component.name == null">Opprett ny felleskomponent</h2>
+<h2 *ngIf="component.name != null">Rediger felleskomponent</h2>
 
 <form [formGroup]="componentForm" (ngSubmit)="save(componentForm.value)">
   <mat-card>
@@ -13,10 +13,10 @@
           </mat-hint>
         </mat-form-field>
         <mat-form-field class="col-xs-4">
-          <input matInput placeholder="Teknisk navn" type="text" formControlName="technicalName" style="width: 99%" required>
-          <mat-hint [hidden]="componentForm.controls['technicalName'].valid || componentForm.controls['technicalName'].pristine" align="end" style="color: red">
+          <input matInput placeholder="Teknisk navn" type="text" formControlName="name" style="width: 99%" required>
+          <mat-hint [hidden]="componentForm.controls['name'].valid || componentForm.controls['name'].pristine" align="end" style="color: red">
             <fa name="warning"></fa>
-            <span *ngIf="componentForm.controls['technicalName'].hasError('required')">Påkrevd</span>
+            <span *ngIf="componentForm.controls['name'].hasError('required')">Påkrevd</span>
           </mat-hint>
         </mat-form-field>
       </div>
