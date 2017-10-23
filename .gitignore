@@ -1,6 +1,7 @@
 .gradle
 .idea
 build
+dist
 classes
 schema
 out
@@ -8,3 +9,4 @@ out
 /.settings/
 *.project
 *.iml
+

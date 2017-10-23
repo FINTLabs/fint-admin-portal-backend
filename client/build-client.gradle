@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+task webjar(type: Jar, dependsOn: "jar") {
+  archiveName = 'client.jar'
+  from(fileTree('dist')) {
+    into 'META-INF/resources'
+  }
+}
