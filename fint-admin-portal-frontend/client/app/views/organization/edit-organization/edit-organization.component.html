@@ -8,7 +8,7 @@
         <mat-form-field class="col-xs-6">
           <input matInput type="text" placeholder="Organisasjonsnavn" formControlName="displayName" [matAutocomplete]="orgTypeahead">
           <mat-autocomplete #orgTypeahead="matAutocomplete" (optionSelected)="setSelectedOrganization($event)">
-            <mat-option *ngFor="let org of organizations" [value]="org">{{ org.name }}</mat-option>
+            <mat-option *ngFor="let org of organizations" [value]="org">{{ org.navn }}</mat-option>
           </mat-autocomplete>
           <mat-hint [hidden]="organizationForm.controls['displayName'].valid || organizationForm.controls['displayName'].pristine" align="end" style="color: red">
             <fa name="warning"></fa>

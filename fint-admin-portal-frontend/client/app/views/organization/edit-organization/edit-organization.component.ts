@@ -7,7 +7,7 @@ import { OrganizationService } from '../organization.service';
 import { IOrganization } from 'app/api/IOrganization';
 import { IContact } from 'app/api/IContact';
 import { ContactStore } from 'app/views/organization/edit-organization/ContactStore';
-import { MatCheckboxChange } from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatCheckboxChange} from '@angular/material';
 
 @Component({
   selector: 'app-edit-organization',
@@ -17,6 +17,7 @@ import { MatCheckboxChange } from '@angular/material';
 export class EditOrganizationComponent implements OnInit {
   organizationForm: FormGroup;
   organization: IOrganization = <IOrganization>{};
+  organizations = [];
 
   responsible: IContact[] = [];
   contactStore: ContactStore = new ContactStore();
@@ -67,7 +68,9 @@ export class EditOrganizationComponent implements OnInit {
     nameCtrl.valueChanges
       .distinctUntilChanged()
       .debounceTime(200)  // Do not hammer http request. Wait until user has typed a bit
-      .subscribe(v => this.organizationService.fetchRegistryOrgByName(v))
+      .subscribe(v => this.organizationService.fetchRegistryOrgByName(v).subscribe(orgs => {
+        this.organizations = orgs;
+      }))
   }
 
   save(model: IOrganization) {
@@ -89,9 +92,9 @@ export class EditOrganizationComponent implements OnInit {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  setSelectedOrganization(value) {
-    this.organizationForm.controls['displayName'].setValue(value.navn);
-    this.organizationForm.controls['orgNumber'].setValue(value.organisasjonsnummer);
+  setSelectedOrganization(value: MatAutocompleteSelectedEvent) {
+    this.organizationForm.controls['displayName'].setValue(value.option.value.navn);
+    this.organizationForm.controls['orgNumber'].setValue(value.option.value.organisasjonsnummer);
   }
 
   toggleMergeContact($event: MatCheckboxChange, type: string) {
