@@ -37,6 +37,11 @@ export class OrganizationService {
     return call.map(item => item.json()).catch(this.handleError);
   }
 
+  delete(org: IOrganization) {
+    return this.http.delete(this.base + '/' + org.name)
+      .catch(error => this.handleError(error));
+  }
+
   // --------------------------
   // Contacts
   // --------------------------

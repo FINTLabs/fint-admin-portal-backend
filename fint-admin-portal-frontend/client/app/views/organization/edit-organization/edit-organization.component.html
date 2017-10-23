@@ -80,6 +80,7 @@
     <mat-card-actions>
       <button mat-raised-button type="submit" color="primary" [disabled]="!organizationForm.valid"><fa name="save"></fa>Lagre</button>
       <button mat-raised-button type="button" [routerLink]="['../']"><fa name="ban"></fa>Avbryt</button>
+      <button mat-raised-button color="warn" type="button" (click)="deleteOrganization()" class="pull-right"><fa name="trash"></fa>Slett organisasjon</button>
     </mat-card-actions>
   </mat-card>
 </form>

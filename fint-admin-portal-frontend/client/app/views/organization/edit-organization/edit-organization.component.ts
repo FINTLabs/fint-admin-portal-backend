@@ -89,6 +89,16 @@ export class EditOrganizationComponent implements OnInit {
       });
   }
 
+  deleteOrganization() {
+    this.FintDialog.confirmDelete().afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.organizationService.delete(this.organization).subscribe(response => {
+          this.router.navigate(['../'], { relativeTo: this.route });
+        });
+      }
+    });
+  }
+
   goBack() {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
