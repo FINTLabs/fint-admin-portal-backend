@@ -41,6 +41,14 @@ repositories {
   //flatDir { dirs 'client/build/libs' }
 }
 
+/*
+task webjar(type: Jar, dependsOn: "jar") {
+  archiveName = 'client.jar'
+  from(fileTree('dist')) {
+    into 'META-INF/resources'
+  }
+}
+*/
 
 dependencies {
   //compile name: 'client'

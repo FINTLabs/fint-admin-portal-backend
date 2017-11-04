@@ -9,4 +9,4 @@ out
 /.settings/
 *.project
 *.iml
-
+docker-compose.yml
