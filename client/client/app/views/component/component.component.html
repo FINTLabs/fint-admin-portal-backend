@@ -24,7 +24,7 @@
       <tbody>
         <tr *ngFor="let component of components;" [routerLink]="['./', component.name]">
           <td>{{ component.displayName }}</td>
-          <td>{{ component.ou }}</td>
+          <td>{{ component.name }}</td>
           <td>{{ component.description }}</td>
           <td>
             <button mat-icon-button><fa name="edit"></fa></button>
