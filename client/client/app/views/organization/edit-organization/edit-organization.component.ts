@@ -1,13 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { MatAutocompleteSelectedEvent, MatCheckboxChange } from '@angular/material';
 
 import { FintDialogService } from 'fint-shared-components';
 import { OrganizationService } from '../organization.service';
-import { IOrganization } from 'app/api/IOrganization';
-import { IContact } from 'app/api/IContact';
-import { ContactStore } from 'app/views/organization/edit-organization/ContactStore';
-import {MatAutocompleteSelectedEvent, MatCheckboxChange} from '@angular/material';
+
+import { IOrganization, IContact } from 'app/api';
+import { ContactStore } from './ContactStore';
 
 @Component({
   selector: 'app-edit-organization',
@@ -83,7 +83,7 @@ export class EditOrganizationComponent implements OnInit {
             return this.organizationService.saveContact(result.name, responsible).toPromise();
           }))
             // Then return
-            .then(result => this.goBack())
+            .then(_ => this.goBack())
             .catch(error => this.FintDialog.displayError('Error saving contacts', error));
         } else { this.goBack(); }
       });

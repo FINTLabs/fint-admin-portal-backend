@@ -1,17 +1,17 @@
 // Modules
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 
 import { AppRoutingModule } from './app-routing.module';
-import { LibSharedModule, EventService } from 'fint-shared-components';
+import { LibSharedModule/* , EventService  */} from 'fint-shared-components';
 
 // Components
 import { AppComponent } from './app.component';
-import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
-import { MatToolbarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -19,19 +19,18 @@ import { MatToolbarModule } from '@angular/material';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    FormsModule,
-    BrowserAnimationsModule,
+    LibSharedModule,
 
     MatToolbarModule,
     AngularFontAwesomeModule,
 
-    LibSharedModule,
     AppRoutingModule
   ],
-  providers: [EventService],
+  // providers: [EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

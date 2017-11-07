@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Http } from '@angular/http';
+
+import { Observable } from 'rxjs/Rx';
+
 import { FintDialogService } from 'fint-shared-components';
 
-import { IComponentHALPage, ICommonComponent } from 'app/api/ICommonComponent';
+import { IComponentHALPage, ICommonComponent } from 'app/api';
 
 @Injectable()
 export class CommonComponentService {
-  base: string = '/api/components';
+  base = '/api/components';
   constructor(private http: Http, private fintDialog: FintDialogService) { }
 
   all(): Observable<IComponentHALPage> {

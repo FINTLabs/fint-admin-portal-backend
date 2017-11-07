@@ -1,9 +1,9 @@
 import { Router } from '@angular/router';
-import { OrganizationService } from './organization.service';
 import { Component, OnInit } from '@angular/core';
-
-import { IOrganization } from 'app/api/IOrganization';
 import { Title } from '@angular/platform-browser';
+
+import { OrganizationService } from './organization.service';
+import { IOrganization } from 'app/api';
 
 @Component({
   selector: 'app-organization',
@@ -12,11 +12,11 @@ import { Title } from '@angular/platform-browser';
 })
 export class OrganizationComponent implements OnInit {
   organizations: IOrganization[] = [];
-  page: number = 1;
+  page = 1;
   pages: number;
   total: number;
-  pageSize: number = 10;
-  isLoading: boolean = false;
+  pageSize = 10;
+  isLoading = false;
 
   constructor(private organizationService: OrganizationService, private router: Router, private titleService: Title) {
     this.titleService.setTitle('Organisasjoner | Fint-Adminportal');

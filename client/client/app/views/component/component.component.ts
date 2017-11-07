@@ -11,11 +11,11 @@ import { ICommonComponent } from 'app/api/ICommonComponent';
 })
 export class ComponentComponent implements OnInit {
   components: ICommonComponent[] = [];
-  page: number = 1;
+  page = 1;
   pages: number;
   total: number;
-  pageSize: number = 10;
-  isLoading: boolean = false;
+  pageSize = 10;
+  isLoading = false;
 
   constructor(private titleService: Title, private CommonComponent: CommonComponentService) {
     this.titleService.setTitle('Komponenter | Fint');

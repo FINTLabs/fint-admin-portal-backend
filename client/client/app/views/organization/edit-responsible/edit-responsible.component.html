@@ -1,7 +1,10 @@
 <form [formGroup]="responsibleForm" novalidate (change)="onChange()">
   <div class="row">
     <mat-form-field class="col-xs-4">
-      <input matInput placeholder="Fødselsnummer" type="tel" formControlName="nin" required autocomplete="off">
+      <input matInput placeholder="Fødselsnummer" type="showBirthNo ? 'tel' : 'password'" formControlName="nin" required autocomplete="off">
+      <button matSuffix mat-icon-button type="button" title="Vis fødselsnummer" (click)="showBirthNo = !showBirthNo">
+        <fa [name]="showBirthNo ? 'eye' : 'eye-slash'" fixed="true"></fa>
+      </button>
       <mat-hint [hidden]="responsibleForm.controls['nin'].valid || responsibleForm.controls['nin'].pristine" align="end" style="color: red">
         <fa name="warning"></fa>
         <span *ngIf="responsibleForm.controls['nin'].hasError('required')">Påkrevd</span>

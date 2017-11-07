@@ -3,10 +3,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+
 import { FintDialogService } from 'fint-shared-components';
 
 import { CommonComponentService } from '../common-component.service';
-import { ICommonComponent } from 'app/api/ICommonComponent';
+import { ICommonComponent } from 'app/api';
 
 @Component({
   selector: 'app-edit-component',

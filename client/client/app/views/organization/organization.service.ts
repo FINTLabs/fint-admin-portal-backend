@@ -5,20 +5,19 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { IOrgHALPage, IOrganization } from 'app/api/IOrganization';
-import { IContact } from 'app/api/IContact';
+import { IOrgHALPage, IOrganization, IContact } from 'app/api';
 import { FintDialogService } from 'fint-shared-components';
 
 @Injectable()
 export class OrganizationService {
-  base: string = '/api/organisations';
+  base = '/api/organisations';
 
   constructor(private http: Http, private fintDialog: FintDialogService) { }
 
   all(page: number = 1, pageSize?: number): Observable<IOrgHALPage> {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('page', page.toString());
-    //params.set('pageSize', pageSize.toString());
+    // params.set('pageSize', pageSize.toString());
     return this.http.get(this.base, { search: params })
       .map(items => items.json())
       .catch(error => this.handleError(error));
@@ -31,9 +30,9 @@ export class OrganizationService {
   }
 
   save(org: IOrganization): Observable<IOrganization> {
-    //if (!org.name) { delete org.dn; }
+    // if (!org.name) { delete org.dn; }
     if (org.dn == null) { delete org.dn; }
-    let call = (org.dn) ? this.http.put(this.base + '/' + org.name, org) : this.http.post(this.base, org); // If exists, put - else post
+    const call = (org.dn) ? this.http.put(this.base + '/' + org.name, org) : this.http.post(this.base, org); // If exists, put - else post
     return call.map(item => item.json()).catch(this.handleError);
   }
 
@@ -53,8 +52,10 @@ export class OrganizationService {
 
   saveContact(orgName: string, responsible: IContact): Observable<Response> {
     if (!responsible.dn) { delete responsible.dn; }
-    let url = this.base + '/' + orgName + '/contacts';
-    let call = (responsible.dn) ? this.http.put(url + '/' + responsible.nin, responsible) : this.http.post(url, responsible); // If exists, put - else post
+    const url = this.base + '/' + orgName + '/contacts';
+    const call = (responsible.dn)
+      ? this.http.put(url + '/' + responsible.nin, responsible)
+      : this.http.post(url, responsible); // If exists, put - else post
     return call
       .map(result => result.json())
       .catch(error => this.handleError(error));
@@ -64,7 +65,7 @@ export class OrganizationService {
   // External calls
   // --------------------------
   fetchRegistryOrgByName(filter: string) {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
     params.set('$filter', `startswith(navn,'${filter}') and (organisasjonsform eq 'FYLK' or organisasjonsform eq 'KOMM')`);
@@ -74,7 +75,7 @@ export class OrganizationService {
   }
 
   fetchRegistryOrgByNumber(orgId: number) {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set('page', '0');
     params.set('size', '100');
     params.set('$filter', `organisasjonsnummer eq '${orgId}' and (organisasjonsform eq 'FYLK' or organisasjonsform eq 'KOMM')`);

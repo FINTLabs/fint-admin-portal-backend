@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { EventModule } from 'fint-shared-components';
+// import { EventModule } from 'fint-shared-components';
 import { ComponentModule } from './views/component/component.module';
 import { OrganizationModule } from './views/organization/organization.module';
 
@@ -19,7 +19,7 @@ const routes: Routes = [
   imports: [
     ComponentModule,    // Including routes
     OrganizationModule, // Including routes
-    EventModule.forRoot(), // Including routes
+    // EventModule.forRoot(), // Including routes
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IContact } from 'app/api/IContact';
+import { IContact } from 'app/api';
 
 @Component({
   selector: 'app-edit-responsible',
