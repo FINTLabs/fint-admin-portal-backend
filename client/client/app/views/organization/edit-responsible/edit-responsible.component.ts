@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IContact } from 'app/api';
+import { IContact } from 'app/api/IContact';
 
 @Component({
   selector: 'app-edit-responsible',
@@ -10,16 +10,18 @@ import { IContact } from 'app/api';
 export class EditResponsibleComponent implements OnInit {
   @Output()
   responsibleChange: EventEmitter<IContact> = new EventEmitter<IContact>();
+  showBirthNo = false;
 
   _responsible: IContact = <IContact>{};
   @Input()
-  get responsible() { return this._responsible };
   set responsible(c: IContact) {
     this._responsible = c;
     if (c && this.responsibleForm) {
       this.responsibleForm.setValue(this._responsible);
     }
   }
+  get responsible() { return this._responsible };
+
   responsibleForm: FormGroup;
 
   constructor(private fb: FormBuilder) { }
