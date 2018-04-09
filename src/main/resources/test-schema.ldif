@@ -1,0 +1,17 @@
+
+dn: o=fint-test
+objectclass: top
+objectclass: group
+o: fint-test
+
+dn: ou=apis,o=fint-test
+objectclass: group
+ou: apis
+
+dn: ou=contacts,o=fint-test
+objectclass: group
+ou: contacts
+
+dn: ou=organisations,o=fint-test
+objectclass: group
+ou: organisations
