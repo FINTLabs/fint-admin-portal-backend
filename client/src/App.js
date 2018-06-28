@@ -3,6 +3,8 @@ import './App.css';
 import MuiThemeProvider from "@material-ui/core/es/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/es/styles/createMuiTheme";
 import Main from "./main/Main";
+import AppProvider from "./data/context/AppProvider";
+import {CookiesProvider} from "react-cookie";
 
 const theme = createMuiTheme({
     palette: {
@@ -25,7 +27,11 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
-                <Main/>
+                <CookiesProvider>
+                    <AppProvider>
+                        <Main/>
+                    </AppProvider>
+                </CookiesProvider>
             </MuiThemeProvider>
         );
     }
