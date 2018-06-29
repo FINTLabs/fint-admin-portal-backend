@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import AdapterIcon from "@material-ui/icons/Link";
 import ApiIcon from "@material-ui/icons/WebAsset";
-import ClientIcon from "@material-ui/icons/ImportantDevices";
+import ContactIcon from "@material-ui/icons/Person";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
@@ -45,7 +45,6 @@ class Dashboard extends Component {
         this.props.fetchOrganisations();
         this.props.fetchContacts();
         this.props.fetchComponents();
-
     }
 
 
@@ -55,7 +54,6 @@ class Dashboard extends Component {
             return (
                 <div className={classes.root}>
                     <Grid container spacing={24}>
-
                         <Grid item xs={4}>
                             <Link to="contacts" className={classes.cardLink}>
                                 <Card className={classes.card}>
@@ -63,7 +61,7 @@ class Dashboard extends Component {
                                         title="Kontakter"
                                         avatar={
                                             <Avatar className={classes.avatar}>
-                                                <ClientIcon className={classes.avatar}/>
+                                                <ContactIcon className={classes.avatar}/>
                                             </Avatar>
                                         }
                                         subheader="Antall"
@@ -78,10 +76,8 @@ class Dashboard extends Component {
                                 </Card>
                             </Link>
                         </Grid>
-
                         <Grid item xs={4}>
                             <Link to="organisations" className={classes.cardLink}>
-
                                 <Card className={classes.card}>
                                     <CardHeader
                                         title="Organisasjon"
@@ -98,14 +94,11 @@ class Dashboard extends Component {
                                             {organisations.length}
                                         </Typography>
                                     </CardContent>
-
                                 </Card>
                             </Link>
                         </Grid>
-
                         <Grid item xs={4}>
-                            <Link to="apis" className={classes.cardLink}>
-
+                            <Link to="components" className={classes.cardLink}>
                                 <Card className={classes.card}>
                                     <CardHeader
                                         title="Komponenter"
@@ -119,10 +112,9 @@ class Dashboard extends Component {
                                     <Divider/>
                                     <CardContent className={classes.cardContent}>
                                         <Typography type="display4">
-                                            {this.props.context.currentOrganisation.components.length}
+                                            {components.length}
                                         </Typography>
                                     </CardContent>
-
                                 </Card>
                             </Link>
                         </Grid>

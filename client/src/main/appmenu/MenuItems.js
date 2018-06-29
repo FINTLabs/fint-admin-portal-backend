@@ -1,9 +1,9 @@
 import React from "react";
 import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import BusinessIcon from "@material-ui/icons/Business";
-import ContactsIcon from "@material-ui/icons/Contacts";
-import ViewCompactIcon from "@material-ui/icons/ViewCompact";
+import GroupIcon from "@material-ui/icons/Group";
+import ContactIcon from "@material-ui/icons/Person";
+import ComponentIcon from "@material-ui/icons/WebAsset";
 import {Link} from "react-router-dom";
 
 const menuLink = {
@@ -23,25 +23,25 @@ export const MENU_ITEMS = (
         <Link to="/organisations" style={menuLink}>
             <ListItem button>
                 <ListItemIcon>
-                    <BusinessIcon/>
+                    <GroupIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Organisations"/>
+                <ListItemText primary="Organisasjoner"/>
             </ListItem>
         </Link>
         <Link to="/contacts" style={menuLink}>
             <ListItem button>
                 <ListItemIcon>
-                    <ContactsIcon/>
+                    <ContactIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Contacts"/>
+                <ListItemText primary="Kontakter"/>
             </ListItem>
         </Link>
         <Link to="/components" style={menuLink}>
             <ListItem button>
                 <ListItemIcon>
-                    <ViewCompactIcon/>
+                    <ComponentIcon/>
                 </ListItemIcon>
-                <ListItemText primary="Components"/>
+                <ListItemText primary="Komponenter"/>
             </ListItem>
         </Link>
     </div>

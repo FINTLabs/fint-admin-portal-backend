@@ -7,9 +7,9 @@ import {
 export default function organisation(state = [], action) {
     switch (action.type) {
         case FETCH_ORGANISATIONS_SUCCESS:
-            return {...state, organisation: action.payload};
+            return {...state, organisations: action.payload};
         case CREATE_ORGANISATION_SUCCESS:
-            return {...state, organisation: action.payload};
+            return {...state, organisations: action.payload};
         case UPDATE_ORGANISATION_SUCCESS:
             return state;
         case DELETE_ORGANISATION_SUCCESS:

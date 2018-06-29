@@ -5,7 +5,9 @@ class OrganisationApi {
     static fetchOrganisations() {
         const url = apiUrl + `/api/organisations`;
         return fetch(url, {method: 'GET'}).then(response => {
-            return response.json();
+            return response.json().then(result => {
+                return result._embedded.organisationList;
+            })
         }).catch(error => {
             return error;
         });

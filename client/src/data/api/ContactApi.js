@@ -3,9 +3,14 @@ import {apiUrl} from "./apiUrl";
 class ContactApi {
 
     static fetchContacts() {
-        const url = apiUrl + `/api/contacts`;
-        return fetch(url, {method: 'GET'}).then(response => {
-            return response.json();
+        const url = new URL(apiUrl + `/api/contacts`);
+        const params = {'page':1};
+        url.search = new URLSearchParams(params);
+        const request = new Request(url, {method:'GET'});
+        return fetch(request).then(response => {
+            return response.json().then(result => {
+                return result._embedded.contactList;
+            })
         }).catch(error => {
             return error;
         });

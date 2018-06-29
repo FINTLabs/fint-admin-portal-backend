@@ -4,22 +4,23 @@ class ComponentApi {
 
     static fetchComponents() {
         const url = apiUrl + `/api/components`;
-        return fetch(url, {method: 'GET'})
-            .then(response => {
-                return response.json();
+        return fetch(url, {method: 'GET'}).then(response => {
+                return response.json().then(result => {
+                    return result._embedded.componentList;
+                })
             }).catch(error => {
                 return error;
             })
     }
 
     static getComponents() {
-        const url = apiUrl +`/api/components`;
+        const url = apiUrl + `/api/components`;
         return fetch(url, {method: 'GET'})
             .then(response => Promise.all([response, response.json()]));
     }
 
     static createComponent(component) {
-        const url = apiUrl +`/api/components`;
+        const url = apiUrl + `/api/components`;
         const request = new Request(url, {
             method: 'POST',
             headers: {
@@ -29,7 +30,8 @@ class ComponentApi {
             body: JSON.stringify({
                 dn: component.dn,
                 name: component.name,
-                description: component.description
+                description: component.description,
+                basePath: component.basePath
             })
         });
 
@@ -41,7 +43,7 @@ class ComponentApi {
     }
 
     static updateComponent(component) {
-        const url = apiUrl +`/api/components/${component.name}`;
+        const url = apiUrl + `/api/components/${component.name}`;
         const request = new Request(url, {
             method: 'PUT',
             headers: {
@@ -63,10 +65,8 @@ class ComponentApi {
     }
 
     static deleteComponent(component) {
-        const url = apiUrl +`/api/component/${component.name}`;
-        const request = new Request(url, {
-            method: 'DELETE'
-        });
+        const url = apiUrl + `/api/components/${component.name}`;
+        const request = new Request(url, {method: 'DELETE'});
 
         return fetch(request).then(response => {
             return response;
