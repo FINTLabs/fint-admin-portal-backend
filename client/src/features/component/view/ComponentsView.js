@@ -5,7 +5,8 @@ import {
     withStyles,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import {TableBody} from "@material-ui/core/es/index";
+import {TableBody, TextField} from "@material-ui/core/es/index";
+import ComponentApi from "../../../data/api/ComponentApi";
 
 
 const styles = (theme) => ({
@@ -22,15 +23,12 @@ const styles = (theme) => ({
 });
 
 class ComponentsView extends React.Component {
-    handleClose = () => {
-        this.setState({open: false});
-        this.props.onClose();
-    };
 
     constructor(props) {
         super(props);
         this.state = {
             open: props.show,
+            component: props.component
         };
     }
 
@@ -38,10 +36,40 @@ class ComponentsView extends React.Component {
         if (nextProps.show !== prevState.show) {
             return {
                 open: nextProps.show,
+                component: nextProps.component
             };
         }
         return null;
     }
+
+    handleCancel = () => {
+        this.setState({open: false,});
+        this.props.onClose();
+    };
+
+    updateComponentState = (event) => {
+        const field = event.target.name;
+
+        const component = this.state.component;
+        component[field] = event.target.value;
+        return this.setState({component: component});
+    };
+
+    updateComponent = () => {
+        ComponentApi.updateComponent(this.state.component)
+            .then(response => {
+                this.props.notify("Komponenten ble oppdatert.");
+                this.props.onClose();
+            })
+            .catch(error => {
+            });
+        this.props.onClose();
+    };
+
+    isFormValid = () => {
+        const component = this.state.component;
+        return component.dn && component.name && component.description && component.basePath;
+    };
 
     render() {
         const {classes} = this.props;
@@ -63,19 +91,56 @@ class ComponentsView extends React.Component {
                             <Table className={classes.table}>
                                 <TableBody>
                                     <TableRow>
-
+                                        <TableCell variant='head'>Navn</TableCell>
+                                        <TableCell variant='body'>
+                                            <TextField
+                                                name="name"
+                                                label="Navn"
+                                                required
+                                                fullWidth
+                                                value={this.state.component.name}
+                                                onChange={this.updateComponentState}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
                                         <TableCell variant='head'>Teknisk Navn</TableCell>
-                                        <TableCell variant='body'>{component.name}</TableCell>
+                                        <TableCell variant='body'>
+                                            <TextField
+                                                name="dn"
+                                                label="Teknisk navn"
+                                                required
+                                                fullWidth
+                                                value={this.state.component.dn}
+                                                onChange={this.updateComponentState}
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow>
-
                                         <TableCell variant='head'>Beskrivelse</TableCell>
-                                        <TableCell variant='body'>{component.description}</TableCell>
+                                        <TableCell variant='body'>
+                                            <TextField
+                                                name="description"
+                                                label="Beskrivelse"
+                                                required
+                                                fullWidth
+                                                value={this.state.component.description}
+                                                onChange={this.updateComponentState}
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow>
-
                                         <TableCell variant='head'>Sti</TableCell>
-                                        <TableCell variant='body'>{component.basePath}</TableCell>
+                                        <TableCell variant='body'>
+                                            <TextField
+                                                name="basePath"
+                                                label="Sti"
+                                                required
+                                                fullWidth
+                                                value={this.state.component.basePath}
+                                                onChange={this.updateComponentState}
+                                            />
+                                        </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell variant='head' colSpan={2}
@@ -104,20 +169,17 @@ class ComponentsView extends React.Component {
                                                    className={classes.endpointMainTitle}>Swagger</TableCell>
                                     </TableRow>
                                     <TableRow>
-
                                         <TableCell variant='head'
                                                    className={classes.endpointsCell}>Produksjon</TableCell>
                                         <TableCell variant='body'><a target="_blank"
                                                                      href={`https://api.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://api.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                                     </TableRow>
                                     <TableRow>
-
                                         <TableCell variant='head' className={classes.endpointsCell}>Beta</TableCell>
                                         <TableCell variant='body'><a target="_blank"
                                                                      href={`https://beta.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://beta.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                                     </TableRow>
                                     <TableRow>
-
                                         <TableCell variant='head'
                                                    className={classes.endpointsCell}>Play-with-FINT</TableCell>
                                         <TableCell variant='body'><a target="_blank"
@@ -127,7 +189,10 @@ class ComponentsView extends React.Component {
                             </Table>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="secondary">
+                            <Button onClick={() => this.handleCancel()} color="primary">
+                                Avbryt
+                            </Button>
+                            <Button disabled={!this.isFormValid()} onClick={() => this.updateComponent()} color="primary">
                                 Ok
                             </Button>
                         </DialogActions>
@@ -142,7 +207,7 @@ class ComponentsView extends React.Component {
 
 ComponentsView.propTypes = {
     show: PropTypes.bool.isRequired,
-    //component: PropTypes.object.isRequired,
+    component: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 

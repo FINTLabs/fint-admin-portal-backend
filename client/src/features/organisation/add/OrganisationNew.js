@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import ComponentApi from "../../data/api/ComponentApi";
 import PropTypes from "prop-types";
+import OrganisationApi from "../../../data/api/OrganisationApi";
 
 
 const styles = (theme) => ({
-    createComponentButton: {
+    createOrganisationButton: {
         margin: theme.spacing.unit,
         top: theme.spacing.unit * 10,
         right: theme.spacing.unit * 3,
@@ -18,13 +18,13 @@ const styles = (theme) => ({
     }
 });
 
-class ComponentNew extends Component {
+class OrganisationNew extends Component {
 
 
     constructor(props) {
         super(props);
         this.state = {
-            component: {},
+            organisation: {},
             open: false,
         };
     }
@@ -39,35 +39,35 @@ class ComponentNew extends Component {
         this.setState({open: false});
     };
 
-    updateComponentState = (event) => {
+    updateOrganisationState = (event) => {
+
         const field = event.target.name;
 
-        const component = this.state.component;
-        component[field] = event.target.value;
-        return this.setState({component: component});
+        const organisation = this.state.organisation;
+        organisation[field] = event.target.value;
+        return this.setState({organisation: organisation});
     };
 
-    createComponent = () => {
-        console.log(this.state.component);
-        ComponentApi.createComponent(this.state.component)
+    createOrganisation = () => {
+        OrganisationApi.createOrganisation(this.state.organisation)
             .then(response => {
                 if (response.status === 201) {
-                    this.props.notify("Komponenten ble opprettet");
+                    this.props.notify("Kontakten ble opprettet");
                 }
                 else {
-                    this.props.notify("Komponenten finnes fra før");
+                    this.props.notify("Kontakten finnes fra før");
                 }
                 this.setState({open: false});
                 this.props.onClose();
             })
             .catch(() => {
-                this.props.notify("Det oppsto en feil ved opprettelse av komponenten.");
+                this.props.notify("Det oppsto en feil ved opprettelse av kontakten.");
             });
     };
 
     isFormValid = () => {
-        const component = this.state.component;
-        return component.dn && component.name && component.description && component.basePath;
+        const organisation = this.state.organisation;
+        return organisation.dn && organisation.name && organisation.displayName && organisation.orgNumber;
     };
 
     render() {
@@ -75,7 +75,7 @@ class ComponentNew extends Component {
         return (
             <div>
                 <Button onClick={() => this.openCreateDialog()} variant="fab" color="secondary" aria-label="add"
-                        className={classes.createComponentButton}>
+                        className={classes.createOrganisationButton}>
                     <AddIcon/>
                 </Button>
                 <Dialog
@@ -83,44 +83,43 @@ class ComponentNew extends Component {
                     onClose={this.handleCancel}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">Komponent</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Kontakt</DialogTitle>
                     <DialogContent className={classes.dialogContent}>
 
-                        <TextField
-                            name="dn"
-                            label="Teknisk navn"
-                            required
-                            fullWidth
-                            onChange={this.updateComponentState}
-                        />
                         <TextField
                             name="name"
                             label="Navn"
                             required
                             fullWidth
-                            onChange={this.updateComponentState}
+                            onChange={this.updateOrganisationState}
                         />
                         <TextField
-                            name="description"
-                            label="Beskrivelse"
+                            name="dn"
+                            label="Teknisk navn"
                             required
                             fullWidth
-                            onChange={this.updateComponentState}
+                            onChange={this.updateOrganisationState}
                         />
                         <TextField
-                            name="basePath"
-                            label="Sti"
+                            name="displayName"
+                            label="Vist navn"
                             required
                             fullWidth
-                            onChange={this.updateComponentState}
+                            onChange={this.updateOrganisationState}
                         />
-
+                        <TextField
+                            name="orgNumber"
+                            label="Organisasjonsnummer"
+                            required
+                            fullWidth
+                            onChange={this.updateOrganisationState}
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => this.handleCancel()} color="primary">
                             Avbryt
                         </Button>
-                        <Button disabled={!this.isFormValid()} onClick={() => this.createComponent()} color="primary">
+                        <Button disabled={!this.isFormValid()} onClick={() => this.createOrganisation()} color="primary">
                             Opprett
                         </Button>
                     </DialogActions>
@@ -130,10 +129,10 @@ class ComponentNew extends Component {
     }
 }
 
-ComponentNew.propTypes = {
+OrganisationNew.propTypes = {
     classes: PropTypes.any.isRequired,
     notify: PropTypes.any.isRequired,
     onClose: PropTypes.any.isRequired,
 };
 
-export default withStyles(styles)(ComponentNew);
+export default withStyles(styles)(OrganisationNew);

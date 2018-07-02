@@ -8,7 +8,6 @@ import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ContactIcon from "@material-ui/icons/Person";
 import WarningMessageBox from "../../common/WarningMessageBox";
-import {blue} from "@material-ui/core/colors";
 import ContactApi from "../../data/api/ContactApi";
 import ContactView from "./view/ContactView";
 import {withContext} from "../../data/context/withContext";
@@ -34,9 +33,6 @@ const styles = (theme) => ({
     },
     removeIcon: {
         color: theme.palette.primary.light,
-    },
-    setLegalIcon: {
-        color: blue[700],
     },
 });
 

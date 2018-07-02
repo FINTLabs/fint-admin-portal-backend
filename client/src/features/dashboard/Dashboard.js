@@ -3,7 +3,7 @@ import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withSt
 import {green} from "@material-ui/core/colors";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import AdapterIcon from "@material-ui/icons/Link";
+import BusinessIcon from "@material-ui/icons/Business";
 import ApiIcon from "@material-ui/icons/WebAsset";
 import ContactIcon from "@material-ui/icons/Person";
 import {bindActionCreators} from "redux";
@@ -83,7 +83,7 @@ class Dashboard extends Component {
                                         title="Organisasjon"
                                         avatar={
                                             <Avatar className={classes.avatar}>
-                                                <AdapterIcon className={classes.avatar}/>
+                                                <BusinessIcon className={classes.avatar}/>
                                             </Avatar>
                                         }
                                         subheader="Antall"

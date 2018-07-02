@@ -53,7 +53,8 @@ class ComponentApi {
             body: JSON.stringify({
                 dn: component.dn,
                 name: component.name,
-                description: component.description
+                description: component.description,
+                basePath: component.basePath,
             })
         });
 

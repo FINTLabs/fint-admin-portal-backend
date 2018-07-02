@@ -8,10 +8,11 @@ import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import PropTypes from "prop-types";
-import ComponentsView from "./ComponentsView";
+import ComponentsView from "./view/ComponentsView";
 import {withContext} from "../../data/context/withContext";
 import WarningMessageBox from "../../common/WarningMessageBox";
 import ComponentApi from "../../data/api/ComponentApi";
+import {fetchComponents} from "../../data/redux/dispatchers/component";
 
 
 const styles = theme => ({
@@ -49,7 +50,7 @@ class ComponentList extends Component {
         this.state = {
             askToRemoveComponent: false,
             message: '',
-            component: null,
+            component: {},
             notify: false,
             notifyMessage: '',
             showComponent: false,
@@ -101,6 +102,7 @@ class ComponentList extends Component {
         this.setState({
             showComponent: false,
         });
+        fetchComponents();
     };
 
 
@@ -136,6 +138,7 @@ class ComponentList extends Component {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={component.description}
+                                    secondary={component.basePath}
                                 />
                                 <ListItemSecondaryAction>
                                     <IconButton aria-label="Remove"
