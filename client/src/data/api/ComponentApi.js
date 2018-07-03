@@ -5,9 +5,7 @@ class ComponentApi {
     static fetchComponents() {
         const url = apiUrl + `/api/components`;
         return fetch(url, {method: 'GET'}).then(response => {
-                return response.json().then(result => {
-                    return result._embedded.componentList;
-                })
+                return response.json();
             }).catch(error => {
                 return error;
             })

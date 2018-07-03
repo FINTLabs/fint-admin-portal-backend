@@ -10,7 +10,7 @@ const store = createStore(
     combineReducers({
         component,
         organisation,
-        contact
+        contact,
     }),
     applyMiddleware(thunkMiddleware, logger)
 );

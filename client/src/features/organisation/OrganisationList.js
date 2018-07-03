@@ -10,8 +10,10 @@ import BusinessIcon from '@material-ui/icons/Business';
 import {withContext} from "../../data/context/withContext";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance"
 import OrganisationView from "./view/OrganisationView";
 import OrganisationApi from "../../data/api/OrganisationApi";
+import OrganisationAddLegalContact from "./add/OrganisationAddLegalContact";
 
 
 const styles = (theme) => ({
@@ -46,11 +48,20 @@ class OrganisationList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            askToAddLegalContact: false,
             askToRemoveOrganisation: false,
             showOrganisation: false,
             organisation: {},
             message: ''
         };
+    }
+
+    askToAddLegalContact(organisation) {
+        this.setState({
+            askToAddLegalContact: true,
+            organisation: organisation,
+            contacts: this.props.fetchContacts(),
+        });
     }
 
     askToRemoveOrganisation = (organisation) => {
@@ -86,6 +97,12 @@ class OrganisationList extends React.Component {
         });
     };
 
+    onCloseAddLegalContact = () => {
+        this.setState({
+            askToAddLegalContact: false
+        })
+    };
+
     showOrganisationView = (organisation) => {
         this.setState({
             organisation: organisation,
@@ -102,6 +119,14 @@ class OrganisationList extends React.Component {
                     message={this.state.message}
                     onClose={this.onCloseRemoveOrganisation}
                 />
+                <OrganisationAddLegalContact
+                    show={this.state.askToAddLegalContact}
+                    notify={this.props.notify}
+                    onClose={this.onCloseAddLegalContact}
+                    organisation={this.state.organisation}
+                    fetchContacts={this.props.fetchContacts}
+                    contacts={this.props.contacts}
+                />
                 <OrganisationView
                     organisation={this.state.organisation}
                     onClose={this.onCloseOrganisationView}
@@ -111,7 +136,7 @@ class OrganisationList extends React.Component {
                 <div className={classes.organisationList}>
                     <Typography variant="headline" className={classes.title}>Organisasjoner</Typography>
                     <Divider/>
-                    <List>
+                    <List className={classes.organisationList}>
                         {organisations.map((organisation) =>
                             <ListItem className={classes.listItem} key={organisation.dn}>
                                 <ListItemAvatar>
@@ -127,6 +152,10 @@ class OrganisationList extends React.Component {
                                     <IconButton aria-label="Remove"
                                                 onClick={() => this.askToRemoveOrganisation(organisation)}>
                                         <RemoveIcon className={classes.removeIcon}/>
+                                    </IconButton>
+                                    <IconButton aria-label="Legal"
+                                                onClick={() => this.askToAddLegalContact(organisation)}>
+                                        <AccountBalanceIcon className={classes.setLegalIcon}/>
                                     </IconButton>
                                     <IconButton aria-label="Settings"
                                                 onClick={() => this.showOrganisationView(organisation)}>
@@ -145,6 +174,8 @@ class OrganisationList extends React.Component {
 OrganisationList.propTypes = {
     fetchOrganisations: PropTypes.any.isRequired,
     organisations: PropTypes.array.isRequired,
+    contacts: PropTypes.any.isRequired,
+    fetchContacts: PropTypes.any.isRequired,
     notify: PropTypes.any.isRequired,
 };
 

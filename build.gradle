@@ -53,6 +53,7 @@ task webjar(type: Jar, dependsOn: "jar") {
 dependencies {
   //compile name: 'client'
   compile('org.springframework.boot:spring-boot-starter-web')
+  compile('org.springframework.retry:spring-retry:1.2.2.RELEASE')
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')

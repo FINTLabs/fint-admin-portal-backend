@@ -12,7 +12,6 @@ class OrganisationView extends Component {
             open: props.show,
             organisation: props.organisation,
         };
-
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -27,7 +26,6 @@ class OrganisationView extends Component {
     }
 
     handleCancel = () => {
-        //this.setState({open: false,});
         this.props.onClose();
     };
 
@@ -46,8 +44,8 @@ class OrganisationView extends Component {
                 this.props.onClose();
             })
             .catch(error => {
+                alert(error)
             });
-
     };
 
     render() {
@@ -60,7 +58,6 @@ class OrganisationView extends Component {
                 >
                     <DialogTitle id="form-dialog-title">Organisasjon</DialogTitle>
                     <DialogContent>
-
                         <TextField
                             name="name"
                             label="Navn"
@@ -93,7 +90,6 @@ class OrganisationView extends Component {
                             value={this.state.organisation.orgNumber}
                             onChange={this.updateOrganisationState}
                         />
-
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => this.handleCancel()} color="primary">

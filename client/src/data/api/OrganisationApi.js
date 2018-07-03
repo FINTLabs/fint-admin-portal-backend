@@ -5,9 +5,7 @@ class OrganisationApi {
     static fetchOrganisations() {
         const url = apiUrl + `/api/organisations`;
         return fetch(url, {method: 'GET'}).then(response => {
-            return response.json().then(result => {
-                return result._embedded.organisationList;
-            })
+            return response.json();
         }).catch(error => {
             return error;
         });
@@ -65,7 +63,6 @@ class OrganisationApi {
         });
     }
 
-    //TODO: ta url ut av konstruktor (sjekk alle api klassene)
     static deleteOrganisation(organisation) {
         const request = new Request(apiUrl + `/api/organisation/${organisation.name}`, {method: 'DELETE'});
         return fetch(request).then(response => {

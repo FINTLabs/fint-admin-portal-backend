@@ -4,6 +4,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -32,6 +34,9 @@ public class ContactController {
 
   @Autowired
   private ContactService contactService;
+
+  @Autowired
+  private LdapServiceRetryDecorator ldapServiceRetryDecorator;
 
   @ApiOperation("Add new contact")
   @RequestMapping(method = RequestMethod.POST,
@@ -74,10 +79,9 @@ public class ContactController {
   }
 
   @ApiOperation("Get all contacts")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Contact> getComponents(@RequestParam(required = false) Integer page) {
-    return new HalPagedResources<>(contactService.getContacts(), page);
+  public ResponseEntity getComponents() {
+    return ResponseEntity.ok(ldapServiceRetryDecorator.getContacts());
   }
 
   @ApiOperation("Get contact by nin")

@@ -102,12 +102,10 @@ function mapStateToProps(state) {
     }
 }
 
-function matchDispatchToProps(dispatch) {
-    return bindActionCreators(
-        {
-            fetchContacts: fetchContacts,
-        }
-        , dispatch);
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        fetchContacts: fetchContacts,
+    }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(withContext(ContactContainer)));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(ContactContainer)));

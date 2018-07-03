@@ -1,5 +1,5 @@
 export default {
     components: [],
     contacts: [],
-    organisations: []
+    organisations: [],
 }

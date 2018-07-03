@@ -136,8 +136,8 @@ Dashboard.propTypes = {
 function mapStateToProps(state) {
     return {
         organisations: state.organisation.organisations,
-        components: state.component.components,
         contacts: state.contact.contacts,
+        components: state.component.components,
     }
 }
 

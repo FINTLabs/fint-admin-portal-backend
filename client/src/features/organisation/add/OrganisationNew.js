@@ -8,7 +8,7 @@ import OrganisationApi from "../../../data/api/OrganisationApi";
 const styles = (theme) => ({
     createOrganisationButton: {
         margin: theme.spacing.unit,
-        top: theme.spacing.unit * 10,
+        top: theme.spacing.unit * 2,
         right: theme.spacing.unit * 3,
         position: 'absolute',
     },
@@ -96,9 +96,10 @@ class OrganisationNew extends Component {
                         <TextField
                             name="dn"
                             label="Teknisk navn"
-                            required
                             fullWidth
+                            required
                             onChange={this.updateOrganisationState}
+                            defaultValue={`ou=,ou=organisations,o=FINT-TEST`}
                         />
                         <TextField
                             name="displayName"
