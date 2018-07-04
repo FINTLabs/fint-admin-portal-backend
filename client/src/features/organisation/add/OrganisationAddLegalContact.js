@@ -6,6 +6,7 @@ import {
 } from "@material-ui/core";
 import ContactIcon from "@material-ui/icons/Person";
 import AddIconCircle from "@material-ui/icons/AddCircle";
+import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import OrganisationApi from "../../../data/api/OrganisationApi";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import PropTypes from "prop-types";
@@ -39,13 +40,13 @@ const styles = (theme) => ({
         color: '#fff',
         backgroundColor: theme.palette.secondary.main,
     },
-
     searchInput: {
         margin: theme.spacing.unit,
         width: '80%',
     },
-
-
+    removeIcon: {
+        color: theme.palette.primary.light,
+    },
 });
 
 class OrganisationAddLegalContact extends React.Component {
@@ -92,12 +93,49 @@ class OrganisationAddLegalContact extends React.Component {
         });
     };
 
+    askToRemoveLegalContact = (contact) => {
+        this.setState({
+            askToRemoveLegalContact: true,
+            message: `Vil du fjerne ${contact.firstName} ${contact.lastName} som juridisk kontakt?`,
+            contact: contact,
+        });
+    };
+
+    onCloseRemoveLegalContact = (confirmed) => {
+        this.setState({
+            askToRemoveLegalContact: false,
+        });
+
+        if (confirmed) {
+            this.unsetLegalContact(this.props.organisation, this.state.contact);
+        }
+    };
+
+    unsetLegalContact = (organisation, contact) => {
+        OrganisationApi.unsetLegalContact(organisation, contact).then(response => {
+            this.props.notify(`${contact.firstName} ${contact.lastName} er ikke lenger juridisk kontakt.`);
+            this.props.fetchContacts();
+            this.onSearch(this.state.searchString);
+            this.setState({
+                currentLegalContact: {},
+                searchString: ''
+            })
+        })
+    };
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (nextProps.contacts !== prevState.contacts) {
             return {
                 contacts: nextProps.contacts,
             };
         }
+
+        if (nextProps.currentLegalContact !== prevState.currentLegalContact) {
+            return {
+                currentLegalContact: nextProps.currentLegalContact,
+            };
+        }
+
         return null;
     }
 
@@ -115,7 +153,9 @@ class OrganisationAddLegalContact extends React.Component {
             filteredContacts: [],
             searchString: '',
             askToAddContact: false,
+            askToRemoveLegalContact: false,
             message: '',
+            currentLegalContact: props.currentLegalContact,
         };
     }
 
@@ -127,6 +167,11 @@ class OrganisationAddLegalContact extends React.Component {
                     show={this.state.askToAddContact}
                     message={this.state.message}
                     onClose={this.onCloseAddContact}
+                />
+                <InformationMessageBox
+                    show={this.state.askToRemoveLegalContact}
+                    message={this.state.message}
+                    onClose={this.onCloseRemoveLegalContact}
                 />
                 <Dialog
                     open={this.props.show}
@@ -151,6 +196,32 @@ class OrganisationAddLegalContact extends React.Component {
                     </DialogTitle>
                     <DialogContent>
                         <div className={classes.contactList}>
+
+                            {this.state.currentLegalContact.dn ?
+                                (<List>
+                                    <ListItem className={classes.listItem} key={this.state.currentLegalContact.dn}>
+                                        <ListItemAvatar>
+                                            <Avatar className={classes.itemAvatar}>
+                                                <ContactIcon/>
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={this.state.currentLegalContact.firstName}
+                                            secondary={this.state.currentLegalContact.lastName}
+                                        />
+                                        <ListItemSecondaryAction>
+                                            <IconButton color="secondary" aria-label="Add"
+                                                        onClick={() => this.askToRemoveLegalContact(this.state.currentLegalContact)}>
+                                                <RemoveIcon className={classes.removeIcon}/>
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                </List>)
+                                :
+                                (<div/>)
+                            }
+
+
                             <List>
                                 {this.state.filteredContacts.map((contact) =>
                                     <ListItem className={classes.listItem} key={contact.dn}>
@@ -189,11 +260,12 @@ class OrganisationAddLegalContact extends React.Component {
 OrganisationAddLegalContact.propTypes = {
     organisation: PropTypes.any.isRequired,
     classes: PropTypes.any.isRequired,
-    contacts: PropTypes.any,
     fetchContacts: PropTypes.any.isRequired,
     notify: PropTypes.any.isRequired,
     show: PropTypes.any.isRequired,
     onClose: PropTypes.any.isRequired,
+    currentLegalContact: PropTypes.any,
+    contacts: PropTypes.any,
 };
 
 export default withStyles(styles)(withContext(OrganisationAddLegalContact));

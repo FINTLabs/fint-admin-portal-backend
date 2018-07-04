@@ -3,6 +3,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, wi
 import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import OrganisationApi from "../../../data/api/OrganisationApi";
+import NameValidationInput from "../../../common/NameValidationInput";
 
 
 const styles = (theme) => ({
@@ -52,22 +53,22 @@ class OrganisationNew extends Component {
         OrganisationApi.createOrganisation(this.state.organisation)
             .then(response => {
                 if (response.status === 201) {
-                    this.props.notify("Kontakten ble opprettet");
+                    this.props.notify("Organisasjonen ble opprettet");
                 }
                 else {
-                    this.props.notify("Kontakten finnes fra før");
+                    this.props.notify("Organisasjonen finnes fra før");
                 }
                 this.setState({open: false});
                 this.props.onClose();
             })
-            .catch(() => {
-                this.props.notify("Det oppsto en feil ved opprettelse av kontakten.");
-            });
+    };
+
+    nameIsValid = (valid) => {
+        this.setState({nameIsValid: valid});
     };
 
     isFormValid = () => {
-        const organisation = this.state.organisation;
-        return organisation.dn && organisation.name && organisation.displayName && organisation.orgNumber;
+        return (this.state.nameIsValid && this.state.organisation.displayName && this.state.organisation.orgNumber)
     };
 
     render() {
@@ -85,21 +86,13 @@ class OrganisationNew extends Component {
                 >
                     <DialogTitle id="form-dialog-title">Kontakt</DialogTitle>
                     <DialogContent className={classes.dialogContent}>
-
-                        <TextField
+                        <NameValidationInput
                             name="name"
-                            label="Navn"
+                            title="Navn"
                             required
                             fullWidth
                             onChange={this.updateOrganisationState}
-                        />
-                        <TextField
-                            name="dn"
-                            label="Teknisk navn"
-                            fullWidth
-                            required
-                            onChange={this.updateOrganisationState}
-                            defaultValue={`ou=,ou=organisations,o=FINT-TEST`}
+                            nameIsValid={this.nameIsValid}
                         />
                         <TextField
                             name="displayName"
@@ -120,7 +113,8 @@ class OrganisationNew extends Component {
                         <Button onClick={() => this.handleCancel()} color="primary">
                             Avbryt
                         </Button>
-                        <Button disabled={!this.isFormValid()} onClick={() => this.createOrganisation()} color="primary">
+                        <Button disabled={!this.isFormValid()} onClick={() => this.createOrganisation()}
+                                color="primary">
                             Opprett
                         </Button>
                     </DialogActions>
@@ -133,7 +127,7 @@ class OrganisationNew extends Component {
 OrganisationNew.propTypes = {
     classes: PropTypes.any.isRequired,
     notify: PropTypes.any.isRequired,
-    onClose: PropTypes.any.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(OrganisationNew);

@@ -72,7 +72,7 @@ class OrganisationContainer extends React.Component {
                 />
                 <OrganisationAddExisting
                     notify={this.notify}
-                    onClose={this.props.fetchOrganisations}
+                    fetchOrganisations={this.props.fetchOrganisations}
                 />
                 <OrganisationList
                     notify={this.notify}
@@ -90,8 +90,8 @@ OrganisationContainer.propTypes = {
     classes: PropTypes.any,
     contacts: PropTypes.any,
     organisations: PropTypes.any,
-    fetchOrganisations: PropTypes.any,
-    fetchContacts: PropTypes.any,
+    fetchOrganisations: PropTypes.func,
+    fetchContacts: PropTypes.func,
 };
 
 function mapStateToProps(state) {

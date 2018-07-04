@@ -26,7 +26,6 @@ class OrganisationApi {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                dn: organisation.dn,
                 name: organisation.name,
                 orgNumber: organisation.orgNumber,
                 displayName: organisation.displayName,
@@ -64,7 +63,7 @@ class OrganisationApi {
     }
 
     static deleteOrganisation(organisation) {
-        const request = new Request(apiUrl + `/api/organisation/${organisation.name}`, {method: 'DELETE'});
+        const request = new Request(apiUrl + `/api/organisations/${organisation.name}`, {method: 'DELETE'});
         return fetch(request).then(response => {
             return response;
         }).catch(error => {
@@ -75,7 +74,9 @@ class OrganisationApi {
     static getLegalContact(organisation) {
         const url = apiUrl + `/api/organisations/${organisation.name}/contacts/legal`;
         return fetch(url, {method: 'GET'})
-            .then(response => Promise.all([response, response.json()]));
+            .then(response => {
+                return response.json();
+            });
     }
 
     static setLegalContact(organisation, contact) {
@@ -89,7 +90,7 @@ class OrganisationApi {
     }
 
     static unsetLegalContact(organisation, contact) {
-        const request = new Request(apiUrl + `/api/organisation/${organisation.name}/contacts/legal/${contact.nin}`, {method: 'DELETE'});
+        const request = new Request(apiUrl + `/api/organisations/${organisation.name}/contacts/legal/${contact.nin}`, {method: 'DELETE'});
         return fetch(request)
             .then(response => {
                 return response;

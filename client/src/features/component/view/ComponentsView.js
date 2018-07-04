@@ -104,15 +104,14 @@ class ComponentsView extends React.Component {
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell variant='head'>Teknisk Navn</TableCell>
+                                        <TableCell variant='head'>dn</TableCell>
                                         <TableCell variant='body'>
                                             <TextField
                                                 name="dn"
-                                                label="Teknisk navn"
-                                                required
+                                                label="dn"
+                                                disabled
                                                 fullWidth
                                                 value={this.state.component.dn}
-                                                onChange={this.updateComponentState}
                                             />
                                         </TableCell>
                                     </TableRow>

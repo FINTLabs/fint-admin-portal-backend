@@ -105,7 +105,6 @@ class OrganisationAddExisting extends React.Component {
                 organisations: nextProps.organisations,
             };
         }
-
         return null;
     }
 
@@ -115,21 +114,12 @@ class OrganisationAddExisting extends React.Component {
         });
     };
 
-    onCloseCreateOrganisation = (organisation) => {
+    onCloseCreateOrganisation = () => {
+        this.setState({
+            showOrganisationAdd: false,
+            filteredOrganisations: []
+        });
         this.props.fetchOrganisations()
-            .then(() => {
-                this.onSearch(organisation.orgNumber);
-            });
-        /*
-        this.setState({
-          filteredOrganisations: [organisation],
-        });
-        */
-        /*
-        this.setState({
-          searchString: `${organisation.firstName}`,
-        });
-        */
     };
 
     constructor(props, context) {
@@ -152,8 +142,11 @@ class OrganisationAddExisting extends React.Component {
                     message={this.state.message}
                     onClose={this.onCloseAddOrganisation}
                 />
-                <Button variant="fab" color="secondary" className={classes.addButton}
-                        onClick={this.openAddDialog}>
+                <Button
+                    variant="fab" color="secondary"
+                    className={classes.addButton}
+                    onClick={this.openAddDialog}
+                >
                     <Add/>
                 </Button>
                 <Dialog
@@ -176,7 +169,10 @@ class OrganisationAddExisting extends React.Component {
                             onChange={this.onChangeSearch}
                             onKeyUp={() => this.onSearch(this.state.searchString)}
                         />
-                        <OrganisationNew notify={this.props.notify} onClose={this.onCloseCreateOrganisation}/>
+                        <OrganisationNew
+                            notify={this.props.notify}
+                            onClose={this.onCloseCreateOrganisation}
+                        />
                     </DialogTitle>
                     <DialogContent>
                         <div className={classes.organisationList}>
@@ -217,8 +213,7 @@ class OrganisationAddExisting extends React.Component {
 
 OrganisationAddExisting.propTypes = {
     classes: PropTypes.any.isRequired,
-    //organisations: PropTypes.any.isRequired,
-    //fetchOrganisations: PropTypes.any.isRequired,
+    fetchOrganisations: PropTypes.any.isRequired,
     notify: PropTypes.any.isRequired
 };
 

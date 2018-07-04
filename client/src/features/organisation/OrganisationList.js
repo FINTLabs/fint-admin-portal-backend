@@ -22,7 +22,7 @@ const styles = (theme) => ({
         justifyContent: 'center',
     },
     organisationList: {
-        width: '75%',
+        width: '90%',
     },
     title: {
         paddingLeft: theme.spacing.unit * 3,
@@ -52,16 +52,21 @@ class OrganisationList extends React.Component {
             askToRemoveOrganisation: false,
             showOrganisation: false,
             organisation: {},
+            currentLegalContact: {},
             message: ''
         };
     }
 
     askToAddLegalContact(organisation) {
-        this.setState({
-            askToAddLegalContact: true,
-            organisation: organisation,
-            contacts: this.props.fetchContacts(),
-        });
+        OrganisationApi.getLegalContact(organisation).then(legalContact => {
+            this.setState({
+                askToAddLegalContact: true,
+                organisation: organisation,
+                contacts: this.props.fetchContacts(),
+                currentLegalContact: legalContact
+            });
+        })
+
     }
 
     askToRemoveOrganisation = (organisation) => {
@@ -83,8 +88,14 @@ class OrganisationList extends React.Component {
     };
 
     removeOrganisation = (organisation) => {
-        OrganisationApi.deleteOrganisation(organisation).then(() => {
-            this.props.notify(`${organisation.name} ble fjernet.`);
+        console.log(organisation);
+        OrganisationApi.deleteOrganisation(organisation).then(response => {
+            if (response.status === 202) {
+                this.props.notify(`${organisation.name} ble fjernet.`);
+            }
+            else {
+                this.props.notify("Noe gikk galt");
+            }
             this.props.fetchOrganisations();
         }).catch(error => {
             alert(error);
@@ -120,12 +131,13 @@ class OrganisationList extends React.Component {
                     onClose={this.onCloseRemoveOrganisation}
                 />
                 <OrganisationAddLegalContact
-                    show={this.state.askToAddLegalContact}
                     notify={this.props.notify}
-                    onClose={this.onCloseAddLegalContact}
-                    organisation={this.state.organisation}
                     fetchContacts={this.props.fetchContacts}
                     contacts={this.props.contacts}
+                    onClose={this.onCloseAddLegalContact}
+                    currentLegalContact={this.state.currentLegalContact}
+                    organisation={this.state.organisation}
+                    show={this.state.askToAddLegalContact}
                 />
                 <OrganisationView
                     organisation={this.state.organisation}

@@ -68,11 +68,10 @@ class OrganisationView extends Component {
                         />
                         <TextField
                             name="dn"
-                            label="Teknisk navn"
-                            required
+                            label="dn"
                             fullWidth
+                            disabled
                             value={this.state.organisation.dn}
-                            onChange={this.updateOrganisationState}
                         />
                         <TextField
                             name="displayName"
