@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import MuiThemeProvider from "@material-ui/core/es/styles/MuiThemeProvider";
-import createMuiTheme from "@material-ui/core/es/styles/createMuiTheme";
+import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import Main from "./main/Main";
 import AppProvider from "./data/context/AppProvider";
 import {CookiesProvider} from "react-cookie";

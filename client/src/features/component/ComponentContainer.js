@@ -4,7 +4,7 @@ import ComponentList from "./ComponentList";
 import ComponentNew from "./add/ComponentNew";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
 import {bindActionCreators} from "redux";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {withContext} from "../../data/context/withContext";
 import AutoHideNotification from "../../common/AutoHideNotification";

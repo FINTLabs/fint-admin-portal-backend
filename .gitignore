@@ -10,4 +10,4 @@ out
 *.project
 *.iml
 docker-compose.yml
-client/node_modules/*
+client/node_modules/

@@ -5,7 +5,7 @@ import {
     withStyles,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import {TableBody, TextField} from "@material-ui/core/es/index";
+import {TableBody, TextField} from "@material-ui/core";
 import ComponentApi from "../../../data/api/ComponentApi";
 
 

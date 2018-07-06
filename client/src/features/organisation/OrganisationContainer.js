@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withContext} from "../../data/context/withContext";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import {withStyles} from "@material-ui/core/styles";
 import {fetchOrganisations} from "../../data/redux/dispatchers/organisation";
 import LoadingProgress from "../../common/LoadingProgress";
 import AutoHideNotification from "../../common/AutoHideNotification";
