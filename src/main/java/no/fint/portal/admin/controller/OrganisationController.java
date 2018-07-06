@@ -4,6 +4,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -37,12 +38,14 @@ public class OrganisationController {
   private OrganisationService organisationService;
 
   @Autowired
+  private LdapServiceRetryDecorator ldapServiceRetryDecorator;
+
+  @Autowired
   private ContactService contactService;
 
   @ApiOperation("Create new organisation")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
-
   )
   public ResponseEntity createOrganization(@RequestBody final Organisation organisation) {
     log.info("Organisation: {}", organisation);
@@ -93,12 +96,10 @@ public class OrganisationController {
     );
   }
 
-
   @ApiOperation("Get all organisations")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Organisation> getOrganizations(@RequestParam(required = false) Integer page) {
-    return new HalPagedResources<>(organisationService.getOrganisations(), page);
+  public ResponseEntity getOrganizations() {
+    return ResponseEntity.ok().body(ldapServiceRetryDecorator.getOrganisations());
   }
 
   @ApiOperation("Get organisation by name")

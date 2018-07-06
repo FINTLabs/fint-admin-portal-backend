@@ -4,6 +4,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -34,6 +35,9 @@ public class ComponentController {
 
   @Autowired
   private ComponentService componentService;
+
+  @Autowired
+  private LdapServiceRetryDecorator ldapServiceRetryDecorator;
 
   @ApiOperation("Create new component")
   @RequestMapping(method = RequestMethod.POST,
@@ -76,13 +80,12 @@ public class ComponentController {
   }
 
   @ApiOperation("Get all components")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Component> getComponents(@RequestParam(required = false) Integer page) {
-    List<Component> components = componentService.getComponents();
+  public ResponseEntity getComponents() {
+    List<Component> components = ldapServiceRetryDecorator.getComponents();
     if (components == null)
       components = Collections.emptyList();
-    return new HalPagedResources<>(components, page);
+    return ResponseEntity.ok(components);
   }
 
   @ApiOperation("Get component by name")
