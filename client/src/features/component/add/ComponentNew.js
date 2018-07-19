@@ -54,8 +54,11 @@ class ComponentNew extends Component {
                 if (response.status === 201) {
                     this.props.notify("Komponenten ble opprettet");
                 }
-                else {
+                if (response.status === 302) {
                     this.props.notify("Komponenten finnes fra før");
+                }
+                else {
+                  this.props.notify("Det oppsto en feil ved opprettelse av komponenten.");
                 }
                 this.setState({open: false});
                 this.props.onClose();
@@ -88,13 +91,6 @@ class ComponentNew extends Component {
                         <TextField
                             name="name"
                             label="Navn"
-                            required
-                            fullWidth
-                            onChange={this.updateComponentState}
-                        />
-                        <TextField
-                            name="dn"
-                            label="Teknisk navn"
                             required
                             fullWidth
                             onChange={this.updateComponentState}
