@@ -12,6 +12,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -34,8 +35,8 @@ public class LdapServiceRetryDecorator {
   )
   public List<Contact> getContacts() {
     List<Contact> contacts = contactService.getContacts();
-    if (contacts.get(0).getNin() == null) {
-      throw new InvalidResourceException("Invalid Contact");
+    if (contacts.size() == 0) {
+      contacts = Collections.emptyList();
     }
     return contacts;
   }
@@ -46,11 +47,14 @@ public class LdapServiceRetryDecorator {
     maxAttempts = 5
   )
   public List<Organisation> getOrganisations() {
+
     List<Organisation> organisations = organisationService.getOrganisations();
-    if (organisations.get(0).getOrgNumber() == null) {
-      throw new InvalidResourceException("Invalid Organisation");
+    if (organisations.size() == 0) {
+      organisations = Collections.emptyList();
     }
     return organisations;
+
+
   }
 
   @Retryable(
@@ -60,8 +64,8 @@ public class LdapServiceRetryDecorator {
   )
   public List<Component> getComponents() {
     List<Component> components = componentService.getComponents();
-    if (components.get(0).getName() == null) {
-      throw new InvalidResourceException("Invalid Component");
+    if (components.size() == 0) {
+      components = Collections.emptyList();
     }
     return components;
   }

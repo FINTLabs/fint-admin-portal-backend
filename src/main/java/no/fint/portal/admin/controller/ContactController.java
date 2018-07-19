@@ -80,13 +80,13 @@ public class ContactController {
 
   @ApiOperation("Get all contacts")
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity getComponents() {
+  public ResponseEntity getContacts() {
     return ResponseEntity.ok(ldapServiceRetryDecorator.getContacts());
   }
 
   @ApiOperation("Get contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-  public ResponseEntity getComponent(@PathVariable String nin) {
+  public ResponseEntity getContact(@PathVariable String nin) {
     Optional<Contact> contact = contactService.getContact(nin);
 
     if (contact.isPresent()) {
@@ -100,7 +100,7 @@ public class ContactController {
 
   @ApiOperation("Delete contact")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
-  public ResponseEntity deleteComponent(@PathVariable final String nin) {
+  public ResponseEntity deleteContact(@PathVariable final String nin) {
     Optional<Contact> contact = contactService.getContact(nin);
 
     if (contact.isPresent()) {
