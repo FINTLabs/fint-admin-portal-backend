@@ -70,7 +70,7 @@ class ComponentNew extends Component {
 
     isFormValid = () => {
         const component = this.state.component;
-        return component.dn && component.name && component.description && component.basePath;
+        return component.name && component.description && component.basePath;
     };
 
     render() {
