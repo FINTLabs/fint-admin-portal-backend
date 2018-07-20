@@ -21,7 +21,7 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     componentList: {
-        width: '90%',
+        width: '75%',
     },
     title: {
         paddingLeft: theme.spacing.unit * 3,
@@ -127,7 +127,7 @@ class ComponentList extends Component {
                 <div className={classes.componentList}>
                     <Typography variant="headline" className={classes.title}>Komponenter</Typography>
                     <Divider/>
-                    <List className={classes.componentList}>
+                    <List>
                         {this.props.components.map((component) =>
                             <ListItem className={classes.listItem} key={component.dn}>
                                 <ListItemAvatar>

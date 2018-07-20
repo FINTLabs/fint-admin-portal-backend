@@ -3,6 +3,7 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, wi
 import AddIcon from "@material-ui/icons/Add";
 import ComponentApi from "../../../data/api/ComponentApi";
 import PropTypes from "prop-types";
+import NameValidationInput from "../../../common/NameValidationInput";
 
 
 const styles = (theme) => ({
@@ -54,13 +55,16 @@ class ComponentNew extends Component {
                 if (response.status === 201) {
                     this.props.notify("Komponenten ble opprettet");
                 }
-                if (response.status === 302) {
+                else if (response.status === 302) {
                     this.props.notify("Komponenten finnes fra før");
                 }
                 else {
                   this.props.notify("Det oppsto en feil ved opprettelse av komponenten.");
                 }
-                this.setState({open: false});
+                this.setState({
+                  open: false,
+                  component: {},
+                });
                 this.props.onClose();
             })
             .catch(() => {
@@ -68,9 +72,13 @@ class ComponentNew extends Component {
             });
     };
 
+  nameIsValid = (valid) => {
+    this.setState({nameIsValid: valid});
+  };
+
     isFormValid = () => {
         const component = this.state.component;
-        return component.name && component.description && component.basePath;
+        return this.state.nameIsValid && component.name && component.description && component.basePath;
     };
 
     render() {
@@ -88,13 +96,15 @@ class ComponentNew extends Component {
                 >
                     <DialogTitle id="form-dialog-title">Komponent</DialogTitle>
                     <DialogContent className={classes.dialogContent}>
-                        <TextField
+                      <NameValidationInput
                             name="name"
-                            label="Navn"
+                            title="Navn"
                             required
                             fullWidth
                             onChange={this.updateComponentState}
-                        />
+                            nameIsValid={this.nameIsValid}
+                      />
+
                         <TextField
                             name="description"
                             label="Beskrivelse"

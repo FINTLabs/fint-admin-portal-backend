@@ -22,7 +22,7 @@ const styles = (theme) => ({
         justifyContent: 'center',
     },
     organisationList: {
-        width: '90%',
+        width: '75%',
     },
     title: {
         paddingLeft: theme.spacing.unit * 3,
@@ -148,7 +148,7 @@ class OrganisationList extends React.Component {
                 <div className={classes.organisationList}>
                     <Typography variant="headline" className={classes.title}>Organisasjoner</Typography>
                     <Divider/>
-                    <List className={classes.organisationList}>
+                    <List>
                         {organisations.map((organisation) =>
                             <ListItem className={classes.listItem} key={organisation.dn}>
                                 <ListItemAvatar>

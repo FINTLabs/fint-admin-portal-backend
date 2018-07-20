@@ -48,13 +48,7 @@ class ContactApi {
             headers: new Headers({
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({
-                nin: contact.nin,
-                firstName: contact.firstName,
-                lastName: contact.lastName,
-                mail: contact.mail,
-                mobile: contact.mobile
-            })
+            body: JSON.stringify(contact)
         });
 
         return fetch(request).then(response => {

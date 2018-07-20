@@ -40,12 +40,15 @@ class ContactView extends Component {
     };
 
     updateContact = () => {
+        console.log(JSON.stringify(this.state.contact));
         ContactApi.updateContact(this.state.contact)
             .then(response => {
                 this.props.notify("Kontakten ble oppdatert.");
                 this.props.onClose();
             })
             .catch(error => {
+              this.props.notify(`En feil oppstod ved oppdatering av kontakten: ${error}`);
+              this.props.onClose();
             });
 
     };
