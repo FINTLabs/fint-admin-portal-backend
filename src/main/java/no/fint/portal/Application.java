@@ -9,6 +9,7 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.EnableRetry;
 
 import java.util.Properties;
 
@@ -16,6 +17,7 @@ import java.util.Properties;
 @EnableSpringfox
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableRetry
 public class Application {
   public static void main(String[] args) {
     SpringApplication app = new SpringApplication(Application.class);
