@@ -49,7 +49,6 @@ class ComponentNew extends Component {
     };
 
     createComponent = () => {
-        console.log(this.state.component);
         ComponentApi.createComponent(this.state.component)
             .then(response => {
                 if (response.status === 201) {

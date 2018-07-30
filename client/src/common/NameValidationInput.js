@@ -10,7 +10,7 @@ class NameValidationInput extends React.Component {
 
     onChangeUsername = (event) => {
         let username = event.target.value;
-        let usernameValidator = new RegExp("^[a-zA-Z0-9_-]{3,128}$");
+        let usernameValidator = new RegExp("^[a-z0-9.]{3,128}$");
         let valid = usernameValidator.test(username);
 
         this.setState({
@@ -40,7 +40,7 @@ class NameValidationInput extends React.Component {
                     name={name}
                     onChange={this.onChangeUsername}
                 />
-                <FormHelperText>{this.state.usernameValid ? '' : 'Navnet kan bare inneholde a-z, A-Z, 0-9, - og _. Det kan fra 3-128 tegn langt.'}</FormHelperText>
+                <FormHelperText>{this.state.usernameValid ? '' : 'Navnet kan bare inneholde a-z, og . (punktum). Det kan fra 3-128 tegn langt.'}</FormHelperText>
             </FormControl>
         );
     }

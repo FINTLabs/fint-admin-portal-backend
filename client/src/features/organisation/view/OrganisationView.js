@@ -49,7 +49,8 @@ class OrganisationView extends Component {
       });
   };
 
-  render() {
+  renderDialog() {
+
     return (
       <div>
         <Dialog
@@ -61,7 +62,7 @@ class OrganisationView extends Component {
           <DialogContent>
             <TextField
               name="name"
-              label="Navn"
+              label="Teknisk navn"
               disabled
               fullWidth
               value={this.state.organisation.name}
@@ -69,7 +70,7 @@ class OrganisationView extends Component {
             />
             <TextField
               name="displayName"
-              label="Vist navn"
+              label="Visningsnavn"
               required
               fullWidth
               value={this.state.organisation.displayName}
@@ -82,6 +83,13 @@ class OrganisationView extends Component {
               fullWidth
               value={this.state.organisation.orgNumber}
               onChange={this.updateOrganisationState}
+            />
+            <TextField
+              name="primaryAsset"
+              label="Primær ressurs"
+              disabled
+              fullWidth
+              value={this.state.organisation.primaryAssetId !== null ? this.state.organisation.primaryAssetId : 'Ikke tilgjengelig'}
             />
           </DialogContent>
           <DialogActions>
@@ -96,7 +104,11 @@ class OrganisationView extends Component {
 
       </div>
     );
-  }
+  };
+
+  render() {
+    return this.renderDialog();
+  };
 }
 
 OrganisationView.propTypes = {

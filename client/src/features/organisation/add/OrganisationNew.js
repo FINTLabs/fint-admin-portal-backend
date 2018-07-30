@@ -91,7 +91,7 @@ class OrganisationNew extends Component {
           <DialogContent className={classes.dialogContent}>
             <NameValidationInput
               name="name"
-              title="Navn"
+              title="Domenenavn (f.eks. rfk.no)"
               required
               fullWidth
               onChange={this.updateOrganisationState}

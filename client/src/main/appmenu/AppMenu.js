@@ -117,7 +117,6 @@ class AppMenu extends React.Component {
 
   componentDidMount = () => {
     MeApi.getMe().then(me => {
-      console.log(me);
       this.setState({me: me});
     });
   };

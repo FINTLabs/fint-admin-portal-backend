@@ -40,7 +40,6 @@ class ContactView extends Component {
     };
 
     updateContact = () => {
-        console.log(JSON.stringify(this.state.contact));
         ContactApi.updateContact(this.state.contact)
             .then(response => {
                 this.props.notify("Kontakten ble oppdatert.");

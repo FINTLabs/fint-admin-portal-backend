@@ -67,8 +67,9 @@ const styles = (theme) => ({
 
 class OrganisationAddLegalContact extends React.Component {
 
-  onSearch = (searchString) => {
+  onSearch = () => {
     let contacts = this.props.contacts;
+    let {searchString} = this.state;
     if (contacts) {
       this.setState({
         filteredContacts: contacts.filter(c =>
@@ -101,9 +102,21 @@ class OrganisationAddLegalContact extends React.Component {
   setLegalContact = (organisation, contact) => {
     OrganisationApi.setLegalContact(organisation, contact)
       .then(response => {
-        this.props.notify(`${contact.firstName} ${contact.lastName} ble satt som juridisk kontakt.`);
-        this.props.fetchContacts();
-        this.onSearch(this.state.searchString);
+        if (response.status === 204) {
+          this.props.notify(`${contact.firstName} ${contact.lastName} ble satt som juridisk kontakt.`);
+          //this.props.fetchContacts();
+          //this.onSearch(this.state.searchString);
+          this.setState({
+            currentLegalContact: contact,
+            searchString: '',
+            filteredContacts: [],
+          });
+        }
+        else {
+          this.props.notify(`Det oppstod et problem når vi forsøkte å sette juridisk kontakt. Sorry ;). Prøv igjen!`);
+          //this.props.fetchContacts();
+          this.onSearch(this.state.searchString);
+        }
       }).catch(error => {
       alert(error);
     });
@@ -130,18 +143,19 @@ class OrganisationAddLegalContact extends React.Component {
   unsetLegalContact = (organisation, contact) => {
     OrganisationApi.unsetLegalContact(organisation, contact).then(response => {
       this.props.notify(`${contact.firstName} ${contact.lastName} er ikke lenger juridisk kontakt.`);
-      this.props.fetchContacts();
+      //this.props.fetchContacts();
       this.onSearch(this.state.searchString);
       this.setState({
         currentLegalContact: {},
-        searchString: ''
+        searchString: '',
+        filteredContacts: [],
       })
     })
   };
 
   onClose = () => {
     this.setState({
-      searchString: null,
+      searchString: '',
       filteredContacts: [],
     });
     this.props.onClose();
@@ -154,11 +168,12 @@ class OrganisationAddLegalContact extends React.Component {
       };
     }
 
-    if (nextProps.currentLegalContact !== prevState.currentLegalContact) {
+    if (JSON.stringify(prevState.currentLegalContact) === '{}') {
       return {
         currentLegalContact: nextProps.currentLegalContact,
       };
     }
+
 
     return null;
   }
@@ -215,35 +230,35 @@ class OrganisationAddLegalContact extends React.Component {
                 'aria-label': 'Description',
               }}
               onChange={this.onChangeSearch}
-              onKeyUp={() => this.onSearch(this.state.searchString)}
+              onKeyUp={this.onSearch}
             />
           </DialogTitle>
           <DialogContent>
 
             <div>
-            {this.state.currentLegalContact.dn ?
-              (<List className={classes.currentLegalContactListItem}>
-                <ListItem key={this.state.currentLegalContact.dn}>
-                  <ListItemAvatar>
-                    <Avatar className={classes.itemAvatar}>
-                      <LegalContactIcon className={classes.setLegalIcon}/>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={this.state.currentLegalContact.firstName}
-                    secondary={this.state.currentLegalContact.lastName}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton color="secondary" aria-label="Add"
-                                onClick={() => this.askToRemoveLegalContact(this.state.currentLegalContact)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>)
-              :
-              (null)
-            }
+              {this.state.currentLegalContact.dn ?
+                (<List className={classes.currentLegalContactListItem}>
+                  <ListItem key={this.state.currentLegalContact.dn}>
+                    <ListItemAvatar>
+                      <Avatar className={classes.itemAvatar}>
+                        <LegalContactIcon className={classes.setLegalIcon}/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={this.state.currentLegalContact.firstName}
+                      secondary={this.state.currentLegalContact.lastName}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton color="secondary" aria-label="Add"
+                                  onClick={() => this.askToRemoveLegalContact(this.state.currentLegalContact)}>
+                        <RemoveIcon className={classes.removeIcon}/>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>)
+                :
+                (null)
+              }
             </div>
 
             <div className={classes.contactList}>

@@ -1,9 +1,8 @@
-import {apiUrl} from "./apiUrl";
 
 class ContactApi {
 
   static fetchContacts() {
-    const url = apiUrl + `/api/contacts`;
+    const url = `/api/contacts`;
     const request = new Request(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -16,7 +15,7 @@ class ContactApi {
   }
 
   static getContacts() {
-    const url = apiUrl + `/api/contacts`;
+    const url = `/api/contacts`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -25,7 +24,7 @@ class ContactApi {
   }
 
   static createContact(contact) {
-    const url = apiUrl + `/api/contacts`;
+    const url = `/api/contacts`;
     const request = new Request(url, {
       method: 'POST',
       headers: {
@@ -50,7 +49,7 @@ class ContactApi {
   }
 
   static updateContact(contact) {
-    const request = new Request(apiUrl + `/api/contacts/${contact.nin}`, {
+    const request = new Request(`/api/contacts/${contact.nin}`, {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -67,7 +66,7 @@ class ContactApi {
   }
 
   static deleteContact(contact) {
-    const request = new Request(apiUrl + `/api/contacts/${contact.nin}`, {
+    const request = new Request(`/api/contacts/${contact.nin}`, {
       method: 'DELETE',
       credentials: 'same-origin'
     });

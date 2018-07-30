@@ -1,9 +1,8 @@
-import {apiUrl} from "./apiUrl";
 
 class MeApi {
 
   static getMe() {
-    const url = apiUrl + `/api/me`;
+    const url = `/api/me`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'

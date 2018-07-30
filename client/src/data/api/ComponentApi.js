@@ -1,9 +1,8 @@
-import {apiUrl} from "./apiUrl";
 
 class ComponentApi {
 
   static fetchComponents() {
-    const url = apiUrl + `/api/components`;
+    const url = `/api/components`;
     return fetch(url,
       {
         method: 'GET',
@@ -17,7 +16,7 @@ class ComponentApi {
   }
 
   static getComponents() {
-    const url = apiUrl + `/api/components`;
+    const url = `/api/components`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -26,7 +25,7 @@ class ComponentApi {
   }
 
   static createComponent(component) {
-    const url = apiUrl + `/api/components`;
+    const url = `/api/components`;
     const request = new Request(url, {
       method: 'POST',
       headers: {
@@ -50,7 +49,7 @@ class ComponentApi {
   }
 
   static updateComponent(component) {
-    const url = apiUrl + `/api/components/${component.name}`;
+    const url = `/api/components/${component.name}`;
     const request = new Request(url, {
       method: 'PUT',
       headers: {
@@ -74,7 +73,7 @@ class ComponentApi {
   }
 
   static deleteComponent(component) {
-    const url = apiUrl + `/api/components/${component.name}`;
+    const url = `/api/components/${component.name}`;
     const request = new Request(url, {
       method: 'DELETE',
       credentials: 'same-origin'

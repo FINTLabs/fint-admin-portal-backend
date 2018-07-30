@@ -1,9 +1,8 @@
-import {apiUrl} from "./apiUrl";
 
 class OrganisationApi {
 
   static fetchOrganisations() {
-    const url = apiUrl + `/api/organisations`;
+    const url = `/api/organisations`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -15,7 +14,7 @@ class OrganisationApi {
   }
 
   static getOrganisations() {
-    const url = apiUrl + `/api/organisations`;
+    const url = `/api/organisations`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -23,7 +22,7 @@ class OrganisationApi {
   }
 
   static createOrganisation(organisation) {
-    const url = apiUrl + `/api/organisations`;
+    const url = `/api/organisations`;
     const request = new Request(url, {
       method: 'POST',
       headers: {
@@ -46,7 +45,7 @@ class OrganisationApi {
   }
 
   static updateOrganisation(organisation) {
-    const url = apiUrl + `/api/organisations/${organisation.name}`;
+    const url = `/api/organisations/${organisation.name}`;
     const request = new Request(url, {
       method: 'PUT',
       headers: {
@@ -70,7 +69,7 @@ class OrganisationApi {
   }
 
   static deleteOrganisation(organisation) {
-    const request = new Request(apiUrl + `/api/organisations/${organisation.name}`, {
+    const request = new Request(`/api/organisations/${organisation.name}`, {
       method: 'DELETE',
       credentials: 'same-origin'
     });
@@ -82,7 +81,7 @@ class OrganisationApi {
   }
 
   static getLegalContact(organisation) {
-    const url = apiUrl + `/api/organisations/${organisation.name}/contacts/legal`;
+    const url = `/api/organisations/${organisation.name}/contacts/legal`;
     return fetch(url, {
       method: 'GET',
       credentials: 'same-origin'
@@ -92,7 +91,7 @@ class OrganisationApi {
   }
 
   static setLegalContact(organisation, contact) {
-    const url = apiUrl + `/api/organisations/${organisation.name}/contacts/legal/${contact.nin}`;
+    const url = `/api/organisations/${organisation.name}/contacts/legal/${contact.nin}`;
     return fetch(url, {
       method: 'PUT',
       credentials: 'same-origin'
@@ -105,7 +104,7 @@ class OrganisationApi {
   }
 
   static unsetLegalContact(organisation, contact) {
-    const request = new Request(apiUrl + `/api/organisations/${organisation.name}/contacts/legal/${contact.nin}`, {
+    const request = new Request(`/api/organisations/${organisation.name}/contacts/legal/${contact.nin}`, {
       method: 'DELETE',
       credentials: 'same-origin'
     });
@@ -115,6 +114,16 @@ class OrganisationApi {
       }).catch(error => {
         return error;
       });
+  }
+
+  static getPrimaryAsset(organisation) {
+    const url = `/api/organisations/${organisation.name}/asset/primary`;
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin'
+    }).then(response => {
+      return response.json();
+    });
   }
 
 }
