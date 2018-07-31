@@ -56,7 +56,7 @@ class OrganisationList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      askToAddLegalContact: false,
+      showAddLegalContactDialog: false,
       askToRemoveOrganisation: false,
       showOrganisation: false,
       organisation: {},
@@ -66,17 +66,24 @@ class OrganisationList extends React.Component {
   }
 
 
-  askToAddLegalContact(organisation) {
+  showAddLegalContactDialog = (organisation) => {
     OrganisationApi.getLegalContact(organisation).then(legalContact => {
       this.setState({
-        askToAddLegalContact: true,
+        showAddLegalContactDialog: true,
         organisation: organisation,
         contacts: this.props.fetchContacts(),
         currentLegalContact: legalContact
       });
-    })
+    });
+  };
 
-  }
+  refreshLegalContact = (organisation) => {
+    OrganisationApi.getLegalContact(organisation).then(legalContact => {
+      this.setState({
+        currentLegalContact: legalContact
+      });
+    });
+  };
 
 
   askToRemoveOrganisation = (organisation) => {
@@ -119,7 +126,7 @@ class OrganisationList extends React.Component {
 
   onCloseAddLegalContact = () => {
     this.setState({
-      askToAddLegalContact: false
+      showAddLegalContactDialog: false
     })
   };
 
@@ -156,8 +163,9 @@ getPrimaryAssetId = (organisation) => {
           contacts={this.props.contacts}
           onClose={this.onCloseAddLegalContact}
           currentLegalContact={this.state.currentLegalContact}
+          refreshLegalContact={this.refreshLegalContact}
           organisation={this.state.organisation}
-          show={this.state.askToAddLegalContact}
+          show={this.state.showAddLegalContactDialog}
         />
         <OrganisationView
           organisation={this.state.organisation}
@@ -186,7 +194,7 @@ getPrimaryAssetId = (organisation) => {
                     <RemoveIcon className={classes.removeIcon}/>
                   </IconButton>
                   <IconButton aria-label="Legal"
-                              onClick={() => this.askToAddLegalContact(organisation)}>
+                              onClick={() => this.showAddLegalContactDialog(organisation)}>
                     <AccountBalanceIcon className={classes.setLegalIcon}/>
                   </IconButton>
                   <IconButton aria-label="Settings"

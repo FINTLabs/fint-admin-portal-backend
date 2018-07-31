@@ -103,22 +103,19 @@ class OrganisationAddLegalContact extends React.Component {
     OrganisationApi.setLegalContact(organisation, contact)
       .then(response => {
         if (response.status === 204) {
+          this.props.refreshLegalContact(organisation);
           this.props.notify(`${contact.firstName} ${contact.lastName} ble satt som juridisk kontakt.`);
-          //this.props.fetchContacts();
-          //this.onSearch(this.state.searchString);
-          this.setState({
-            currentLegalContact: contact,
-            searchString: '',
-            filteredContacts: [],
-          });
         }
         else {
           this.props.notify(`Det oppstod et problem når vi forsøkte å sette juridisk kontakt. Sorry ;). Prøv igjen!`);
-          //this.props.fetchContacts();
-          this.onSearch(this.state.searchString);
         }
-      }).catch(error => {
-      alert(error);
+      })
+      .catch(error => {
+        this.props.notify(`Det oppstod en feil: ${error}`);
+      });
+    this.setState({
+      searchString: '',
+      filteredContacts: [],
     });
   };
 
@@ -141,16 +138,24 @@ class OrganisationAddLegalContact extends React.Component {
   };
 
   unsetLegalContact = (organisation, contact) => {
-    OrganisationApi.unsetLegalContact(organisation, contact).then(response => {
-      this.props.notify(`${contact.firstName} ${contact.lastName} er ikke lenger juridisk kontakt.`);
-      //this.props.fetchContacts();
-      this.onSearch(this.state.searchString);
-      this.setState({
-        currentLegalContact: {},
-        searchString: '',
-        filteredContacts: [],
+    OrganisationApi.unsetLegalContact(organisation, contact)
+      .then(response => {
+        if (response.status === 204) {
+          this.props.refreshLegalContact(organisation);
+          this.props.notify(`${contact.firstName} ${contact.lastName} er ikke lenger juridisk kontakt.`);
+        }
+        else {
+          this.props.notify(`Det oppstod et problem når vi forsøkte å fjerne den juridiske kontakten. Sorry ;). Prøv igjen!`);
+        }
       })
-    })
+      .catch(error => {
+        this.props.notify(`Det oppstod en feil: ${error}`);
+      });
+
+    this.setState({
+      searchString: '',
+      filteredContacts: [],
+    });
   };
 
   onClose = () => {
@@ -168,7 +173,8 @@ class OrganisationAddLegalContact extends React.Component {
       };
     }
 
-    if (JSON.stringify(prevState.currentLegalContact) === '{}') {
+    //if (JSON.stringify(prevState.currentLegalContact) === '{}') {
+    if (nextProps.currentLegalContact !== prevState.currentLegalContact) {
       return {
         currentLegalContact: nextProps.currentLegalContact,
       };
