@@ -33,12 +33,7 @@ class ComponentApi {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin',
-      body: JSON.stringify({
-        dn: component.dn,
-        name: component.name,
-        description: component.description,
-        basePath: component.basePath
-      })
+      body: JSON.stringify(component)
     });
 
     return fetch(request).then(response => {
@@ -57,12 +52,7 @@ class ComponentApi {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin',
-      body: JSON.stringify({
-        dn: component.dn,
-        name: component.name,
-        description: component.description,
-        basePath: component.basePath,
-      })
+      body: JSON.stringify(component)
     });
 
     return fetch(request).then(response => {

@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import ComponentApi from "../../../data/api/ComponentApi";
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 const styles = (theme) => ({
@@ -68,6 +69,15 @@ class ComponentsView extends React.Component {
     return this.setState({component: component});
   };
 
+  updateComponentCheckBoxState = (event) => {
+    const field = event.target.name;
+
+    const component = this.state.component;
+    component[field] = event.target.checked;
+    console.log(JSON.stringify(component));
+    return this.setState({ component: component });
+  };
+
   updateComponent = () => {
     ComponentApi.updateComponent(this.state.component)
       .then(response => {
@@ -78,6 +88,7 @@ class ComponentsView extends React.Component {
       });
     this.props.onClose();
   };
+
 
   isFormValid = () => {
     const component = this.state.component;
@@ -135,6 +146,28 @@ class ComponentsView extends React.Component {
                       />
                     </TableCell>
                   </TableRow>
+                  <TableRow>
+                    <TableCell variant='head'>Åpne data</TableCell>
+                    <TableCell variant='body'>
+                      <Checkbox
+                        name="openData"
+                        checked={this.state.component.openData}
+                        onChange={this.updateComponentCheckBoxState}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant='head'>Felles</TableCell>
+                    <TableCell variant='body'>
+                      <Checkbox
+                        name="common"
+                        checked={this.state.component.common}
+                        onChange={this.updateComponentCheckBoxState}
+                      />
+                    </TableCell>
+                  </TableRow>
+
+
                   <TableRow>
                     <TableCell variant='head' colSpan={2}
                                className={classes.endpointMainTitle}>Endepunkter</TableCell>

@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles} from "@material-ui/core";
+import React, { Component } from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import OrganisationApi from "../../../data/api/OrganisationApi";
-import NameValidationInput from "../../../common/NameValidationInput";
+import DomainNameValidationInput from "../../../common/DomainNameValidationInput";
 
 
 const styles = (theme) => ({
@@ -11,11 +11,11 @@ const styles = (theme) => ({
     margin: theme.spacing.unit,
     top: theme.spacing.unit * 10,
     right: theme.spacing.unit * 3,
-    position: 'absolute',
+    position: "absolute"
   },
   dialogContent: {
     marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   }
 });
 
@@ -26,18 +26,18 @@ class OrganisationNew extends Component {
     super(props);
     this.state = {
       organisation: {},
-      open: false,
+      open: false
     };
   }
 
   openCreateDialog = () => {
     this.setState({
-      open: true,
-    })
+      open: true
+    });
   };
 
   handleCancel = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
 
   updateOrganisationState = (event) => {
@@ -46,7 +46,7 @@ class OrganisationNew extends Component {
 
     const organisation = this.state.organisation;
     organisation[field] = event.target.value;
-    return this.setState({organisation: organisation});
+    return this.setState({ organisation: organisation });
   };
 
   createOrganisation = () => {
@@ -60,22 +60,22 @@ class OrganisationNew extends Component {
         }
         this.setState({
           open: false,
-          organisation: {},
+          organisation: {}
         });
         this.props.onClose();
-      })
+      });
   };
 
   nameIsValid = (valid) => {
-    this.setState({nameIsValid: valid});
+    this.setState({ nameIsValid: valid });
   };
 
   isFormValid = () => {
-    return (this.state.nameIsValid && this.state.organisation.displayName && this.state.organisation.orgNumber)
+    return (this.state.nameIsValid && this.state.organisation.displayName && this.state.organisation.orgNumber);
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div>
         <Button onClick={() => this.openCreateDialog()} variant="fab" color="secondary" aria-label="add"
@@ -89,7 +89,7 @@ class OrganisationNew extends Component {
         >
           <DialogTitle id="form-dialog-title">Kontakt</DialogTitle>
           <DialogContent className={classes.dialogContent}>
-            <NameValidationInput
+            <DomainNameValidationInput
               name="name"
               title="Domenenavn (f.eks. rfk.no)"
               required
@@ -130,7 +130,7 @@ class OrganisationNew extends Component {
 OrganisationNew.propTypes = {
   classes: PropTypes.any.isRequired,
   notify: PropTypes.any.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(OrganisationNew);
