@@ -119,7 +119,7 @@ public class OrganisationController {
     );
   }
 
-  @ApiOperation("Get organisation by name")
+  @ApiOperation("Get primary asset")
   @GetMapping(value = "/{name}/asset/primary")
   public ResponseEntity getOrganizationPrimaryAsset(@PathVariable String name) {
     Optional<Organisation> organisation = organisationService.getOrganisation(name);
