@@ -3,7 +3,7 @@ WORKDIR /src/client
 COPY client .
 RUN yarn install && npm rebuild node-sass && yarn build
 
-FROM gradle:jdk8-alpine as java
+FROM gradle:4.6-jdk8-alpine as java
 USER root
 COPY . .
 COPY --from=node /src/client/build/ src/main/resources/public/

@@ -9,10 +9,9 @@ import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
+import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
-import no.rogfk.hateoas.extension.HalPagedResources;
-import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +24,7 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -59,7 +59,7 @@ public class ComponentController {
   }
 
   @ApiOperation("Update component")
-    @RequestMapping(value = "/{name}",
+  @RequestMapping(value = "/{name}",
     method = RequestMethod.PUT,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
@@ -115,6 +115,16 @@ public class ComponentController {
     throw new EntityNotFoundException(
       String.format("Component %s not found", name)
     );
+  }
+
+  @GetMapping("/{name}/assets")
+  public ResponseEntity<List<String>> getActiveAssetsForComponent(@PathVariable final String name) {
+    Optional<Component> component = componentService.getComponentByName(name);
+
+    Component c = component.orElseThrow(() -> new EntityNotFoundException("Component " + name + " not found"));
+
+
+    return ResponseEntity.ok(componentService.getActiveAssetsForComponent(c).stream().map(Asset::getAssetId).collect(Collectors.toList()));
   }
 
   //
