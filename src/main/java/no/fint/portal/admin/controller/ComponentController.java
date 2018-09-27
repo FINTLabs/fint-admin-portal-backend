@@ -117,7 +117,7 @@ public class ComponentController {
     );
   }
 
-  @GetMapping("/{name}/assets")
+  @GetMapping("/assets/{name}")
   public ResponseEntity<List<String>> getActiveAssetsForComponent(@PathVariable final String name) {
     Optional<Component> component = componentService.getComponentByName(name);
 
