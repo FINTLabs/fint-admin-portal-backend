@@ -14,7 +14,7 @@ pipeline {
                     sh "docker push 'dtr.fintlabs.no/beta/admin-portal:latest'"
                 }
                 withDockerServer([credentialsId: "ucp-fintlabs-jenkins-bundle", uri: "tcp://ucp.fintlabs.no:443"]) {
-                    sh "docker service update admin-portal_admin-portal --image dtr.fintlabs.no/beta/admin-portal:latest --detach=false"
+                    sh "docker service update admin-portal-beta_admin-portal --image dtr.fintlabs.no/beta/admin-portal:latest --detach=false"
                 }
             }
         }
