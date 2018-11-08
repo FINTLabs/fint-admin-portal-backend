@@ -147,6 +147,20 @@ class ComponentsView extends React.Component {
                     </TableCell>
                   </TableRow>
                   <TableRow>
+                    <TableCell variant='head'>Port</TableCell>
+                    <TableCell variant='body'>
+                      <TextField
+                        name="port"
+                        label="Port"
+                        required
+                        fullWidth
+                        type="number"
+                        value={this.state.component.port}
+                        onChange={this.updateComponentState}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
                     <TableCell variant='head'>Åpne data</TableCell>
                     <TableCell variant='body'>
                       <Checkbox
