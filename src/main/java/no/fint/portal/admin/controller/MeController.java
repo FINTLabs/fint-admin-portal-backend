@@ -4,24 +4,17 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.model.contact.Contact;
-import no.fint.portal.model.contact.ContactService;
-import no.fint.portal.modell.Me;
-import org.springframework.beans.factory.annotation.Autowired;
+import no.fint.portal.model.Me;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
-import java.util.Optional;
 
 @Slf4j
 @RestController

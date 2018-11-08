@@ -1,3 +1,6 @@
+spring:
+  application:
+    name: fint-admin-portal
 
 springfox:
  title: 'FINT Admin Portal API - TEST MODE'

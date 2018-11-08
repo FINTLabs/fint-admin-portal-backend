@@ -1,14 +1,14 @@
 buildscript {
-  apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/master/dependencies.gradle'
-  ext {
-    springBootVersion = springBootVersion
-  }
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-  }
+    apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/master/dependencies.gradle'
+    ext {
+        springBootVersion = springBootVersion
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'java'
@@ -16,30 +16,25 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 
-
-jar {
-  baseName = 'fint-admin-portal-backend'
-  version = version
-}
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-  mavenCentral()
-  mavenLocal()
-  jcenter()
-  repositories {
-    maven {
-      url "http://dl.bintray.com/rfkikt/maven"
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    repositories {
+        maven {
+            url "http://dl.bintray.com/rfkikt/maven"
+        }
     }
-  }
-  repositories {
-    maven {
-      url "http://dl.bintray.com/fint/maven"
+    repositories {
+        maven {
+            url "http://dl.bintray.com/fint/maven"
+        }
     }
-  }
-  mavenLocal()
-  //flatDir { dirs 'client/build/libs' }
+    mavenLocal()
+    //flatDir { dirs 'client/build/libs' }
 }
 
 /*
@@ -52,22 +47,22 @@ task webjar(type: Jar, dependsOn: "jar") {
 */
 
 dependencies {
-  //compile name: 'client'
-  compile('org.springframework.boot:spring-boot-starter-web')
-  compile('org.springframework.retry:spring-retry:1.2.2.RELEASE')
+    //compile name: 'client'
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.retry:spring-retry:1.2.2.RELEASE')
 
-  compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
-  compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-  compile('no.fint:fint-portal-api:3.2.0')
-  //compile('no.fint:fint-portal-api:0-SNAPSHOT')
+    compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
+    compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
+    compile('no.fint:fint-portal-api:3.3.0-rc-1')
+    //compile('no.fint:fint-portal-api:0-SNAPSHOT')
 
   runtime('org.springframework.boot:spring-boot-devtools')
   runtime('org.springframework.ldap:spring-ldap-test')
   runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
 
-  compileOnly('org.projectlombok:lombok')
+    compileOnly('org.projectlombok:lombok')
 
-  testCompile('org.springframework.boot:spring-boot-starter-test')
-  testCompile("org.spockframework:spock-core:${spockSpringVersion}")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 
