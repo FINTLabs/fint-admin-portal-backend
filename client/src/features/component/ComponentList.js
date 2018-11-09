@@ -13,6 +13,7 @@ import {withContext} from "../../data/context/withContext";
 import WarningMessageBox from "../../common/WarningMessageBox";
 import ComponentApi from "../../data/api/ComponentApi";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
+import Sort from "../../common/utils/Sort";
 
 
 const styles = theme => ({
@@ -107,6 +108,8 @@ class ComponentList extends Component {
 
     render() {
         const {classes} = this.props;
+        const components = this.props.components.sort(Sort.alphabetically);
+
 
         return (
             <div className={classes.root}>
@@ -128,7 +131,7 @@ class ComponentList extends Component {
                     <Typography variant="headline" className={classes.title}>Komponenter</Typography>
                     <Divider/>
                     <List>
-                        {this.props.components.map((component) =>
+                        {components.map((component) =>
                             <ListItem className={classes.listItem} key={component.dn}>
                                 <ListItemAvatar>
                                     <Avatar className={classes.itemAvatar}>

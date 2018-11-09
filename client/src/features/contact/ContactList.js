@@ -11,6 +11,7 @@ import WarningMessageBox from "../../common/WarningMessageBox";
 import ContactApi from "../../data/api/ContactApi";
 import ContactView from "./view/ContactView";
 import {withContext} from "../../data/context/withContext";
+import Sort from "../../common/utils/Sort";
 
 const styles = (theme) => ({
     root: {
@@ -89,7 +90,9 @@ class ContactList extends React.Component {
     };
 
     render() {
-        const {contacts, classes} = this.props;
+        const {classes} = this.props;
+        const contacts = this.props.contacts.sort(Sort.alphabetically);
+
         return (
             <div className={classes.root}>
                 <WarningMessageBox

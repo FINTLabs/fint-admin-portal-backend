@@ -22,6 +22,7 @@ import AccountBalanceIcon from "@material-ui/icons/AccountBalance"
 import OrganisationView from "./view/OrganisationView";
 import OrganisationApi from "../../data/api/OrganisationApi";
 import OrganisationAddLegalContact from "./add/OrganisationAddLegalContact";
+import Sort from "../../common/utils/Sort";
 
 
 const styles = (theme) => ({
@@ -149,8 +150,10 @@ getPrimaryAssetId = (organisation) => {
 */
 
   render() {
-    const {organisations, classes} = this.props;
-    return (
+    const {classes} = this.props;
+      const organisations = this.props.organisations.sort(Sort.alphabetically);
+
+      return (
       <div className={classes.root}>
         <WarningMessageBox
           show={this.state.askToRemoveOrganisation}
