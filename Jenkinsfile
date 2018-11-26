@@ -13,26 +13,32 @@ pipeline {
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
                     sh "docker push 'dtr.fintlabs.no/beta/admin-portal:latest'"
                 }
-                withDockerServer([credentialsId: "ucp-fintlabs-jenkins-bundle", uri: "tcp://ucp.fintlabs.no:443"]) {
-                    sh "docker service update admin-portal-beta_admin-portal --image dtr.fintlabs.no/beta/admin-portal:latest --detach=false"
+                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/admin-portal:RC-${BUILD_NUMBER}"
+                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
+                    sh "docker push fintlabs.azurecr.io/admin-portal:RC-${BUILD_NUMBER}"
                 }
             }
         }
         stage('Publish PR') {
             when { changeRequest() }
             steps {
-                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/admin-portal:${BRANCH_NAME}"
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/admin-portal:${BRANCH_NAME}-${BUILD_NUMBER}"
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker push 'dtr.fintlabs.no/beta/admin-portal:${BRANCH_NAME}'"
+                    sh "docker push dtr.fintlabs.no/beta/admin-portal:${BRANCH_NAME}-${BUILD_NUMBER}"
                 }
             }
         }
-        stage('Publish Tag') {
-            when { buildingTag() }
+        stage('Publish Version') {
+            when {
+                tag pattern: "v\\d+\\.\\d+\\.\\d+(-\\w+-\\d+)?", comparator: "REGEXP"
+            }
             steps {
-                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/admin-portal:${TAG_NAME}"
+                script {
+                    VERSION = TAG_NAME[1..-1]
+                }
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/admin-portal:${VERSION}"
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker push 'dtr.fintlabs.no/beta/admin-portal:${TAG_NAME}'"
+                    sh "docker push 'dtr.fintlabs.no/beta/admin-portal:${VERSION}'"
                 }
             }
         }
