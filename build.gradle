@@ -56,9 +56,11 @@ dependencies {
     compile('no.fint:fint-portal-api:3.3.0-rc-1')
     //compile('no.fint:fint-portal-api:0-SNAPSHOT')
 
-  runtime('org.springframework.boot:spring-boot-devtools')
-  runtime('org.springframework.ldap:spring-ldap-test')
-  runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
+    runtime('org.springframework.boot:spring-boot-devtools')
+    runtime('org.springframework.ldap:spring-ldap-test')
+    runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
+    runtime('com.microsoft.azure:applicationinsights-spring-boot-starter:1.1.0-BETA')
+    runtime('com.microsoft.azure:applicationinsights-logging-logback:2.2.0')
 
     compileOnly('org.projectlombok:lombok')
 

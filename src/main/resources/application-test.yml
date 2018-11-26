@@ -40,6 +40,8 @@ security:
 
 logging:
   level:
-    org:
-      springframework:
-        ldap: TRACE
+    org.springframework.ldap: DEBUG
+
+azure:
+  application-insights:
+    instrumentation-key: 7fa5c13a-9e6c-438e-85cc-bfc2e227d22a

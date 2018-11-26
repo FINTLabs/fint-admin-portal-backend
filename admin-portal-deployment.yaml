@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\noasgnil\go\bin\kompose.exe convert -d -f .\app-stack-beta.yml
+    kompose.version: 1.16.0 (HEAD)
+  labels:
+    io.kompose.service: admin-portal
+  name: admin-portal
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: admin-portal
+  template:
+    metadata:
+      labels:
+        io.kompose.service: admin-portal
+    spec:
+      restartPolicy: Always
+      containers:
+        - image: dtr.fintlabs.no/beta/admin-portal:latest
+          name: admin-portal
+          ports:
+            - containerPort: 8081
+          env:
+            - name: TZ
+              value: Europe/Oslo
+            - name: fint.ldap.url
+              value: ldap://10.0.0.55
+            - name: fint.ldap.component-base
+              value: ou=components,o=fint
+            - name: fint.ldap.contact-base
+              value: ou=contacts,o=fint
+            - name: fint.ldap.organisation-base
+              value: ou=organisations,o=fint
+            - name: fint.ldap.user
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: ldap.user
+            - name: fint.ldap.password
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: ldap.password
+            - name: fint.nam.oauth.idp-hostname
+              value: idp.felleskomponent.no
+            - name: fint.nam.oauth.clientId
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: nam.oauth.clientId
+            - name: fint.nam.oauth.clientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: nam.oauth.clientSecret
+            - name: fint.nam.oauth.username
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: nam.oauth.username
+            - name: fint.nam.oauth.password
+              valueFrom:
+                secretKeyRef:
+                  name: fint-portal-user
+                  key: nam.oauth.password

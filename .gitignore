@@ -11,3 +11,4 @@ out
 *.iml
 docker-compose.yml
 client/node_modules/
+/.vscode/
