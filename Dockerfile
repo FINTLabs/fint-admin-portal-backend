@@ -3,7 +3,7 @@ FROM fintlabs.azurecr.io/admin-portal-frontend as node
 FROM gradle:4.6-jdk8-alpine as java
 USER root
 COPY . .
-COPY --from=node /src/client/build/ src/main/resources/public/
+COPY --from=node /src/build/ src/main/resources/public/
 RUN gradle --no-daemon build
 
 FROM openjdk:8-jre-alpine
