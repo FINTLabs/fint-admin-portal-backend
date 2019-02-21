@@ -21,8 +21,15 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: dtr.fintlabs.no/beta/admin-portal:latest
+        - image: fintlabs.azurecr.io/admin-portal:RC-3
           name: admin-portal
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
           ports:
             - containerPort: 8081
           env:
