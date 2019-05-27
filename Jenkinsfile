@@ -16,6 +16,7 @@ pipeline {
                 withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
                     sh "docker push fintlabs.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
                 }
+                kubernetesDeploy configs: 'admin-portal-beta.yml', kubeconfigId: 'aks-beta-fint'
             }
         }
         stage('Publish PR') {
