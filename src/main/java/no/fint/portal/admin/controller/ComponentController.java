@@ -101,12 +101,16 @@ public class ComponentController {
         ControllerLinkBuilder builder = ControllerLinkBuilder.linkTo(getClass()).slash("assets");
         return ResponseEntity.ok(components
                 .stream()
-                .map(c -> new ComponentConfiguration(
-                        c.getName().replace("_", "-"),
-                        c.getPort(),
-                        c.getBasePath(),
-                        builder.slash(c.getName()).toUri().getPath()
-                ))
+                .map(c -> ComponentConfiguration
+                        .builder()
+                        .name(c.getName().replace("_", "-"))
+                        .path(c.getBasePath())
+                        .assetPath(builder.slash(c.getName()).toUri().getPath())
+                        .isInBeta(c.isInBeta())
+                        .isInProduction(c.isInProduction())
+                        .isInPlayWithFint(c.isInPlayWithFint())
+                        .build()
+                )
                 .collect(Collectors.toList()));
     }
 
