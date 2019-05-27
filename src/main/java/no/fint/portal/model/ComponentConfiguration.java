@@ -1,13 +1,17 @@
 package no.fint.portal.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class ComponentConfiguration {
     private String name;
-    private Integer port;
     private String path;
     private String assetPath;
+    private boolean isInProduction;
+    private boolean isInBeta;
+    private boolean isInPlayWithFint;
 }
