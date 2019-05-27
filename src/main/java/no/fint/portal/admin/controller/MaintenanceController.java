@@ -176,7 +176,7 @@ public class MaintenanceController {
     }
 
     private String getContactName(Contact contact) {
-        return String.format("%s %s", contact.getFirstName(), contact.getLastName());
+        return String.format("%s %s <%s>", contact.getFirstName(), contact.getLastName(), contact.getDn());
     }
 
     private List<String> checkLegalContacts(Contact contact) {
