@@ -35,7 +35,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: fintlabs.azurecr.io/admin-portal:1.2.0
+        - image: fintlabs.azurecr.io/admin-portal:1.3.0
           name: admin-portal
           resources:
             limits:
