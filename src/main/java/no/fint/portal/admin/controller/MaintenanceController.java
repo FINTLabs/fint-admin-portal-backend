@@ -55,6 +55,20 @@ public class MaintenanceController {
                 .collect(Collectors.toMap(Component::getDn, this::checkComponentOrganisations));
     }
 
+    @GetMapping("/consistency/organisations/contacts/technical")
+    public Map<String, List<String>> organisationTechnicalContactsConsistency() {
+        return organisationService.getOrganisations()
+                .stream()
+                .collect(Collectors.toMap(Organisation::getDn, this::checkOrganisationTechnicalContacts));
+    }
+
+    @PostMapping("/repair/organisations/contacts/technical")
+    public Map<String, List<String>> repairOrganisationTechnicalContactsConsistency() {
+        return organisationService.getOrganisations()
+                .stream()
+                .collect(Collectors.toMap(Organisation::getDn, this::repairOrganisationTechnicalContacts));
+    }
+
     @GetMapping("/consistency/components/clients")
     public Map<String, List<String>> componentClientConsistency() {
         return componentService.getComponents()
@@ -111,6 +125,47 @@ public class MaintenanceController {
                     return null;
                 })
                 .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> repairOrganisationTechnicalContacts(Organisation organisation) {
+        return organisation.getTechicalContacts().stream()
+                .map(contact -> {
+                    Optional<Contact> optionalContact = contactService.getContactByDn(contact);
+                    if (!optionalContact.isPresent()) {
+                        return null;
+                    }
+
+                    Contact contact1 = optionalContact.get();
+                    if (contact1
+                            .getTechnical()
+                            .stream()
+                            .noneMatch(organisation.getDn()::equals)) {
+                        contact1.getTechnical().add(organisation.getDn());
+                        contactService.updateContact(contact1);
+                        return "Repaired: " + contact;
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> checkOrganisationTechnicalContacts(Organisation organisation) {
+        return organisation.getTechicalContacts().stream()
+                .map(contact -> {
+                    Optional<Contact> optionalContact = contactService.getContactByDn(contact);
+                    if (!optionalContact.isPresent()) {
+                        return "Not found: " + contact;
+                    }
+                    if (optionalContact.get()
+                            .getTechnical()
+                            .stream()
+                            .anyMatch(organisation.getDn()::equals)) {
+                        return "OK: " + contact;
+                    }
+                    return "Missing: " + contact;
+                })
                 .collect(Collectors.toList());
     }
 
