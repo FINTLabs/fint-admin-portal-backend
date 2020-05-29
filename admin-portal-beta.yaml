@@ -14,10 +14,9 @@ spec:
   selector:
     io.kompose.service: admin-portal-beta
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
   labels:
     io.kompose.service: admin-portal-beta
   name: admin-portal-beta
