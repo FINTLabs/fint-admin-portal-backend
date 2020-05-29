@@ -55,10 +55,7 @@ public class ApiDiscoveryService {
                     .map(UriComponents::getPath)
                     .collect(Collectors.toList());
         } catch (HttpStatusCodeException e) {
-            if (e.getStatusCode().is4xxClientError()) {
-                return Collections.emptyList();
-            }
-            throw e;
+            return Collections.emptyList();
         }
     }
 
