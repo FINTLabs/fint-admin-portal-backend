@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.LdapServiceRetryDecorator;
+import no.fint.portal.admin.service.ApiDiscoveryService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -41,6 +42,9 @@ public class ComponentController {
 
     @Autowired
     private LdapServiceRetryDecorator ldapServiceRetryDecorator;
+
+    @Autowired
+    private ApiDiscoveryService apiDiscoveryService;
 
     @ApiOperation("Create new component")
     @RequestMapping(method = RequestMethod.POST,
@@ -106,6 +110,7 @@ public class ComponentController {
                         .name(c.getName().replace("_", "-"))
                         .path(c.getBasePath())
                         .assetPath(builder.slash(c.getName()).toUri().getPath())
+                        .classes(apiDiscoveryService.getClassesForComponent(c.getName().replace("_", "-"), c.getBasePath()))
                         .isInBeta(c.isInBeta())
                         .isInProduction(c.isInProduction())
                         .isInPlayWithFint(c.isInPlayWithFint())

@@ -3,10 +3,10 @@ package no.fint.portal;
 import com.github.springfox.loader.EnableSpringfox;
 import no.rogfk.hateoas.extension.annotations.EnableHalHypermediaSupport;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.EnableRetry;
@@ -16,8 +16,8 @@ import java.util.Properties;
 @EnableHalHypermediaSupport
 @EnableSpringfox
 @SpringBootApplication
-@EnableAutoConfiguration
 @EnableRetry
+@EnableCaching
 public class Application {
   public static void main(String[] args) {
     SpringApplication app = new SpringApplication(Application.class);
