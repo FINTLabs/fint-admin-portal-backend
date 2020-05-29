@@ -8,7 +8,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -54,7 +53,7 @@ public class ApiDiscoveryService {
                     .map(UriComponentsBuilder::build)
                     .map(UriComponents::getPath)
                     .collect(Collectors.toList());
-        } catch (HttpStatusCodeException e) {
+        } catch (Exception e) {
             return Collections.emptyList();
         }
     }
