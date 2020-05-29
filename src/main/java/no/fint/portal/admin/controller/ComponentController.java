@@ -1,7 +1,6 @@
 package no.fint.portal.admin.controller;
 
 
-import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +10,9 @@ import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ComponentConfiguration;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.model.PolicyStatus;
 import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
-import no.fint.portal.nam.AuthorizationPolicyService;
-import no.fint.portal.nam.model.Policy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -45,9 +41,6 @@ public class ComponentController {
 
     @Autowired
     private LdapServiceRetryDecorator ldapServiceRetryDecorator;
-
-    @Autowired
-    private AuthorizationPolicyService authorizationPolicyService;
 
     @ApiOperation("Create new component")
     @RequestMapping(method = RequestMethod.POST,
@@ -119,31 +112,6 @@ public class ComponentController {
                         .build()
                 )
                 .collect(Collectors.toList()));
-    }
-
-    @ApiOperation("Get NAM policy status for component")
-    @GetMapping("/{name}/policy")
-    public ResponseEntity getComponentPolicyStatus(@PathVariable String name) {
-        Optional<Component> component = componentService.getComponentByName(name);
-        PolicyStatus policyStatus = new PolicyStatus();
-
-        if (component.isPresent()) {
-            Component comp = component.get();
-            if (!Strings.isNullOrEmpty(comp.getAdapterAuthorizationPolicyId())
-                    && !Strings.isNullOrEmpty(comp.getClientAuthorizationPolicyId())) {
-                Policy adapterPolicy = authorizationPolicyService.getPolicy(comp.getAdapterAuthorizationPolicyId());
-                Policy clientPolicy = authorizationPolicyService.getPolicy(comp.getClientAuthorizationPolicyId());
-
-                policyStatus.setAdapterPolicyOk((adapterPolicy.getRule().size() == 3) && adapterPolicy.isEnable());
-                policyStatus.setClientPolicyOk(clientPolicy.getRule().size() == 3 && clientPolicy.isEnable());
-            }
-            return ResponseEntity.ok(policyStatus);
-        }
-
-
-        throw new EntityNotFoundException(
-                String.format("Component with name %s could not be found", name)
-        );
     }
 
     @ApiOperation("Get component by name")
