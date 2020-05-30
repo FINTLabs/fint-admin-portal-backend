@@ -2,12 +2,12 @@ package no.fint.portal.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.ApiService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,7 +34,7 @@ public class ApiDiscoveryService {
     @Cacheable("apiServices")
     public List<String> getClassesForComponent(String componentName, String componentPath) {
         try {
-            String uri = StringUtils.isEmpty(baseUri)
+            String uri = StringUtils.isBlank(baseUri)
                     ? "http://consumer-" + componentName + ":8080" + componentPath
                     : baseUri + componentPath;
 
@@ -52,6 +52,7 @@ public class ApiDiscoveryService {
                     .map(UriComponentsBuilder::fromHttpUrl)
                     .map(UriComponentsBuilder::build)
                     .map(UriComponents::getPath)
+                    .map(s -> StringUtils.removeStart(s, componentPath))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             return Collections.emptyList();

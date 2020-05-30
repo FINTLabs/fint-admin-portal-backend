@@ -52,6 +52,7 @@ dependencies {
     compile('no.fint:fint-portal-api:3.6.0-beta-1')
 //    compile('no.fint:fint-portal-api:0-SNAPSHOT')
 
+    compile('org.apache.commons:commons-lang3:3.10')
     compile('com.github.ben-manes.caffeine:caffeine')
     runtime('org.springframework.boot:spring-boot-actuator')
     runtime('org.springframework.ldap:spring-ldap-test')
