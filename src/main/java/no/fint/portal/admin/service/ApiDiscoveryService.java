@@ -2,6 +2,7 @@ package no.fint.portal.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.ApiService;
+import no.fint.portal.model.ComponentClass;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,7 +33,7 @@ public class ApiDiscoveryService {
     }
 
     @Cacheable("apiServices")
-    public List<String> getClassesForComponent(String componentName, String componentPath) {
+    public List<ComponentClass> getClassesForComponent(String componentName, String componentPath) {
         try {
             String uri = StringUtils.isBlank(baseUri)
                     ? "http://consumer-" + componentName + ":8080" + componentPath
@@ -52,7 +53,8 @@ public class ApiDiscoveryService {
                     .map(UriComponentsBuilder::fromHttpUrl)
                     .map(UriComponentsBuilder::build)
                     .map(UriComponents::getPath)
-                    .map(s -> StringUtils.removeStart(s, componentPath))
+                    .map(c -> new ComponentClass(StringUtils.substringAfterLast(c, "/"), c))
+                    //.map(s -> StringUtils.removeStart(s, componentPath))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             return Collections.emptyList();

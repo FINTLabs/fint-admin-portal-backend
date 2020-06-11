@@ -11,10 +11,12 @@ import java.util.List;
 @Builder
 public class ComponentConfiguration {
     private String name;
+    private String displayName;
     private String path;
     private String assetPath;
-    private List<String> classes;
+    private List<ComponentClass> classes;
     private boolean isInProduction;
     private boolean isInBeta;
     private boolean isInPlayWithFint;
+    private boolean core;
 }
