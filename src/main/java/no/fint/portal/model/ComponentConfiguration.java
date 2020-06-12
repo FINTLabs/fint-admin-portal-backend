@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ComponentConfiguration {
+    private String dn;
     private String name;
     private String displayName;
     private String path;

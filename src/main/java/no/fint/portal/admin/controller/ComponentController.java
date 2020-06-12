@@ -108,6 +108,7 @@ public class ComponentController {
                 .map(c -> ComponentConfiguration
                         .builder()
                         .name(c.getName().replace("_", "-"))
+                        .dn(c.getDn())
                         .displayName(c.getDescription())
                         .core(c.isCore())
                         .path(c.getBasePath())
