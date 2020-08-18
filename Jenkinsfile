@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker pull fintlabs.azurecr.io/admin-portal-frontend"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker pull fintlabsacr.azurecr.io/admin-portal-frontend"
                     sh "docker build --tag ${GIT_COMMIT} ."
                 }
             }
@@ -12,9 +12,9 @@ pipeline {
         stage('Publish') {
             when { branch 'master' }
             steps {
-                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker push fintlabs.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
+                sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker push fintlabsacr.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
                 }
                 kubernetesDeploy configs: 'admin-portal-beta.yaml', kubeconfigId: 'aks-beta-fint'
             }
@@ -22,9 +22,9 @@ pipeline {
         stage('Publish PR') {
             when { changeRequest() }
             steps {
-                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/admin-portal:${BRANCH_NAME}.${BUILD_NUMBER}"
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker push fintlabs.azurecr.io/admin-portal:${BRANCH_NAME}.${BUILD_NUMBER}"
+                sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/admin-portal:${BRANCH_NAME}.${BUILD_NUMBER}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker push fintlabsacr.azurecr.io/admin-portal:${BRANCH_NAME}.${BUILD_NUMBER}"
                 }
             }
         }
@@ -36,9 +36,9 @@ pipeline {
                 script {
                     VERSION = TAG_NAME[1..-1]
                 }
-                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/admin-portal:${VERSION}"
-                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker push 'fintlabs.azurecr.io/admin-portal:${VERSION}'"
+                sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/admin-portal:${VERSION}"
+                withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
+                    sh "docker push 'fintlabsacr.azurecr.io/admin-portal:${VERSION}'"
                 }
             }
         }
