@@ -1,4 +1,4 @@
-FROM fintlabs.azurecr.io/admin-portal-frontend as node
+FROM fintlabsacr.azurecr.io/admin-portal-frontend as node
 
 FROM gradle:4.10.3-jdk8-alpine as java
 USER root
