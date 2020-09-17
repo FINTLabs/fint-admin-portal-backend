@@ -33,7 +33,7 @@ public class ApiDiscoveryService {
     }
 
     @Cacheable("apiServices")
-    public List<ComponentClass> getClassesForComponent(String componentName, String componentPath) {
+    public List<ComponentClass> getClassesFromComponent(String componentName, String componentPath) {
         try {
             String uri = StringUtils.isBlank(baseUri)
                     ? "http://consumer-" + componentName + ":8080" + componentPath
@@ -54,7 +54,6 @@ public class ApiDiscoveryService {
                     .map(UriComponentsBuilder::build)
                     .map(UriComponents::getPath)
                     .map(c -> new ComponentClass(StringUtils.substringAfterLast(c, "/"), c))
-                    //.map(s -> StringUtils.removeStart(s, componentPath))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             return Collections.emptyList();

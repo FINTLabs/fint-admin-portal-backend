@@ -113,7 +113,7 @@ public class ComponentController {
                         .core(c.isCore())
                         .path(c.getBasePath())
                         .assetPath(builder.slash(c.getName()).toUri().getPath())
-                        .classes(apiDiscoveryService.getClassesForComponent(c.getName().replace("_", "-"), c.getBasePath()))
+                        .classes(apiDiscoveryService.getClassesFromComponent(c.getName().replace("_", "-"), c.getBasePath()))
                         .isInBeta(c.isInBeta())
                         .isInProduction(c.isInProduction())
                         .isInPlayWithFint(c.isInPlayWithFint())
