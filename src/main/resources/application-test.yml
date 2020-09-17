@@ -1,12 +1,11 @@
-spring:
-  application:
-    name: fint-admin-portal
-
 springfox:
  title: 'FINT Admin Portal API - TEST MODE'
  version: '@version@'
 
 fint:
+  admin:
+    api:
+      base: https://play-with-fint.felleskomponent.no
   ldap:
     url: "ldap://localhost:12345"
     user: "uid=user"
@@ -23,6 +22,8 @@ fint:
       clientSecret: "dummy"
 
 spring:
+  application:
+    name: fint-admin-portal
   ldap:
     embedded:
       base-dn: o=fint-test

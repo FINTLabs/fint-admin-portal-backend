@@ -17,3 +17,10 @@ fint:
 security:
   basic:
     enabled: false
+
+spring:
+  cache:
+    type: caffeine
+    cache-names: apiServices
+    caffeine:
+      spec: expireAfterWrite=1h
