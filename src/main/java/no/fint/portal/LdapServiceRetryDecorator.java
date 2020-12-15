@@ -1,6 +1,8 @@
 package no.fint.portal;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.model.access.AccessPackage;
+import no.fint.portal.model.access.AccessPackageTemplateService;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.contact.Contact;
@@ -28,6 +30,8 @@ public class LdapServiceRetryDecorator {
   @Autowired
   private ComponentService componentService;
 
+  @Autowired
+  private AccessPackageTemplateService acccessPackageTemplateService;
 
   @Retryable(
     backoff = @Backoff(delay = 200L),
@@ -80,6 +84,19 @@ public class LdapServiceRetryDecorator {
       components = Collections.emptyList();
     }
     return components;
+  }
+
+  @Retryable(
+          backoff = @Backoff(delay = 200L),
+          value = {InvalidResourceException.class},
+          maxAttempts = 5
+  )
+  public List<AccessPackage> getAccessPackageTemplates() {
+    List<AccessPackage> templates = acccessPackageTemplateService.getAccessPackageTemplates();
+    if (templates.size() <= 0) {
+      templates = Collections.emptyList();
+    }
+    return templates;
   }
   /*
   @Retryable(
