@@ -1,14 +1,11 @@
-package no.fint.portal;
+package no.fint;
 
 import com.github.springfox.loader.EnableSpringfox;
 import no.rogfk.hateoas.extension.annotations.EnableHalHypermediaSupport;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.EnableRetry;
 
 import java.util.Properties;
@@ -34,11 +31,7 @@ public class Application {
 
 
   @Bean
-  public EmbeddedServletContainerCustomizer containerCustomizer() {
-    return (container -> {
-      ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/");
-      container.addErrorPages(error404Page);
-    });
+  public CustomContainer containerCustomizer() {
+    return new CustomContainer();
   }
-
 }
