@@ -5,14 +5,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.LdapServiceRetryDecorator;
+import no.fint.portal.admin.service.ApiDiscoveryService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
+import no.fint.portal.model.ComponentConfiguration;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,11 +36,17 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/components")
 public class ComponentController {
 
-    @Autowired
-    private ComponentService componentService;
+    private final ComponentService componentService;
 
-    @Autowired
-    private LdapServiceRetryDecorator ldapServiceRetryDecorator;
+    private final LdapServiceRetryDecorator ldapServiceRetryDecorator;
+
+    private final ApiDiscoveryService apiDiscoveryService;
+
+    public ComponentController(ComponentService componentService, LdapServiceRetryDecorator ldapServiceRetryDecorator, ApiDiscoveryService apiDiscoveryService) {
+        this.componentService = componentService;
+        this.ldapServiceRetryDecorator = ldapServiceRetryDecorator;
+        this.apiDiscoveryService = apiDiscoveryService;
+    }
 
     @ApiOperation("Create new component")
     @RequestMapping(method = RequestMethod.POST,
@@ -125,6 +134,34 @@ public class ComponentController {
 
 
         return ResponseEntity.ok(componentService.getActiveAssetsForComponent(c).stream().map(Asset::getAssetId).collect(Collectors.toList()));
+    }
+
+    @ApiOperation("Get compontent configurations")
+    @GetMapping("/configurations")
+    public ResponseEntity<List<ComponentConfiguration>> getComponentConfigurations() throws NoSuchMethodException {
+        List<Component> components = ldapServiceRetryDecorator.getComponents();
+        if (Objects.isNull(components) || components.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        ControllerLinkBuilder builder = ControllerLinkBuilder.linkTo(getClass()).slash("assets");
+        return ResponseEntity.ok(components
+                .stream()
+                .filter(Component::isCore)
+                .map(c -> ComponentConfiguration
+                        .builder()
+                        .name(c.getName().replace("_", "-"))
+                        .dn(c.getDn())
+                        .displayName(c.getDescription())
+                        .core(c.isCore())
+                        .path(c.getBasePath())
+                        .assetPath(builder.slash(c.getName()).toUri().getPath())
+                        .classes(apiDiscoveryService.getClassesFromComponent(c.getName().replace("_", "-"), c.getBasePath()))
+                        .isInBeta(c.isInBeta())
+                        .isInProduction(c.isInProduction())
+                        .isInPlayWithFint(c.isInPlayWithFint())
+                        .build()
+                )
+                .collect(Collectors.toList()));
     }
 
     //

@@ -58,8 +58,6 @@ spec:
               value: ou=organisations,o=fint
             - name: fint.ldap.access.template-base
               value: ou=access,o=fint
-            - name: fint.portal.admin.uri
-              value: https://admin-beta.fintlabs.no
             - name: fint.ldap.user
               valueFrom:
                 secretKeyRef:
