@@ -4,7 +4,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.LdapServiceRetryDecorator;
+import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.admin.service.ApiDiscoveryService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -50,10 +50,10 @@ public class ComponentController {
 
     @ApiOperation("Create new component")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
 
     )
-    public ResponseEntity createComponent(@RequestBody final Component component) {
+    public ResponseEntity<Component> createComponent(@RequestBody final Component component) {
         log.trace("Component: {}", component);
 
         if (componentService.createComponent(component)) {
@@ -72,7 +72,7 @@ public class ComponentController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity updateComponent(@RequestBody final Component component, @PathVariable final String name) {
+    public ResponseEntity<Component> updateComponent(@RequestBody final Component component, @PathVariable final String name) {
         log.trace("Component: {}", component);
 
         if (!name.equals(component.getName())) {
@@ -90,7 +90,7 @@ public class ComponentController {
 
     @ApiOperation("Get all components")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getComponents() {
+    public ResponseEntity<List<Component>> getComponents() {
         List<Component> components = ldapServiceRetryDecorator.getComponents();
         if (components == null)
             components = Collections.emptyList();
@@ -99,7 +99,7 @@ public class ComponentController {
 
     @ApiOperation("Get component by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{name}")
-    public ResponseEntity getComponent(@PathVariable String name) {
+    public ResponseEntity<Component> getComponent(@PathVariable String name) {
         Optional<Component> component = componentService.getComponentByName(name);
 
         if (component.isPresent()) {
@@ -113,7 +113,7 @@ public class ComponentController {
 
     @ApiOperation("Delete component")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{name}")
-    public ResponseEntity deleteComponent(@PathVariable final String name) {
+    public ResponseEntity<Void> deleteComponent(@PathVariable final String name) {
         Optional<Component> component = componentService.getComponentByName(name);
 
         if (component.isPresent()) {
@@ -168,27 +168,27 @@ public class ComponentController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 }

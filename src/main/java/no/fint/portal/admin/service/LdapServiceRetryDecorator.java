@@ -1,4 +1,4 @@
-package no.fint.portal;
+package no.fint.portal.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.access.AccessPackage;
