@@ -3,7 +3,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.LdapServiceRetryDecorator;
+import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -42,11 +42,11 @@ public class AccessPackageTemplateController {
 
     @ApiOperation("Add new access template")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
 
     )
     public ResponseEntity<AccessPackage> addAccessTemplate(@RequestBody final AccessPackage accessPackageTemplate) {
-        log.info("Access package template: {}", accessPackageTemplate);
+        log.trace("Access package template: {}", accessPackageTemplate);
 
         if (!acccessPackageTemplateService.addAccessPackageTemplate(accessPackageTemplate)) {
             throw new CreateEntityMismatchException(accessPackageTemplate.getName());

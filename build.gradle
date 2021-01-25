@@ -1,29 +1,18 @@
-buildscript {
-    apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/v1.7.0/dependencies.gradle'
-    ext {
-        springBootVersion = '2.0.3.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
-}
-
 plugins {
-    id 'com.github.kt3k.coveralls' version '2.8.4'
-    id 'com.github.ben-manes.versions' version '0.21.0'
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+group = 'no.fint'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
     mavenCentral()
@@ -35,27 +24,27 @@ repositories {
 }
 
 dependencies {
-    compile('org.jooq:jool-java-8:0.9.14')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-cache')
-    compile ('org.springframework.boot:spring-boot-starter-webflux')
-    compile('org.springframework.retry:spring-retry:1.2.4.RELEASE')
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 
-    compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
-    compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-    //compile('no.fint:fint-portal-api:3.7.0-beta-8')
-    compile('no.fint:fint-portal-api:3.8.2-alpha-1')
+    implementation 'org.jooq:jool-java-8:0.9.14'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'no.fint:fint-portal-api:3.8.2-alpha-1'
 
-    compile('org.apache.commons:commons-lang3:3.10')
-    compile('com.github.ben-manes.caffeine:caffeine')
-    runtime('org.springframework.boot:spring-boot-actuator')
-    runtime('org.springframework.ldap:spring-ldap-test')
-    runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
 
-    compileOnly('org.projectlombok:lombok:1.18.8')
+    runtime 'org.springframework.boot:spring-boot-actuator'
+    runtime 'org.springframework.ldap:spring-ldap-test'
+    runtime "com.unboundid:unboundid-ldapsdk:3.1.1"
+    compileOnly 'org.projectlombok:lombok'
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile("org.spockframework:spock-core:${spockSpringVersion}")
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
 }
 
-apply from: 'https://raw.githubusercontent.com/FINTlibs/fint-buildscripts/v1.7.0/dependencyReport.gradle'
+//apply from: 'https://raw.githubusercontent.com/FINTlibs/fint-buildscripts/v1.7.0/dependencyReport.gradle'

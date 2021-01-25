@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
-import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.client.ClientService;
 import no.fint.portal.model.component.Component;
@@ -13,7 +12,6 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,23 +28,23 @@ import java.util.stream.Stream;
 @RequestMapping(value = "/api/maintenance")
 public class MaintenanceController {
 
-    @Autowired
-    private ComponentService componentService;
+    private final ComponentService componentService;
 
-    @Autowired
-    private ContactService contactService;
+    private final ContactService contactService;
 
-    @Autowired
-    private OrganisationService organisationService;
+    private final OrganisationService organisationService;
 
-    @Autowired
-    private AssetService assetService;
+    private final ClientService clientService;
 
-    @Autowired
-    private ClientService clientService;
+    private final AdapterService adapterService;
 
-    @Autowired
-    private AdapterService adapterService;
+    public MaintenanceController(ComponentService componentService, ContactService contactService, OrganisationService organisationService, ClientService clientService, AdapterService adapterService) {
+        this.componentService = componentService;
+        this.contactService = contactService;
+        this.organisationService = organisationService;
+        this.clientService = clientService;
+        this.adapterService = adapterService;
+    }
 
     @GetMapping("/consistency/components/organisations")
     public Map<String, List<String>> componentOrganisationConsistency() {

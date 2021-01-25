@@ -24,40 +24,38 @@ import java.net.UnknownHostException;
 public class MeController {
 
 
-
-  @ApiOperation("Get Me")
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity me(@RequestHeader(value = "x-fullname", defaultValue = "") String fullName) {
-    return ResponseEntity.ok(new Me(fullName));
-  }
-
+    @ApiOperation("Get Me")
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Me> me(@RequestHeader(value = "x-fullname", defaultValue = "") String fullName) {
+        return ResponseEntity.ok(new Me(fullName));
+    }
 
 
-  //
-  // Exception handlers
-  //
-  @ExceptionHandler(UpdateEntityMismatchException.class)
-  public ResponseEntity handleUpdateEntityMismatch(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    //
+    // Exception handlers
+    //
+    @ExceptionHandler(UpdateEntityMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity handleEntityNotFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(EntityFoundException.class)
-  public ResponseEntity handleEntityFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(EntityFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(NameNotFoundException.class)
-  public ResponseEntity handleNameNotFound(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(NameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(UnknownHostException.class)
-  public ResponseEntity handleUnkownHost(Exception e) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(UnknownHostException.class)
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
 }

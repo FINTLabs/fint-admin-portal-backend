@@ -1,4 +1,4 @@
-package no.fint.portal;
+package no.fint.portal.admin.service;
 
 public class InvalidResourceException extends RuntimeException {
   public InvalidResourceException(String message) {

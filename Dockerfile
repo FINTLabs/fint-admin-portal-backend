@@ -1,6 +1,6 @@
 FROM fintlabsacr.azurecr.io/admin-portal-frontend as node
 
-FROM gradle:4.10.3-jdk8-alpine as java
+FROM gradle:6.7.1-jdk8-openj9 as java
 USER root
 COPY . .
 COPY --from=node /src/build/ src/main/resources/public/
