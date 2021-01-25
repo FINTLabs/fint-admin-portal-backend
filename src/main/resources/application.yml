@@ -14,10 +14,6 @@ fint:
     organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
 
-security:
-  basic:
-    enabled: false
-
 spring:
   cache:
     type: caffeine

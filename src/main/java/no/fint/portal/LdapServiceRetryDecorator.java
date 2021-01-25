@@ -1,6 +1,8 @@
 package no.fint.portal;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.model.access.AccessPackage;
+import no.fint.portal.model.access.AccessPackageTemplateService;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.contact.Contact;
@@ -19,15 +21,20 @@ import java.util.List;
 @Service
 public class LdapServiceRetryDecorator {
 
-  @Autowired
-  private ContactService contactService;
+  private final ContactService contactService;
 
-  @Autowired
-  private OrganisationService organisationService;
+  private final OrganisationService organisationService;
 
-  @Autowired
-  private ComponentService componentService;
+  private final ComponentService componentService;
 
+  private final AccessPackageTemplateService acccessPackageTemplateService;
+
+  public LdapServiceRetryDecorator(ContactService contactService, OrganisationService organisationService, ComponentService componentService, AccessPackageTemplateService acccessPackageTemplateService) {
+    this.contactService = contactService;
+    this.organisationService = organisationService;
+    this.componentService = componentService;
+    this.acccessPackageTemplateService = acccessPackageTemplateService;
+  }
 
   @Retryable(
     backoff = @Backoff(delay = 200L),
@@ -81,47 +88,17 @@ public class LdapServiceRetryDecorator {
     }
     return components;
   }
-  /*
-  @Retryable(
-    backoff = @Backoff(delay = 200L),
-    value = {InvalidResourceException.class},
-    maxAttempts = 5
-  )
-  public List<Contact> getContacts() {
-    List<Contact> contacts = contactService.getContacts();
-    if (contacts.size() == 0) {
-      contacts = Collections.emptyList();
-    }
-    return contacts;
-  }
 
   @Retryable(
-    backoff = @Backoff(delay = 200L),
-    value = {InvalidResourceException.class},
-    maxAttempts = 5
+          backoff = @Backoff(delay = 200L),
+          value = {InvalidResourceException.class},
+          maxAttempts = 5
   )
-  public List<Organisation> getOrganisations() {
-
-    List<Organisation> organisations = organisationService.getOrganisations();
-    if (organisations.size() == 0) {
-      organisations = Collections.emptyList();
+  public List<AccessPackage> getAccessPackageTemplates() {
+    List<AccessPackage> templates = acccessPackageTemplateService.getAccessPackageTemplates();
+    if (templates.size() <= 0) {
+      templates = Collections.emptyList();
     }
-    return organisations;
-
-
+    return templates;
   }
-
-  @Retryable(
-    backoff = @Backoff(delay = 200L),
-    value = {InvalidResourceException.class},
-    maxAttempts = 5
-  )
-  public List<Component> getComponents() {
-    List<Component> components = componentService.getComponents();
-    if (components.size() == 0) {
-      components = Collections.emptyList();
-    }
-    return components;
-  }
-  */
 }

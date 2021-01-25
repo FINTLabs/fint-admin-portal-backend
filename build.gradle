@@ -1,7 +1,7 @@
 buildscript {
     apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/v1.7.0/dependencies.gradle'
     ext {
-        springBootVersion = springBootVersion
+        springBootVersion = '2.0.3.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -20,6 +20,7 @@ apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -27,30 +28,23 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-    repositories {
-        maven {
-            url "http://dl.bintray.com/rfkikt/maven"
-        }
-    }
-    repositories {
-        maven {
-            url "http://dl.bintray.com/fint/maven"
-        }
+    maven {
+        url "http://dl.bintray.com/fint/maven"
     }
     mavenLocal()
 }
-
 
 dependencies {
     compile('org.jooq:jool-java-8:0.9.14')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-cache')
+    compile ('org.springframework.boot:spring-boot-starter-webflux')
     compile('org.springframework.retry:spring-retry:1.2.4.RELEASE')
 
     compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
     compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-    compile('no.fint:fint-portal-api:3.6.0-beta-1')
-    //compile('no.fint:fint-portal-api:0-SNAPSHOT')
+    //compile('no.fint:fint-portal-api:3.7.0-beta-8')
+    compile('no.fint:fint-portal-api:3.8.2-alpha-1')
 
     compile('org.apache.commons:commons-lang3:3.10')
     compile('com.github.ben-manes.caffeine:caffeine')
