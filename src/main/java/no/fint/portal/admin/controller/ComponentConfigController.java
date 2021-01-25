@@ -2,18 +2,20 @@ package no.fint.portal.admin.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.admin.ComponentConfigurationNotFound;
+import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.ComponentConfiguration;
+import no.fint.portal.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,9 +46,18 @@ public class ComponentConfigController {
                         }
                 ).getBody();
 
+        if (Objects.isNull(componentConfigurationList)) {
+            throw new ComponentConfigurationNotFound();
+        }
+
         return ResponseEntity.ok(componentConfigurationList.stream()
-                .filter(c -> c.isCore())
+                .filter(ComponentConfiguration::isCore)
                 .collect(Collectors.toList()));
+    }
+
+    @ExceptionHandler(ComponentConfigurationNotFound.class)
+    public ResponseEntity<Void> handleEntityNotFound() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
 }
