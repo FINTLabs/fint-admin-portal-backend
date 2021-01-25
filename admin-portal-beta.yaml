@@ -60,31 +60,31 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: ldap.user
+                  key: fint.ldap.user
             - name: fint.ldap.password
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: ldap.password
+                  key: fint.ldap.password
             - name: fint.nam.oauth.idp-hostname
               value: idp.felleskomponent.no
             - name: fint.nam.oauth.clientId
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: nam.oauth.clientId
+                  key: fint.nam.oauth.clientId
             - name: fint.nam.oauth.clientSecret
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: nam.oauth.clientSecret
+                  key: fint.nam.oauth.clientSecret
             - name: fint.nam.oauth.username
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: nam.oauth.username
+                  key: fint.nam.oauth.username
             - name: fint.nam.oauth.password
               valueFrom:
                 secretKeyRef:
                   name: fint-portal-user
-                  key: nam.oauth.password
+                  key: fint.nam.oauth.password
