@@ -3,9 +3,7 @@ package no.fint.portal.admin.controller;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.ComponentConfigurationNotFound;
-import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.ComponentConfiguration;
-import no.fint.portal.model.ErrorResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -46,13 +44,13 @@ public class ComponentConfigController {
                         }
                 ).getBody();
 
-        if (Objects.isNull(componentConfigurationList)) {
-            throw new ComponentConfigurationNotFound();
+        if (Objects.nonNull(componentConfigurationList)) {
+            return ResponseEntity.ok(componentConfigurationList.stream()
+                    .filter(ComponentConfiguration::isCore)
+                    .collect(Collectors.toList()));
         }
 
-        return ResponseEntity.ok(componentConfigurationList.stream()
-                .filter(ComponentConfiguration::isCore)
-                .collect(Collectors.toList()));
+        throw new ComponentConfigurationNotFound();
     }
 
     @ExceptionHandler(ComponentConfigurationNotFound.class)

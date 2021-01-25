@@ -9,12 +9,13 @@ import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.access.AccessPackage;
 import no.fint.portal.model.access.AccessPackageTemplateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,16 +24,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/accesspackage/template")
 public class AccessPackageTemplateController {
 
-    @Autowired
-    private AccessPackageTemplateService acccessPackageTemplateService;
+    private final AccessPackageTemplateService acccessPackageTemplateService;
 
-    @Autowired
-    private LdapServiceRetryDecorator ldapServiceRetryDecorator;
+    private final LdapServiceRetryDecorator ldapServiceRetryDecorator;
+
+    public AccessPackageTemplateController(AccessPackageTemplateService acccessPackageTemplateService, LdapServiceRetryDecorator ldapServiceRetryDecorator) {
+        this.acccessPackageTemplateService = acccessPackageTemplateService;
+        this.ldapServiceRetryDecorator = ldapServiceRetryDecorator;
+    }
 
 
     @ApiOperation("Get all access package template")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getAccessPackageTemplates() {
+    public ResponseEntity<List<AccessPackage>> getAccessPackageTemplates() {
         return ResponseEntity.ok(ldapServiceRetryDecorator.getAccessPackageTemplates());
     }
 
@@ -41,7 +45,7 @@ public class AccessPackageTemplateController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
 
     )
-    public ResponseEntity addAccessTemplate(@RequestBody final AccessPackage accessPackageTemplate) {
+    public ResponseEntity<AccessPackage> addAccessTemplate(@RequestBody final AccessPackage accessPackageTemplate) {
         log.info("Access package template: {}", accessPackageTemplate);
 
         if (!acccessPackageTemplateService.addAccessPackageTemplate(accessPackageTemplate)) {
@@ -53,8 +57,9 @@ public class AccessPackageTemplateController {
 
     @ApiOperation("Update Access Package Template")
     @PutMapping("/{accessId}")
-    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String accessId,
-                                                      @RequestBody AccessPackage accessPackage) {
+    public ResponseEntity<AccessPackage> updateAccessTemplate(@PathVariable String accessId,
+                                                              @RequestBody AccessPackage accessPackage) {
+
         if (!accessId.equals(accessPackage.getName())) throw new UpdateEntityMismatchException(accessId);
         AccessPackage original = acccessPackageTemplateService.getAccessPackageTemplate(accessId);
 
@@ -82,7 +87,7 @@ public class AccessPackageTemplateController {
 
     @ApiOperation("Delete access package template")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{accessPackageTemplateName}")
-    public ResponseEntity deleteContact(@PathVariable final String accessPackageTemplateName) {
+    public ResponseEntity<Void> deleteAccessTemplate(@PathVariable final String accessPackageTemplateName) {
         AccessPackage accessPackageTemplate = acccessPackageTemplateService.getAccessPackageTemplate(accessPackageTemplateName);
 
         if (accessPackageTemplate != null) {
