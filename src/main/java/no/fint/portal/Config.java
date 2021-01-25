@@ -16,7 +16,7 @@ public class Config {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
                 .additionalInterceptors((request, body, execution) -> {
-                    log.info("{} {}", request.getMethod(), request.getURI());
+                    log.trace("{} {}", request.getMethod(), request.getURI());
                     return execution.execute(request, body);
                 })
                 .build();

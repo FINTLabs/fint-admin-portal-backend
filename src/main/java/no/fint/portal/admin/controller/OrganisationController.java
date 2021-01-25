@@ -51,7 +51,7 @@ public class OrganisationController {
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
   public ResponseEntity createOrganization(@RequestBody final Organisation organisation) {
-    log.info("Organisation: {}", organisation);
+    log.trace("Organisation: {}", organisation);
 
     if (!organisationService.createOrganisation(organisation)) {
       throw new EntityFoundException(
@@ -69,7 +69,7 @@ public class OrganisationController {
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
   public ResponseEntity updateOrganization(@RequestBody Organisation organisation, @PathVariable final String name) {
-    log.info("Organisation: {}", organisation);
+    log.trace("Organisation: {}", organisation);
 
     if (!name.equals(organisation.getName())) {
       throw new UpdateEntityMismatchException(

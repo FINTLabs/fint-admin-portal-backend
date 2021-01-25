@@ -14,7 +14,7 @@ import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +54,7 @@ public class ComponentController {
 
     )
     public ResponseEntity createComponent(@RequestBody final Component component) {
-        log.info("Component: {}", component);
+        log.trace("Component: {}", component);
 
         if (componentService.createComponent(component)) {
             return ResponseEntity.status(HttpStatus.CREATED).body(component);
@@ -70,10 +70,10 @@ public class ComponentController {
     @ApiOperation("Update component")
     @RequestMapping(value = "/{name}",
             method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity updateComponent(@RequestBody final Component component, @PathVariable final String name) {
-        log.info("Component: {}", component);
+        log.trace("Component: {}", component);
 
         if (!name.equals(component.getName())) {
             throw new UpdateEntityMismatchException(
@@ -143,7 +143,7 @@ public class ComponentController {
         if (Objects.isNull(components) || components.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        ControllerLinkBuilder builder = ControllerLinkBuilder.linkTo(getClass()).slash("assets");
+        WebMvcLinkBuilder builder = WebMvcLinkBuilder.linkTo(getClass()).slash("assets");
         return ResponseEntity.ok(components
                 .stream()
                 .filter(Component::isCore)

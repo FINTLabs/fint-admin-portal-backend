@@ -44,7 +44,7 @@ public class ContactController {
 
   )
   public ResponseEntity addContact(@RequestBody final Contact contact) {
-    log.info("Contact: {}", contact);
+    log.trace("Contact: {}", contact);
 
     if (contactService.addContact(contact)) {
       return ResponseEntity.status(HttpStatus.CREATED).body(contact);
@@ -63,7 +63,7 @@ public class ContactController {
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
   public ResponseEntity updateComponent(@RequestBody final Contact contact, @PathVariable final String nin) {
-    log.info("Contact: {}", contact);
+    log.trace("Contact: {}", contact);
 
     if (!nin.equals(contact.getNin())) {
       throw new UpdateEntityMismatchException(
