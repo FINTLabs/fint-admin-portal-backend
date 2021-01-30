@@ -26,13 +26,15 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-
-    implementation 'org.jooq:jool-java-8:0.9.14'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.retry:spring-retry'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'no.fint:fint-portal-api:3.8.2-alpha-1'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    compile 'io.springfox:springfox-swagger-ui:3.0.0'
+
+    implementation 'no.fint:fint-portal-api:3.9.0'
 
     implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'com.github.ben-manes.caffeine:caffeine'
@@ -47,5 +49,3 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
 }
-
-//apply from: 'https://raw.githubusercontent.com/FINTlibs/fint-buildscripts/v1.7.0/dependencyReport.gradle'
