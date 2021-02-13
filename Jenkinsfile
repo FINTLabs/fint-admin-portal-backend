@@ -10,7 +10,7 @@ pipeline {
             }
         }
         stage('Publish') {
-            when { branch 'master' }
+            when { branch 'main' }
             steps {
                 sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/admin-portal:build.${BUILD_NUMBER}"
                 withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
