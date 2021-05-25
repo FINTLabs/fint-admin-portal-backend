@@ -35,8 +35,8 @@ public class ApiDiscoveryService {
     @Cacheable("apiServices")
     public List<ComponentClass> getClassesFromComponent(String componentName, String componentPath) {
         try {
-            String uri = StringUtils.isBlank(baseUri)
-                    ? "http://consumer-" + componentName + ":8080" + componentPath
+            String uri = runsInCluster()
+                    ? getInClusterUri(componentName, componentPath)
                     : baseUri + componentPath;
 
             return restTemplate.exchange(
@@ -58,6 +58,14 @@ public class ApiDiscoveryService {
         } catch (Exception e) {
             return Collections.emptyList();
         }
+    }
+
+    private boolean runsInCluster() {
+        return StringUtils.isBlank(baseUri);
+    }
+
+    private String getInClusterUri(String componentName, String componentPath) {
+        return "http://consumer-" + componentName + ":8080" + componentPath;
     }
 
 
