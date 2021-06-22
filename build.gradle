@@ -17,9 +17,8 @@ configurations {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
-        url "http://dl.bintray.com/fint/maven"
+        url 'https://repo.fintlabs.no/releases'
     }
     mavenLocal()
 }
@@ -38,7 +37,7 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     compile 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fint:fint-portal-api:3.9.0'
+    implementation 'no.fint:fint-portal-api:3.12.0-rc-7'
 
     implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'com.github.ben-manes.caffeine:caffeine'
