@@ -13,7 +13,30 @@ fint:
     component-base: "ou=apis,o=fint-test"
     organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
-
+  k8s:
+    size:
+      default:
+        small:
+          request:
+            cpu: "250m"
+            memory: "128Mi"
+          limit:
+            cpu: "500m"
+            memory: "256Mi"
+        medium:
+          request:
+            cpu: "1"
+            memory: "512Mi"
+          limit:
+            cpu: "1"
+            memory: "1Gi"
+        large:
+          request:
+            cpu: "1"
+            memory: "1Gi"
+          limit:
+            cpu: "2"
+            memory: "2Gi"
 spring:
   cache:
     type: caffeine

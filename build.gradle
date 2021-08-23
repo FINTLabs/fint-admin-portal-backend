@@ -1,7 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'groovy'
 }
 
 group = 'no.fint'
@@ -17,7 +18,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
         url "https://repo.fintlabs.no/releases"
     }
@@ -36,11 +36,13 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    //implementation 'org.spockframework:spock-core'
     compile 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fint:fint-portal-api:3.9.0'
+    //implementation 'no.fint:fint-portal-api:3.9.0'
+    implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
 
-    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
     runtime 'org.springframework.boot:spring-boot-actuator'
@@ -51,5 +53,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
+    testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
+
+}
+
+test {
+    useJUnitPlatform()
 }
