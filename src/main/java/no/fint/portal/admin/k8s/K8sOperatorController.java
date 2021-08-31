@@ -32,6 +32,7 @@ public class K8sOperatorController {
 
         List<K8sDeploymentModel> deployments = organisations.stream()
                 .filter(organisation -> organisation.getComponents().size() > 0)
+                .filter(Organisation::isCustomer)
                 .map(k8sOperatorService.buildOrganisationK8sDeploymentModel(components)).collect(Collectors.toList());
 
         return ResponseEntity.ok(deployments);
