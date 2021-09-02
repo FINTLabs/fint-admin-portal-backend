@@ -33,6 +33,7 @@ public class K8sOperatorService {
                             .componentImage(component.getDockerImage())
                             .size(getSize(organisation, component))
                             .componentName(component.getName()).componentPath(component.getBasePath())
+                            .cacheDisabledFor(component.getCacheDisabledFor())
                             .build()));
 
             return k8sDeploymentModel;
