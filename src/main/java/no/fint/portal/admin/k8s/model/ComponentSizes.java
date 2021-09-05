@@ -1,4 +1,4 @@
-package no.fint.portal.admin.k8s;
+package no.fint.portal.admin.k8s.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,35 +32,5 @@ public class ComponentSizes {
             log.error(e.getMessage());
         }
         return Optional.empty();
-    }
-
-    public static Optional<ComponentSizes> deserialize(String json) {
-        if (StringUtils.hasText(json)) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                return Optional.ofNullable(objectMapper.readValue(json, ComponentSizes.class));
-            } catch (JsonProcessingException e) {
-                log.error(e.getMessage());
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Builder
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Size {
-        private Resources request;
-        private Resources limit;
-    }
-
-    @Builder
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Resources {
-        private String memory;
-        private String cpu;
     }
 }
