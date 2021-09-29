@@ -62,7 +62,7 @@ public class DeploymentService {
                 .filter(Component::isCore)
                 .filter(hasComponent(organisation))
                 .forEach(component -> {
-                    Optional<List<ComponentConfiguration>> componentConfigurations = ComponentConfiguration.deserialize(component.getComponentConfiguration());
+                    Optional<List<ComponentConfiguration>> componentConfigurations = ComponentConfiguration.deserialize(component.getComponentConsumerConfiguration());
                     componentConfigurations.ifPresent(configurations ->
                             configurations
                                     .stream()
