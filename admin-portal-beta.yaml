@@ -53,7 +53,7 @@ spec:
             - name: TZ
               value: Europe/Oslo
             - name: fint.ldap.url
-              value: ldap://10.0.0.40
+              value: ldap://10.0.0.50
             - name: fint.ldap.component-base
               value: ou=components,o=fint
             - name: fint.ldap.contact-base
