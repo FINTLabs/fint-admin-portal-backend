@@ -13,3 +13,4 @@ docker-compose.yml
 client/node_modules/
 /.vscode/
 application-*.properties
+.DS_Store
