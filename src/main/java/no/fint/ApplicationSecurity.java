@@ -1,15 +1,15 @@
 package no.fint;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
 @Configuration
-public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+public class ApplicationSecurity {
 
-    @Override
-    public void configure(WebSecurity web) {
-        web
+    @Bean
+    public WebSecurityCustomizer configure() {
+        return web -> web
                 .ignoring()
                 .antMatchers("/**");
     }
