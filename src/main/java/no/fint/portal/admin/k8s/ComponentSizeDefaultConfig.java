@@ -1,6 +1,8 @@
 package no.fint.portal.admin.k8s;
 
 import lombok.Data;
+import no.fint.portal.admin.k8s.model.ComponentSizes;
+import no.fint.portal.admin.k8s.model.Size;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "fint.k8s.size.default")
 public class ComponentSizeDefaultConfig  {
-    private ComponentSizes.Size small;
-    private ComponentSizes.Size large;
-    private ComponentSizes.Size medium;
+    private Size small;
+    private Size large;
+    private Size medium;
 
     public ComponentSizes getComponentSizes() {
         return ComponentSizes

@@ -42,8 +42,8 @@ dependencies {
     //implementation 'org.spockframework:spock-core'
     compile 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fint:fint-portal-api:3.15.0'
-    //implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
+    //implementation 'no.fint:fint-portal-api:3.15.0'
+    implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
 
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'

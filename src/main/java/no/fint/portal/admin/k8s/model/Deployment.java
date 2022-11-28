@@ -1,4 +1,4 @@
-package no.fint.portal.admin.k8s;
+package no.fint.portal.admin.k8s.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Builder
-public class K8sDeploymentModel {
+public class Deployment {
     private String orgId;
     @Builder.Default
-    private List<K8sComponentModel> components = new ArrayList<>();
+    private List<DeploymentConfiguration> components = new ArrayList<>();
 }
