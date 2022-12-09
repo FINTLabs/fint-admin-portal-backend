@@ -1,11 +1,11 @@
 package no.fint.portal.admin.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.admin.service.ApiDiscoveryService;
+import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@Api(tags = "Components")
+@Tag(name = "Components")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/components")
 public class ComponentController {
@@ -48,7 +48,7 @@ public class ComponentController {
         this.apiDiscoveryService = apiDiscoveryService;
     }
 
-    @ApiOperation("Create new component")
+    @Operation(summary = "Create new component")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
 
@@ -67,7 +67,7 @@ public class ComponentController {
         );
     }
 
-    @ApiOperation("Update component")
+    @Operation(summary = "Update component")
     @RequestMapping(value = "/{name}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -88,7 +88,7 @@ public class ComponentController {
         return ResponseEntity.ok(component);
     }
 
-    @ApiOperation("Get all components")
+    @Operation(summary = "Get all components")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Component>> getComponents() {
         List<Component> components = ldapServiceRetryDecorator.getComponents();
@@ -97,7 +97,7 @@ public class ComponentController {
         return ResponseEntity.ok(components);
     }
 
-    @ApiOperation("Get component by name")
+    @Operation(summary = "Get component by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{name}")
     public ResponseEntity<Component> getComponent(@PathVariable String name) {
         Optional<Component> component = componentService.getComponentByName(name);
@@ -111,7 +111,7 @@ public class ComponentController {
         );
     }
 
-    @ApiOperation("Delete component")
+    @Operation(summary = "Delete component")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{name}")
     public ResponseEntity<Void> deleteComponent(@PathVariable final String name) {
         Optional<Component> component = componentService.getComponentByName(name);
@@ -136,7 +136,7 @@ public class ComponentController {
         return ResponseEntity.ok(componentService.getActiveAssetsForComponent(c).stream().map(Asset::getAssetId).collect(Collectors.toList()));
     }
 
-    @ApiOperation("Get compontent configurations")
+    @Operation(summary = "Get compontent configurations")
     @GetMapping("/configurations")
     public ResponseEntity<List<ComponentConfiguration>> getComponentConfigurations() throws NoSuchMethodException {
         List<Component> components = ldapServiceRetryDecorator.getComponents();
