@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.5'
+    id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
     id 'groovy'
@@ -42,8 +42,7 @@ dependencies {
     //implementation 'org.spockframework:spock-core'
     compileOnly 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fintlabs:fint-portal-api:3.17.0-rc-2'
-    //implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
+    implementation 'no.fintlabs:fint-portal-api:3.17.1'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.github.ben-manes.caffeine:caffeine'
