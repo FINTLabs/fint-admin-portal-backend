@@ -38,9 +38,10 @@ dependencies {
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
+    //implementation 'io.springfox:springfox-boot-starter:3.0.0'
     //implementation 'org.spockframework:spock-core'
-    compileOnly 'io.springfox:springfox-swagger-ui:3.0.0'
+    //compileOnly 'io.springfox:springfox-swagger-ui:3.0.0'
 
     implementation 'no.fintlabs:fint-portal-api:3.17.1'
 
