@@ -39,18 +39,16 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
-    //implementation 'io.springfox:springfox-boot-starter:3.0.0'
     //implementation 'org.spockframework:spock-core'
-    //compileOnly 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fintlabs:fint-portal-api:3.17.1'
+    implementation 'no.fintlabs:fint-portal-api:3.18.0-rc-1'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
     runtimeOnly 'org.springframework.boot:spring-boot-actuator'
     runtimeOnly 'org.springframework.ldap:spring-ldap-test'
-    runtimeOnly 'com.unboundid:unboundid-ldapsdk:6.0.6'
+    runtimeOnly 'com.unboundid:unboundid-ldapsdk:6.0.7'
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
