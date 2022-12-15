@@ -1,13 +1,13 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '2.7.6'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
     id 'groovy'
 }
 
 group = 'no.fint'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 jar {
     enabled = false
@@ -38,26 +38,23 @@ dependencies {
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
     //implementation 'org.spockframework:spock-core'
-    compile 'io.springfox:springfox-swagger-ui:3.0.0'
 
-    implementation 'no.fint:fint-portal-api:3.15.0'
-    //implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
-
+    implementation 'no.fintlabs:fint-portal-api:3.18.0-rc-1'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
-    runtime 'org.springframework.boot:spring-boot-actuator'
-    runtime 'org.springframework.ldap:spring-ldap-test'
-    runtime "com.unboundid:unboundid-ldapsdk:3.1.1"
+    runtimeOnly 'org.springframework.boot:spring-boot-actuator'
+    runtimeOnly 'org.springframework.ldap:spring-ldap-test'
+    runtimeOnly 'com.unboundid:unboundid-ldapsdk:6.0.7'
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
+    testImplementation 'org.spockframework:spock-spring:2.3-groovy-3.0'
 
 }
 
