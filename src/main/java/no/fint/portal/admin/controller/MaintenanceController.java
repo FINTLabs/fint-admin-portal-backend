@@ -1,6 +1,6 @@
 package no.fint.portal.admin.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RestController
-@Tag(name = "Maintenance")
+@Api(tags = "Maintenance")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/maintenance")
 public class MaintenanceController {
