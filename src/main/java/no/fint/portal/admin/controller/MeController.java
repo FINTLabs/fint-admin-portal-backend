@@ -1,8 +1,8 @@
 package no.fint.portal.admin.controller;
 
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -18,13 +18,13 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @RestController
-@Tag(name = "Me")
+@Api(tags = "Me")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/me")
 public class MeController {
 
 
-    @Operation(summary = "Get Me")
+    @ApiOperation("Get Me")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Me> me(@RequestHeader(value = "x-fullname", defaultValue = "") String fullName) {
         return ResponseEntity.ok(new Me(fullName));
