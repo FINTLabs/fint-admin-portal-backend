@@ -39,10 +39,10 @@ spec:
           name: admin-portal
           resources:
             limits:
-              memory: "750Mi"
+              memory: "2Gi"
               cpu: "500m"
             requests:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "100m"
           ports:
             - containerPort: 8081
