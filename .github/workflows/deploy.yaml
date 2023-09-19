@@ -44,6 +44,8 @@ jobs:
         with:
           cluster-name: ${{ env.BETA_CLUSTER_NAME }}
           resource-group: ${{ env.BETA_CLUSTER_RESOURCE_GROUP }}
+          admin: 'true'
+          use-kubelogin: 'true'
 
       - name: Deploy to Beta
         uses: azure/k8s-deploy@v1
