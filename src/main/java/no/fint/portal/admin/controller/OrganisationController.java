@@ -1,8 +1,7 @@
 package no.fint.portal.admin.controller;
 
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Organisations")
+@Tag(name = "Organisations")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/organisations")
 public class OrganisationController {
@@ -49,7 +48,7 @@ public class OrganisationController {
         this.contactService = contactService;
     }
 
-    @ApiOperation("Create new organisation")
+    @Operation(summary = "Create new organisation")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
@@ -66,7 +65,7 @@ public class OrganisationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(organisation);
     }
 
-    @ApiOperation("Update organisation")
+    @Operation(summary = "Update organisation")
     @RequestMapping(value = "/{name}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -87,7 +86,7 @@ public class OrganisationController {
     }
 
 
-    @ApiOperation("Delete an organisation")
+    @Operation(summary = "Delete an organisation")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{name}")
     public ResponseEntity<Void> deleteOrganization(@PathVariable final String name) {
         Optional<Organisation> organisation = organisationService.getOrganisation(name);
@@ -102,13 +101,13 @@ public class OrganisationController {
         );
     }
 
-    @ApiOperation("Get all organisations")
+    @Operation(summary = "Get all organisations")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Organisation>> getOrganizations() {
         return ResponseEntity.ok().body(ldapServiceRetryDecorator.getOrganisations());
     }
 
-    @ApiOperation("Get organisation by name")
+    @Operation(summary = "Get organisation by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{name}")
     public ResponseEntity<Organisation> getOrganizationByName(@PathVariable String name) {
         Optional<Organisation> organisation = organisationService.getOrganisation(name);
@@ -122,7 +121,7 @@ public class OrganisationController {
         );
     }
 
-    @ApiOperation("Get primary asset")
+    @Operation(summary = "Get primary asset")
     @GetMapping(value = "/{name}/asset/primary")
     public ResponseEntity<Asset> getOrganizationPrimaryAsset(@PathVariable String name) {
         Optional<Organisation> organisation = organisationService.getOrganisation(name);
@@ -147,7 +146,7 @@ public class OrganisationController {
     }
 
     @GetMapping("/{orgName}/contacts/legal")
-    @ApiOperation("Get Legal Contact")
+    @Operation(summary = "Get Legal Contact")
     public ResponseEntity<Contact> getLegalContact(@PathVariable String orgName) {
         Organisation organisation = organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityFoundException("Organisation " + orgName + " not found."));
 
@@ -158,7 +157,7 @@ public class OrganisationController {
     }
 
     @PutMapping("/{orgName}/contacts/legal/{nin}")
-    @ApiOperation("Set Legal Contact")
+    @Operation(summary = "Set Legal Contact")
     public ResponseEntity<Contact> linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityFoundException("Organisation " + orgName + " not found."));
         Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityFoundException("Contact " + nin + " not found."));
@@ -169,7 +168,7 @@ public class OrganisationController {
     }
 
     @DeleteMapping("/{orgName}/contacts/legal/{nin}")
-    @ApiOperation("Unset Legal Contact")
+    @Operation(summary = "Unset Legal Contact")
     public ResponseEntity<Contact> unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityFoundException("Organisation " + orgName + " not found."));
         Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityFoundException("Contact " + nin + " not found."));

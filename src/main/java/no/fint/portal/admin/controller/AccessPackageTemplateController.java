@@ -1,7 +1,8 @@
 package no.fint.portal.admin.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Access package template")
+@Tag(name = "Access package template")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/accesspackage/template")
 public class AccessPackageTemplateController {
@@ -34,13 +35,13 @@ public class AccessPackageTemplateController {
     }
 
 
-    @ApiOperation("Get all access package template")
+    @Operation(summary = "Get all access package template")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<AccessPackage>> getAccessPackageTemplates() {
         return ResponseEntity.ok(ldapServiceRetryDecorator.getAccessPackageTemplates());
     }
 
-    @ApiOperation("Add new access template")
+    @Operation(summary = "Add new access template")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
 
@@ -55,7 +56,7 @@ public class AccessPackageTemplateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(accessPackageTemplate);
     }
 
-    @ApiOperation("Update Access Package Template")
+    @Operation(summary = "Update Access Package Template")
     @PutMapping("/{accessId}")
     public ResponseEntity<AccessPackage> updateAccessTemplate(@PathVariable String accessId,
                                                               @RequestBody AccessPackage accessPackage) {
@@ -85,7 +86,7 @@ public class AccessPackageTemplateController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
-    @ApiOperation("Delete access package template")
+    @Operation(summary = "Delete access package template")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{accessPackageTemplateName}")
     public ResponseEntity<Void> deleteAccessTemplate(@PathVariable final String accessPackageTemplateName) {
         AccessPackage accessPackageTemplate = acccessPackageTemplateService.getAccessPackageTemplate(accessPackageTemplateName);

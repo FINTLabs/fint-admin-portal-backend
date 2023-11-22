@@ -1,13 +1,17 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.3'
+    id 'org.springframework.boot' version '2.7.17'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'groovy'
+    id 'com.github.ben-manes.versions' version '0.46.0'
 }
 
 group = 'no.fint'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+java {
+    sourceCompatibility = '17'
+}
 
 jar {
     enabled = false
@@ -27,6 +31,7 @@ repositories {
     mavenLocal()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -38,17 +43,19 @@ dependencies {
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    compile 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.7.0'
 
-    implementation 'no.fintlabs:fint-portal-api:3.18.0'
+//    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//    compileOnly 'io.springfox:springfox-swagger-ui:3.0.0'
+
+    implementation 'no.fintlabs:fint-portal-api:3.19.0'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
-    runtime 'org.springframework.boot:spring-boot-actuator'
-    runtime 'org.springframework.ldap:spring-ldap-test'
-    runtime "com.unboundid:unboundid-ldapsdk:3.1.1"
+    runtimeOnly 'org.springframework.boot:spring-boot-actuator'
+    runtimeOnly 'org.springframework.ldap:spring-ldap-test'
+    runtimeOnly "com.unboundid:unboundid-ldapsdk:3.1.1"
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'

@@ -1,8 +1,9 @@
 package no.fint.portal.admin.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Contacts")
+@Tag(name = "Contacts")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
@@ -38,7 +39,7 @@ public class ContactController {
         this.ldapServiceRetryDecorator = ldapServiceRetryDecorator;
     }
 
-    @ApiOperation("Add new contact")
+    @Operation(summary = "Add new contact")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
 
@@ -57,7 +58,7 @@ public class ContactController {
         );
     }
 
-    @ApiOperation("Update contact")
+    @Operation(summary = "Update contact")
     @RequestMapping(value = "/{nin}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -78,13 +79,13 @@ public class ContactController {
         return ResponseEntity.ok(contact);
     }
 
-    @ApiOperation("Get all contacts")
+    @Operation(summary = "Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts() {
         return ResponseEntity.ok(ldapServiceRetryDecorator.getContacts());
     }
 
-    @ApiOperation("Get contact by nin")
+    @Operation(summary = "Get contact by nin")
     @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
     public ResponseEntity<Contact> getContact(@PathVariable String nin) {
         Optional<Contact> contact = contactService.getContact(nin);
@@ -98,7 +99,7 @@ public class ContactController {
         );
     }
 
-    @ApiOperation("Delete contact")
+    @Operation(summary = "Delete contact")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
     public ResponseEntity<Void> deleteContact(@PathVariable final String nin) {
         Optional<Contact> contact = contactService.getContact(nin);
