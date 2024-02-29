@@ -8,7 +8,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-
-  uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
-  with:
-    branch-name: ${{ github.event.inputs.branch-name }}
+      - name: Deploy using shared workflow
+        uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
+        with:
+          branch-name: ${{ github.event.inputs.branch-name }}
