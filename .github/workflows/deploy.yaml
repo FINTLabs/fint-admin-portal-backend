@@ -9,6 +9,6 @@ jobs:
         uses: actions/checkout@v2
 
 
-uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
-with:
-  branch-name: CT-1193-deployment
+  uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
+  with:
+    branch-name: ${{ github.event.inputs.branch-name }}
