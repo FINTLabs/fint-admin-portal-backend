@@ -15,6 +15,6 @@ jobs:
   deploy_shared_workflow:
     name: Deploy using shared workflow
     needs: deploy
-    uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
+    uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
     with:
       branch-name: ${{ github.event.inputs.branch-name }}
