@@ -16,8 +16,6 @@ jobs:
     name: Deploy using shared workflow
     runs-on: ubuntu-latest
     needs: deploy
-    steps:
-      - name: Run Shared Workflow
-        uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
-        with:
-          branch-name: CT-1193-deployment
+    uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
+    with:
+      branch-name: CT-1193-deployment
