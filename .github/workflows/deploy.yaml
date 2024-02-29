@@ -1,10 +1,5 @@
 name: Deployment Workflow
 
-on:
-  push:
-    branches:
-      - CT-1193-deployment
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,7 +7,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Deploy to Beta Environment
-        uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
-        with:
-          branch-name: CT-1193-deployment
+
+uses: FINTLabs/fint-core-workflows/.github/workflows/deploy-to-beta.yaml@main
+with:
+  branch-name: CT-1193-deployment
