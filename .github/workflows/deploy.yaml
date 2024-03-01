@@ -16,3 +16,4 @@ jobs:
         aks-beta-fint-2021-11-23
       cluster: |
         fintlabs-no
+        
