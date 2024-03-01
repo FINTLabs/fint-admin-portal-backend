@@ -12,5 +12,7 @@ jobs:
     uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
     with:
       branch-name: CT-1193-deployment
-      org: aks-beta-fint-2021-11-23
-      cluster: fintlabs-no
+      org: |
+        aks-beta-fint-2021-11-23
+      cluster: |
+        fintlabs-no
