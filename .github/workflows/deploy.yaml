@@ -9,3 +9,4 @@ jobs:
     uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
     with:
       branch-name: CT-1193-deployment
+
