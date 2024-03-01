@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_and_push:
+  build_and_deploy:
     uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
     with:
       branch-name: CT-1193-deployment
