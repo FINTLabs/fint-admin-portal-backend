@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     uses : FINTLabs/fint-core-workflows/.github/workflows/CI.yaml@main
-    with:
-      token: secrets.GITHUBACTION_TOKEN
 
   build-and-push:
     uses: FINTLabs/fint-core-workflows/.github/workflows/CD.yaml@main
