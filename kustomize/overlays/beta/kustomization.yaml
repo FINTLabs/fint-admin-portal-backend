@@ -3,14 +3,6 @@ kind: Kustomization
 namespace: fintlabs-no
 resources:
   - ../../base
-commonLabels:
-  app.kubernetes.io/name: fint-admin-portal-backend
-  app.kubernetes.io/instance: fint-admin-portal-backend_fintlabs_no
-  app.kubernetes.io/version: latest
-  app.kubernetes.io/component: frontend
-  app.kubernetes.io/part-of: fint-core
-  fintlabs.no/team: core
-  fintlabs.no/org-id: fintlabs.no
 
 patches:
   - patch: |-
