@@ -2,10 +2,6 @@ springfox:
  title: 'FINT Admin Portal API'
  version: '@version@'
 
-server:
- port: 8081
-
-
 fint:
   ldap:
     url: "${url}"
