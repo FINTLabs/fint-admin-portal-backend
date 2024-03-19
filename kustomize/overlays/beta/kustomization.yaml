@@ -9,9 +9,6 @@ patches:
       - op: replace
         path: "/spec/url/hostname"
         value: 'admin-beta.fintlabs.no'
-      - op: replace
-        path: "/spec/onePassword/itemPath"
-        value: 'vaults/aks-beta-vault/items/fint-admin-backend'
     target:
       kind: Application
       name: fint-admin-portal-backend
