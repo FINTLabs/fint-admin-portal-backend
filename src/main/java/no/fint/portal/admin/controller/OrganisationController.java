@@ -30,7 +30,7 @@ import java.util.Optional;
 @RestController
 @Tag(name = "Organisations")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/organisations")
+@RequestMapping(value = "/organisations")
 public class OrganisationController {
 
     private final OrganisationService organisationService;

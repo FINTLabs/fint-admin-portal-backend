@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @RestController
 @Tag(name = "Components")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/components")
+@RequestMapping(value = "/components")
 public class ComponentController {
 
     private final ComponentService componentService;

@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
 @RestController
 @Tag(name = "Me")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/me")
+@RequestMapping(value = "/me")
 public class MeController {
 
 

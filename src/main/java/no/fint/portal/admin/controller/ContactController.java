@@ -27,7 +27,7 @@ import java.util.Optional;
 @RestController
 @Tag(name = "Contacts")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/contacts")
+@RequestMapping(value = "/contacts")
 public class ContactController {
 
     private final ContactService contactService;

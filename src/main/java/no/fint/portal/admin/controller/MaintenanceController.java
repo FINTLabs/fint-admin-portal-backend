@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 @RestController
 @Tag(name = "Maintenance")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/maintenance")
+@RequestMapping(value = "/maintenance")
 public class MaintenanceController {
 
     private final ComponentService componentService;
