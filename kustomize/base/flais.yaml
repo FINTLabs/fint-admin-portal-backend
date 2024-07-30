@@ -14,7 +14,7 @@ spec:
   image: ghcr.io/fintlabs/fint-admin-portal-backend:latest
   envFrom:
     - secretRef:
-        name: fint-portal-api
+        name: fint-portal-user
   url:
     hostname: admin-beta.fintlabs.no
     basePath: /api
