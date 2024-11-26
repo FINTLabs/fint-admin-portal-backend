@@ -20,5 +20,3 @@ spec:
     basePath: /api
   ingress:
     enabled: true
-    middlewares:
-      - fint-admin-portal-sso
