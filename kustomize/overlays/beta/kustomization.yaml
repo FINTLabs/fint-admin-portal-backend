@@ -10,5 +10,12 @@ patches:
         path: "/spec/url/hostname"
         value: 'admin-beta.fintlabs.no'
     target:
+        kind: Application
+        name: fint-admin-portal-backend
+  - patch: |-
+      - op: replace
+        path: "/spec/envFrom/0/secretRef/name"
+        value: 'fint-portal-user-testenv'
+    target:
       kind: Application
       name: fint-admin-portal-backend
