@@ -14,8 +14,8 @@ patches:
         name: fint-admin-portal-backend
   - patch: |-
       - op: replace
-        path: "/spec/envFrom/0/secretRef/name"
-        value: 'fint-portal-user-testenv'
+        path: "/spec/onePassword/itemPath"
+        value: "vaults/aks-beta-vault/items/fint-portal-user-testenv"
     target:
       kind: Application
       name: fint-admin-portal-backend
