@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.service.LdapServiceRetryDecorator;
 import no.fint.portal.admin.service.ApiDiscoveryService;
+import no.fint.portal.admin.service.PreventCascadeDeleteService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -42,10 +43,13 @@ public class ComponentController {
 
     private final ApiDiscoveryService apiDiscoveryService;
 
-    public ComponentController(ComponentService componentService, LdapServiceRetryDecorator ldapServiceRetryDecorator, ApiDiscoveryService apiDiscoveryService) {
+    private final PreventCascadeDeleteService preventCascadeDeleteService;
+
+    public ComponentController(ComponentService componentService, LdapServiceRetryDecorator ldapServiceRetryDecorator, ApiDiscoveryService apiDiscoveryService, PreventCascadeDeleteService preventCascadeDeleteService) {
         this.componentService = componentService;
         this.ldapServiceRetryDecorator = ldapServiceRetryDecorator;
         this.apiDiscoveryService = apiDiscoveryService;
+        this.preventCascadeDeleteService = preventCascadeDeleteService;
     }
 
     @Operation(summary = "Create new component")
@@ -79,6 +83,18 @@ public class ComponentController {
             throw new UpdateEntityMismatchException(
                     String.format("Trying to updateEntry component %s on endpoint for component %s.", component.getName(), name)
             );
+        }
+
+        if (!preventCascadeDeleteService.hasComponentSameOrganisationsSize(component, name)) {
+            throw new UpdateEntityMismatchException("Component are missing organisations");
+        }
+
+        if (!preventCascadeDeleteService.hasComponentSameClientsSize(component, name)) {
+            throw new UpdateEntityMismatchException("Component are missing clients");
+        }
+
+        if (!preventCascadeDeleteService.hasComponentSameAdaptersSize(component, name)) {
+            throw new UpdateEntityMismatchException("Component are missing adapters");
         }
 
         if (!componentService.updateComponent(component)) {
