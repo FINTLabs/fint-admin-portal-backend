@@ -111,7 +111,7 @@ jobs:
         uses: azure/k8s-bake@v3
         with:
           renderEngine: 'kustomize'
-          kustomizationPath: 'kustomize/${{ steps.environment.outputs.result }}
+          kustomizationPath: 'kustomize/${{ steps.environment.outputs.result }}'
 
       - uses: azure/login@v2
         with:
