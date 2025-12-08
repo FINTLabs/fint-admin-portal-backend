@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.admin.service.LdapServiceRetryDecorator;
+import no.fint.portal.admin.service.PreventCascadeDeleteService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -41,11 +42,14 @@ public class OrganisationController {
 
     private final ContactService contactService;
 
-    public OrganisationController(OrganisationService organisationService, AssetService assetService, LdapServiceRetryDecorator ldapServiceRetryDecorator, ContactService contactService) {
+    private final PreventCascadeDeleteService preventCascadeDeleteService;
+
+    public OrganisationController(OrganisationService organisationService, AssetService assetService, LdapServiceRetryDecorator ldapServiceRetryDecorator, ContactService contactService, PreventCascadeDeleteService preventCascadeDeleteService) {
         this.organisationService = organisationService;
         this.assetService = assetService;
         this.ldapServiceRetryDecorator = ldapServiceRetryDecorator;
         this.contactService = contactService;
+        this.preventCascadeDeleteService = preventCascadeDeleteService;
     }
 
     @Operation(summary = "Create new organisation")
@@ -77,6 +81,14 @@ public class OrganisationController {
             throw new UpdateEntityMismatchException(
                     String.format("Trying to updateEntry organisation %s on endpoint for organisation %s.", organisation.getName(), name)
             );
+        }
+
+        if (!preventCascadeDeleteService.hasOranisationSameComponentSize(organisation, name)) {
+            throw new UpdateEntityMismatchException("Organisation are missing components");
+        }
+
+        if (!preventCascadeDeleteService.hasOranisationSameTechnicalContactSize(organisation, name)) {
+            throw new UpdateEntityMismatchException("Organisation are missing technical contacts");
         }
 
         if (!organisationService.updateOrganisation(organisation)) {
