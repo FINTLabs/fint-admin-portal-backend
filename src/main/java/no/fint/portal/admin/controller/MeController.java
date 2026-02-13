@@ -9,9 +9,13 @@ import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.Me;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
@@ -23,11 +27,14 @@ import java.net.UnknownHostException;
 @RequestMapping(value = "/me")
 public class MeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MeController.class);
 
     @Operation(summary = "Get Me")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Me> me(@RequestHeader(value = "x-fullname", defaultValue = "") String fullName) {
-        return ResponseEntity.ok(new Me(fullName));
+    public ResponseEntity<Me> me(@AuthenticationPrincipal Jwt token){
+
+        logger.info(token.getClaimAsString("email"));
+        return ResponseEntity.ok(new Me());
     }
 
 

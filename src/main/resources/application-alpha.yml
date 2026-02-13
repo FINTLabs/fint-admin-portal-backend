@@ -1,0 +1,59 @@
+# For running against the alpha environment locally
+
+springfox:
+  title: 'FINT Admin Portal API - TEST MODE'
+  version: '@version@'
+
+fint:
+  admin:
+    api:
+      base: https://admin.test.fintlabs.no
+  ldap:
+    url: "${LDAP_URL}"
+    user: "${LDAP_USER}"
+    password: "${LDAP_PASSWORD}"
+    access:
+      component-base: "ou=apis,o=fint"
+      organisation-base: "ou=organisations,o=fint"
+      contact-base: "ou=contacts,o=fint"
+      template-base: "ou=access,o=fint"
+  nam:
+    oauth:
+      username: "dummy"
+      password: "dummy"
+      idp-hostname: "idp.test.felleskomponent.no"
+      clientId: "dummy"
+      clientSecret: "dummy"
+
+spring:
+  application:
+    name: fint-admin-portal
+  ldap:
+    embedded:
+      base-dn: o=fint-test
+      credential:
+        username: uid=user
+        password: password
+      ldif: classpath:test-schema.ldif
+      port: 12345
+      validation:
+        enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.test.felleskomponent.no/nidp/oauth/nam
+security:
+  basic:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.ldap: DEBUG
+    org:
+      springframework:
+        web=DEBUG:
+
+server:
+  servlet:
+    context-path: /api # in kubernetes we prepend with /api. This will ensure its prepended with /api when developing locally

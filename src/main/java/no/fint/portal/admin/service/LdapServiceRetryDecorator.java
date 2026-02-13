@@ -9,8 +9,6 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -35,11 +33,6 @@ public class LdapServiceRetryDecorator {
         this.acccessPackageTemplateService = acccessPackageTemplateService;
     }
 
-    @Retryable(
-            backoff = @Backoff(delay = 200L),
-            value = {InvalidResourceException.class},
-            maxAttempts = 5
-    )
     public List<Contact> getContacts() {
         List<Contact> contacts = contactService.getContacts();
         if (contacts.size() > 0) {
@@ -52,11 +45,6 @@ public class LdapServiceRetryDecorator {
         return contacts;
     }
 
-    @Retryable(
-            backoff = @Backoff(delay = 200L),
-            value = {InvalidResourceException.class},
-            maxAttempts = 5
-    )
     public List<Organisation> getOrganisations() {
         List<Organisation> organisations = organisationService.getOrganisations();
         if (organisations.size() > 0) {
@@ -69,11 +57,6 @@ public class LdapServiceRetryDecorator {
         return organisations;
     }
 
-    @Retryable(
-            backoff = @Backoff(delay = 200L),
-            value = {InvalidResourceException.class},
-            maxAttempts = 5
-    )
     public List<Component> getComponents() {
         List<Component> components = componentService.getComponents();
         if (components.size() > 0) {
@@ -89,11 +72,6 @@ public class LdapServiceRetryDecorator {
         return components;
     }
 
-    @Retryable(
-            backoff = @Backoff(delay = 200L),
-            value = {InvalidResourceException.class},
-            maxAttempts = 5
-    )
     public List<AccessPackage> getAccessPackageTemplates() {
         List<AccessPackage> templates = acccessPackageTemplateService.getAccessPackageTemplates();
         if (templates.size() <= 0) {
