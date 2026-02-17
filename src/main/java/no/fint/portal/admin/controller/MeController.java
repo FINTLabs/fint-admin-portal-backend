@@ -32,9 +32,7 @@ public class MeController {
     @Operation(summary = "Get Me")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Me> me(@AuthenticationPrincipal Jwt token){
-
-        logger.info(token.getClaimAsString("email"));
-        return ResponseEntity.ok(new Me());
+        return ResponseEntity.ok(new Me(token.getClaimAsString("email")));
     }
 
 
