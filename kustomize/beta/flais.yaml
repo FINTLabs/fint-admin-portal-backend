@@ -16,9 +16,8 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-admin-portal-backend:latest
-  envFrom:
-    - secretRef:
-        name: fint-admin-portal
+  onePassword:
+    itemPath: "vaults/aks-beta-vault/items/fint-admin-portal"
   ingress:
     routes:
       - host: admin-beta.fintlabs.no
