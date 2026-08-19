@@ -18,7 +18,7 @@ spec:
   image: ghcr.io/fintlabs/fint-admin-portal-backend:latest
   envFrom:
     - secretRef:
-        name: fint-portal-api
+        name: fint-admin-portal
   ingress:
     routes:
       - host: admin-beta.fintlabs.no
