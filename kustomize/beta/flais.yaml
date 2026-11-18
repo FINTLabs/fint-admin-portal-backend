@@ -16,6 +16,10 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-admin-portal-backend:latest
+  env:
+    # Java4Shell (CVE-2026-114938): turn off the Base64 intrinsic until the JDK has a fix.
+    - name: JDK_JAVA_OPTIONS
+      value: -XX:-UseBASE64Intrinsics
   onePassword:
     itemPath: "vaults/aks-beta-vault/items/fint-admin-portal"
   ingress:
