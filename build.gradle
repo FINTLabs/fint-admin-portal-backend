@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.17'
+    id 'org.springframework.boot' version '4.2.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'groovy'
@@ -42,7 +42,7 @@ dependencies {
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
 
     implementation 'no.fintlabs:fint-portal-api:3.19.0'
 
